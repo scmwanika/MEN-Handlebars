@@ -1,34 +1,52 @@
-import { Controller, Get, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Get, Patch, Delete, Body, Param, HttpStatus } from '@nestjs/common';
 import { GuestsService } from './guests.service';
 import { CreateGuestDto } from './dto/create-guest.dto';
-import { UpdateGuestDto } from './dto/update-guest.dto';
+// import { UpdateGuestDto } from './dto/update-guest.dto';
 
 @Controller('guests')
 export class GuestsController {
   constructor(private readonly guestsService: GuestsService) {}
   
-  @Post()
-  create(@Body() createGuestDto: CreateGuestDto) {
-    return this.guestsService.create(createGuestDto);
+  @Get()
+  async showAllGuests() {
+    return {
+      statusCode: HttpStatus.OK,
+      data: await this.guestsService.showAll(),
+    };
   }
 
-  @Get()
-  findAll() {
-    return this.guestsService.findAll();
+  @Post()
+  async createGuests(@Body() data: CreateGuestDto) {
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Booking added successfully',
+      data: await this.guestsService.create(data),
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.guestsService.findOne(+id);
+  async readGuest(@Param('id') id: number) {
+    return {
+      statusCode: HttpStatus.OK,
+      data: await this.guestsService.read(id),
+    };
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() updateGuestDto: UpdateGuestDto) {
-    return this.guestsService.update(+id, updateGuestDto);
+  @Patch(':id')
+  async updateGuest(@Param('id') id: number, @Body() data: Partial<CreateGuestDto>) {
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Booking updated successfully',
+      data: await this.guestsService.update(id, data),
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.guestsService.remove(+id);
+  async deleteGuest(@Param('id') id: number) {
+    await this.guestsService.destroy(id);
+    return {
+      statusCode: HttpStatus.OK,
+      message: 'Booking deleted successfully',
+    };
   }
 }

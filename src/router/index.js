@@ -53,14 +53,9 @@ const routes = [
     component: () => import('../views/ViewEmployeeProfile.vue'),
   },
   {
-    path: '/edit-profile/:id',
-    name: 'EditEmployeeProfile',
-    component: () => import('../views/EditEmployeeProfile.vue'),
-  },
-  {
-    path: '/edit-booking/:id',
-    name: 'EditBooking',
-    component: () => import('../views/EditBooking.vue'),
+    path: '/edit-data/:id',
+    name: 'EditData',
+    component: () => import('../views/EditData.vue'),
   },
   {
     path: '*',

@@ -1,26 +1,38 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Guest } from 'src/guests/entities/guest.entity';
 import { CreateGuestDto } from './dto/create-guest.dto';
-import { UpdateGuestDto } from './dto/update-guest.dto';
+// import { UpdateGuestDto } from './dto/update-guest.dto';
 
 @Injectable()
 export class GuestsService {
-  create(createGuestDto: CreateGuestDto) {
-    return 'This action adds a new guest';
+  constructor(
+    @InjectRepository(Guest)
+    private guestsRepository: Repository<Guest>,
+  ) {}
+
+  async showAll() {
+    return await this.guestsRepository.find();
   }
 
-  findAll() {
-    return `This action returns all guests`;
+  async create(data: CreateGuestDto) {
+    const guest = this.guestsRepository.create(data);
+    await this.guestsRepository.save(data);
+    return guest;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} guest`;
+  async read(id: number) {
+    return await this.guestsRepository.findOne({ where: { id: id } });
   }
 
-  update(id: number, updateGuestDto: UpdateGuestDto) {
-    return `This action updates a #${id} guest`;
+  async update(id: number, data: Partial<CreateGuestDto>) {
+    await this.guestsRepository.update({ id }, data);
+    return await this.guestsRepository.findOne({ id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} guest`;
+  async destroy(id: number) {
+    await this.guestsRepository.delete({ id });
+    return { deleted: true };
   }
 }

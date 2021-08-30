@@ -30,14 +30,14 @@
             <td>{{ guest.accommodationType }}</td>
             <td>{{ guest.checkin }}</td>
             <td>
+              <!-- EDIT LINK -->
               <router-link
-                :to="{ name: 'EditBooking', params: { id: guest._id } }"
+                :to="{ name: 'EditData', params: { id: guest._id } }"
                 class="edit"
               >
-                <!-- EDIT BUTTON -->
                 <input type="button" class="btn btn-info" value="edit" />
               </router-link>
-              <!-- DELETE BUTTON -->
+              <!-- DELETE LINK -->
               <a href="" @click="removeGuest(guest._id)">
                 <input type="submit" class="btn btn-danger" value="delete" />
               </a>
@@ -99,11 +99,5 @@ th {
 td {
   width: 1%;
   border: 1px solid #068d68;
-}
-
-input[type="button"],
-input[type="submit"] {
-  width: 35%;
-  display: inline;
 }
 </style>

@@ -19,9 +19,6 @@
       <md-tab id="tab-accommodations" md-label="Accommodations"
         ><UploadAccommodation
       /></md-tab>
-      <md-tab id="tab-training-programs" md-label="Training Programs"
-        ><UploadTrainingProgram
-      /></md-tab>
     </md-tabs>
   </div>
 </template>
@@ -33,7 +30,6 @@ import GuestList from '@/components/AdminPanel/GuestList.vue';
 import ReviewList from '@/components/Testimonial/ReviewList.vue';
 import UploadActivity from '@/components/AdminPanel/UploadActivity.vue';
 import UploadAccommodation from '@/components/AdminPanel/UploadAccommodation.vue';
-import UploadTrainingProgram from '@/components/AdminPanel/UploadTrainingProgram.vue';
 
 export default {
   components: {
@@ -43,7 +39,6 @@ export default {
     ReviewList,
     UploadActivity,
     UploadAccommodation,
-    UploadTrainingProgram,
   },
   methods: {
     async logout() {

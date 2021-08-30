@@ -22,21 +22,22 @@
         <td>{{ employee.fileName }}</td>
         <td>{{ employee.role }}</td>
         <td>
+          <!-- EDIT LINK -->
           <router-link
-            :to="{ name: 'EditEmployeeProfile', params: { id: employee._id } }"
+            :to="{ name: 'EditData', params: { id: employee._id } }"
             class="edit"
-            ><!-- EDIT ICON -->
-            <img src="@/assets/edit-16.png" alt="edit-icon" />
+          >
+            <input type="button" class="btn btn-info" value="edit" />
           </router-link>
-          <a href="" @click.prevent="deleteEmployee(employee._id)"
-          ><!-- DELETE ICON -->
-            <img src="@/assets/delete-16.png" alt="delete-icon" />
+          <!-- DELETE LINK -->
+          <a href="" @click.prevent="deleteEmployee(employee._id)">
+            <input type="submit" class="btn btn-danger" value="delete" />
           </a>
         </td>
       </tr>
     </table>
     <em>{{ message }}</em>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -71,7 +72,8 @@ export default {
           // eslint-disable-next-line no-underscore-dangle
           this.employeeList.splice(
             // eslint-disable-next-line no-underscore-dangle
-            this.employeeList.findIndex((i) => i._id === id), 1,
+            this.employeeList.findIndex((i) => i._id === id),
+            1,
           );
         });
         this.message = 'Employee deleted successfully.';
