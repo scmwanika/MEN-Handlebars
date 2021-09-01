@@ -17,7 +17,7 @@ import TeamSection from '@/components/About/TeamSection.vue';
 import FooterSection from '@/components/FooterSection.vue';
 
 export default {
-  name: 'About',
+  name: 'AboutPage',
   components: {
     HeaderSection,
     AboutSection,

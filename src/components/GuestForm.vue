@@ -87,8 +87,7 @@
 import AccommodationSection from '@/components/Visit/AccommodationSection.vue';
 import { mapMutations, mapActions } from 'vuex';
 import axios from 'axios';
-
-const api = 'http://localhost:3000';
+import api from '../api';
 
 export default {
   components: {

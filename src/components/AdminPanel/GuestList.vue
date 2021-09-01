@@ -1,15 +1,19 @@
 <template>
   <div>
-    <!-- FILTER GUESTS (search by checkin) -->
+    <!-- FILTER GUESTS (search by name or checkin) -->
     <div class="search-wrapper">
       <input
         type="text"
         v-model="search"
-        placeholder="Search Guest By Checkin"
+        placeholder="Search Guest By Name or Checkin"
       />
       <br /><br />
-      <p>
-        Your search found {{ guests.length }} guest of {{ guestList.length }}
+      <p v-if="guests.length === 0">No guest found in your search</p>
+      <p v-else-if="guests.length === 1">
+        Your search found {{ guests.length }} guest
+      </p>
+      <p v-else>
+        Your search found {{ guests.length }} guests of {{ guestList.length }}
       </p>
       <small>
         <table>
@@ -66,10 +70,13 @@ export default {
   computed: {
     ...mapState(['guests']),
     ...mapGetters(['guestList']),
-    // FILTER GUESTS (search by checkin)
+    // FILTER GUESTS (search by name or checkin)
     guests() {
       // eslint-disable-next-line max-len
-      return this.guestList.filter((guest) => guest.checkin.toLowerCase().includes(this.search.toLowerCase()));
+      return this.guestList.filter(
+        (guest) => guest.name.toLowerCase().includes(this.search.toLowerCase())
+          || guest.checkin.toLowerCase().includes(this.search.toLowerCase()),
+      );
     },
   },
   //

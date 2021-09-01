@@ -19,6 +19,7 @@ import ReviewList from '@/components/Testimonial/ReviewList.vue';
 import FooterSection from '@/components/FooterSection.vue';
 
 export default {
+  name: 'TestimonialPage',
   components: {
     HeaderSection,
     OurCapacity,

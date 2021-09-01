@@ -29,6 +29,7 @@ import EditEmployeeProfile from '@/components/Edit/EditEmployeeProfile.vue';
 import EditBooking from '@/components/Edit/EditBooking.vue';
 
 export default {
+  name: 'EditData',
   components: {
     EditEmployeeProfile,
     EditBooking,

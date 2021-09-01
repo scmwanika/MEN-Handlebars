@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-const api = 'http://localhost:3000';
+import api from '../../api';
 
 export default ({
   // STATE

@@ -15,6 +15,7 @@ import ProcessingGuide from '@/components/BuyCoffee/ProcessingGuide.vue';
 import FooterSection from '@/components/FooterSection.vue';
 
 export default {
+  name: 'CoffeePage',
   components: {
     HeaderSection,
     CoffeeProcessing,

@@ -23,8 +23,8 @@
 
 <script>
 import axios from 'axios';
+import api from '../../api';
 
-const api = 'http://localhost:3000';
 export default {
   props: {
     message: String,

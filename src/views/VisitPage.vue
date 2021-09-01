@@ -13,6 +13,7 @@ import OurOffers from '@/components/Visit/OffersCard.vue';
 import FooterSection from '@/components/FooterSection.vue';
 
 export default {
+  name: 'VisitPage',
   components: {
     HeaderSection,
     OurOffers,

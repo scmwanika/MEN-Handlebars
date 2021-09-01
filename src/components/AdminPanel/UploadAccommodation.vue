@@ -38,7 +38,7 @@
         </div>
 
         <div class="form-group">
-          <button class="btn btn-success btn-block btn-add">+</button>
+          <button class="btn btn-success btn-block btn-add">save</button>
           <em>{{ message }}</em>
         </div>
       </form>
@@ -49,8 +49,8 @@
 <script>
 import AccommodationList from '@/components/Visit/AccommodationList.vue';
 import axios from 'axios';
+import api from '../../api';
 
-const api = 'http://localhost:3000';
 export default {
   name: 'UploadAccommodations',
   props: {

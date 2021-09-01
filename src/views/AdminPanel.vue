@@ -32,6 +32,7 @@ import UploadActivity from '@/components/AdminPanel/UploadActivity.vue';
 import UploadAccommodation from '@/components/AdminPanel/UploadAccommodation.vue';
 
 export default {
+  name: 'AdminPanel',
   components: {
     HeaderSection,
     UploadEmployee,
@@ -102,13 +103,13 @@ input[type="text"],
 textarea {
   width: 100%;
 }
-
+/*
 .btn-add {
   width: 40px;
   height: 40px;
   border-radius: 50%;
 }
-
+*/
 .logout {
   margin-left: 15px;
 }
