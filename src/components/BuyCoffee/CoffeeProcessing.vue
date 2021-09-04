@@ -1,16 +1,7 @@
 <template>
   <div class="carousel">
-    <br />
-    <p>
-      Our coffee is processed using a method known as wet processing. This
-      removes the coffee's fruity material and leaves the coffee cherry
-      moist.<br />
-      It is passed through a pulping machine, fermented and dried using forced
-      air drying to achieve a moisture content of about 10.5%.
-    </p>
-    <br />
-    <h5>Benefits of the process</h5>
-    <p>Swipe to view the benefits.</p>
+    <h5>Process benefits</h5>
+    <p>Swipe to view.</p>
     <carousel-3d>
       <slide class="slide" :index="0">
         <br />
@@ -20,7 +11,7 @@
           methods.
         </p>
       </slide>
-      <slide class="slide" :index="1">
+      <slide class="slide" :index="2">
         <br />
         <h3>02-Selective Picking</h3>
         <p>
@@ -28,7 +19,7 @@
           guarantees a higher acidity and gives a better taste.
         </p>
       </slide>
-      <slide class="slide" :index="2">
+      <slide class="slide" :index="1">
         <br />
         <h3>03-Quality Control</h3>
         <p>

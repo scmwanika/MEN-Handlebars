@@ -98,7 +98,7 @@ export default {
   },
   data() {
     return {
-      guest: { },
+      guest: {},
     };
   },
   methods: {
@@ -108,8 +108,8 @@ export default {
       const endpoint = '/guests/add';
       try {
         await axios.post(api + endpoint, this.guest);
-        this.guest = { };
-        this.message = 'We\'ve received your request. Thankyou.';
+        this.guest = {};
+        this.message = "We've received your request. Thankyou.";
       } catch {
         this.message = 'Failed to submit your request; Please, try again.';
       }

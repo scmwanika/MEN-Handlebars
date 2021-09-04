@@ -1,7 +1,7 @@
 <template>
   <div class="carousel">
     <h5>Process guide</h5>
-    <p>Swipe to view the process.</p>
+    <p>Swipe to view.</p>
     <carousel-3d>
       <slide class="slide" :index="0">
         <img src="../../../backend/uploads/Mother Garden.jpg" />
@@ -13,7 +13,7 @@
           traditional clones A-F.
         </p>
       </slide>
-      <slide class="slide" :index="1">
+      <slide class="slide" :index="2">
         <img src="../../../backend/uploads/Cherry Picking.jpg" />
         <br />
         <h3>2-Cherry Picking</h3>
@@ -23,7 +23,7 @@
           traditional clones A-F.
         </p>
       </slide>
-      <slide class="slide" :index="2">
+      <slide class="slide" :index="1">
         <img src="../../../backend/uploads/Wet Processing.jpg" />
         <br />
         <h3>3-Wet Processing</h3>
