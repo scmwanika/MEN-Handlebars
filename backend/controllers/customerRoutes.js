@@ -32,7 +32,7 @@ router.get('/customers', async (req, res) => {
 // Edit-button onClick GETs this customer.
 router.get('/customers/:id', async (req, res) => {
   try {
-    const customer = await Customer.findOne({ _id: req.params.id });
+    const customer = await Customer.findOne({ id: req.params.id });
     res.json(customer);
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
@@ -41,22 +41,19 @@ router.get('/customers/:id', async (req, res) => {
 
 // UPDATE CUSTOMER
 // Update-button onClick, POSTs this customer.
-router.post('/update-customers/:id', async (req, res, next) => {
-  Customer.findByIdAndUpdate(req.params.id, {
-    $set: req.body,
-    // eslint-disable-next-line consistent-return
-  }, (error, data) => {
-    if (error) {
-      return next(error);
-    }
-    res.json(data);
-  });
+router.post('/update-customers/:id', async (req) => {
+  const customer = await Customer.findOne({ where: { id: req.params.id } });
+  if (!customer) {
+    throw Error('Customer not updated');
+  }
+  customer.customerName = req.body.customerName;
+  await customer.save();
 });
 
 // DELETE CUSTOMER
 router.get('/delete-customers/:id', async (req, res) => {
   try {
-    await Customer.deleteOne({ _id: req.params.id });
+    await Customer.destroy({ where: { id: req.params.id } });
     res.json('Customer Deleted');
   } catch (error) {
     res.status(400).send('Unable to delete the record from the database');

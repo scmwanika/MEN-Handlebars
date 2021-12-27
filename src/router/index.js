@@ -17,21 +17,25 @@ const routes = [
     path: '/create-entity',
     name: 'create_entity',
     component: () => import('@/views/create_entity.vue'),
-    /*
     meta: {
       requiresAuth: true,
     },
-    */
   },
   {
     path: '/read-entity',
     name: 'read_entity',
     component: () => import('@/views/read_entity.vue'),
-    /*
     meta: {
       requiresAuth: true,
     },
-    */
+  },
+  {
+    path: '/edit-entity',
+    name: 'edit_entity',
+    component: () => import('@/views/edit_entity.vue'),
+    meta: {
+      requiresAuth: true,
+    },
   },
 
   // NON EXISTING ROUTE

@@ -32,7 +32,7 @@ router.get('/suppliers', async (req, res) => {
 // Edit-button onClick GETs this supplier.
 router.get('/suppliers/:id', async (req, res) => {
   try {
-    const supplier = await Supplier.findOne({ _id: req.params.id });
+    const supplier = await Supplier.findOne({ id: req.params.id });
     res.json(supplier);
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
@@ -41,23 +41,20 @@ router.get('/suppliers/:id', async (req, res) => {
 
 // UPDATE SUPPLIER
 // Update-button onClick, POSTs this supplier.
-router.post('/update-suppliers/:id', async (req, res, next) => {
-  Supplier.findByIdAndUpdate(req.params.id, {
-    $set: req.body,
-    // eslint-disable-next-line consistent-return
-  }, (error, data) => {
-    if (error) {
-      return next(error);
-    }
-    res.json(data);
-  });
+router.post('/update-suppliers/:id', async (req) => {
+  const supplier = await Supplier.findOne({ where: { id: req.params.id } });
+  if (!supplier) {
+    throw Error('Supplier not updated');
+  }
+  supplier.supplierName = req.body.supplierName;
+  await supplier.save();
 });
 
 // DELETE SUPPLIER
 router.get('/delete-suppliers/:id', async (req, res) => {
   try {
-    await Supplier.deleteOne({ _id: req.params.id });
-    res.json('Supplier Deleted');
+    await Supplier.destroy({ where: { id: req.params.id } });
+    res.json('Suppplier Deleted');
   } catch (error) {
     res.status(400).send('Unable to delete the record from the database');
   }

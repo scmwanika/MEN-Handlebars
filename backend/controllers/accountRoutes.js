@@ -32,7 +32,7 @@ router.get('/accounts', async (req, res) => {
 // Edit-button onClick GETs this account.
 router.get('/accounts/:id', async (req, res) => {
   try {
-    const account = await Account.findOne({ _id: req.params.id });
+    const account = await Account.findOne({ id: req.params.id });
     res.json(account);
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
@@ -41,22 +41,19 @@ router.get('/accounts/:id', async (req, res) => {
 
 // UPDATE ACCOUNT
 // Update-button onClick, POSTs this account.
-router.post('/update-accounts/:id', async (req, res, next) => {
-  Account.findByIdAndUpdate(req.params.id, {
-    $set: req.body,
-    // eslint-disable-next-line consistent-return
-  }, (error, data) => {
-    if (error) {
-      return next(error);
-    }
-    res.json(data);
-  });
+router.post('/update-accounts/:id', async (req) => {
+  const account = await Account.findOne({ where: { id: req.params.id } });
+  if (!account) {
+    throw Error('Account not updated');
+  }
+  account.accountName = req.body.accountName;
+  await account.save();
 });
 
 // DELETE ACCOUNT
 router.get('/delete-accounts/:id', async (req, res) => {
   try {
-    await Account.deleteOne({ _id: req.params.id });
+    await Account.destroy({ where: { id: req.params.id } });
     res.json('Account Deleted');
   } catch (error) {
     res.status(400).send('Unable to delete the record from the database');

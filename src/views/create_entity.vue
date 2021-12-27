@@ -113,31 +113,31 @@
               type="date"
               v-model="product.introducedOn"
             /><br /><label>Retail Price:</label><br /><input
-              type="text"
+              type="number"
               v-model="product.retailPrice"
             /><br /><label>Units Purchased:</label><br /><input
-              type="text"
+              type="number"
               v-model="product.unitsPurchased"
             /><br /><label>Value Purchased:</label><br /><input
-              type="text"
+              type="number"
               v-model="product.valuePurchased"
             /><br /><label>Units Sold:</label><br /><input
-              type="text"
+              type="number"
               v-model="product.unitsSold"
             /><br /><label>Value Sold:</label><br /><input
-              type="text"
+              type="number"
               v-model="product.valueSold"
             /><br /><label>Units Instock:</label><br /><input
-              type="text"
+              type="number"
               v-model="product.unitsInstock"
             /><br /><label>Value Instock:</label><br /><input
-              type="text"
+              type="number"
               v-model="product.valueInstock"
             /><br /><label>Sales Cost:</label><br /><input
-              type="text"
+              type="number"
               v-model="product.salesCost"
             /><br /><label>Gross Profit:</label><br /><input
-              type="text"
+              type="number"
               v-model="product.grossProfit"
             /><br /><label>Discontinue:</label><br />
             <h6>NO</h6>
@@ -145,7 +145,6 @@
               type="radio"
               v-model="product.discontinue"
               value="NO"
-              checked=""
             />
             <h6>YES</h6>
             <input type="radio" v-model="product.discontinue" value="YES" />
@@ -297,18 +296,10 @@ export default {
   },
   data() {
     return {
-      // SUPPLIER
       supplier: {},
-      // PRODUCT
       product: {},
-      productList: [
-        { productName: 'Article A', retailPrice: '1,000' },
-        { productName: 'Article B', retailPrice: '2,000' },
-        { productName: 'Article C', retailPrice: '3,000' },
-      ],
-      // CUSTOMER
+      productList: [],
       customer: {},
-      // ACCOUNT
       account: {},
       accountList: [
         { accountName: 'Carriage inwards/outwards' },

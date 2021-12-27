@@ -32,7 +32,7 @@ router.get('/purchases', async (req, res) => {
 // Edit-button onClick GETs this purchase.
 router.get('/purchases/:id', async (req, res) => {
   try {
-    const purchase = await Purchase.findOne({ _id: req.params.id });
+    const purchase = await Purchase.findOne({ id: req.params.id });
     res.json(purchase);
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
@@ -41,22 +41,19 @@ router.get('/purchases/:id', async (req, res) => {
 
 // UPDATE PURCHASE
 // Update-button onClick, POSTs this purchase.
-router.post('/update-purchases/:id', async (req, res, next) => {
-  Purchase.findByIdAndUpdate(req.params.id, {
-    $set: req.body,
-    // eslint-disable-next-line consistent-return
-  }, (error, data) => {
-    if (error) {
-      return next(error);
-    }
-    res.json(data);
-  });
+router.post('/update-purchases/:id', async (req) => {
+  const purchase = await Purchase.findOne({ where: { id: req.params.id } });
+  if (!purchase) {
+    throw Error('Purchase not updated');
+  }
+  purchase.productName = req.body.productName;
+  await purchase.save();
 });
 
 // DELETE PURCHASE
 router.get('/delete-purchases/:id', async (req, res) => {
   try {
-    await Purchase.deleteOne({ _id: req.params.id });
+    await Purchase.destroy({ where: { id: req.params.id } });
     res.json('Purchase Deleted');
   } catch (error) {
     res.status(400).send('Unable to delete the record from the database');
