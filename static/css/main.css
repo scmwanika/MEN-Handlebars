@@ -1,0 +1,63 @@
+header {
+  width: 100%;
+  position: fixed;
+  top: 0;
+}
+
+span {
+  font-size: 24pt;
+  color: #068d68;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+form {
+  flex: 20%;
+  text-align: center;
+}
+
+/* Responsive layout */
+@media (max-width: 800px) {
+  .flex-container {
+    flex-direction: column;
+  }
+}
+
+.listing-table {
+  margin: 0 auto;
+}
+
+legend,
+label,
+h6 {
+  color: orange;
+  margin-bottom: 0;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="email"],
+input[type="url"],
+select {
+  width: 290px;
+  padding: 0.75%;
+  margin-bottom: 5px;
+  font-size: 12pt;
+  font-weight: bolder;
+  border: 1px solid grey;
+}
+
+input[type="radio"] {
+  width: 50px;
+}
+
+.btn-success,
+.submit {
+  width: 290px;
+  border: none;
+  font-weight: bolder;
+}
