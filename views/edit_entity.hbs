@@ -1,72 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
+<style>
+  body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: Courier;
+  }
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stock Manager</title>
-  <style>
-    header {
-      width: 100%;
-      position: fixed;
-      top: 0;
-    }
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
 
+  span {
+    color: black;
+    font-size: 18pt;
+    font-weight: bolder;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  form {
+    flex: 20%;
+    text-align: center;
+  }
+
+  /* Responsive layout */
+  @media (max-width: 800px) {
     .flex-container {
-      display: flex;
-      flex-direction: row;
+      flex-direction: column;
     }
+  }
 
-    form {
-      flex: 20%;
-      text-align: center;
-    }
+  legend,
+  label,
+  h6 {
+    color: orange;
+    margin-bottom: 0;
+  }
 
-    /* Responsive layout */
-    @media (max-width: 800px) {
-      .flex-container {
-        flex-direction: column;
-      }
-    }
+  input[type="text"],
+  input[type="date"],
+  input[type="email"],
+  input[type="url"],
+  select {
+    width: 290px;
+    padding: 0.75%;
+    margin-bottom: 5px;
+    font-size: 12pt;
+    border: 1px solid grey;
+  }
 
-    .listing-table {
-      margin: 0 auto;
-    }
-
-    legend,
-    label,
-    h6 {
-      color: orange;
-      margin-bottom: 0;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="date"],
-    input[type="email"],
-    input[type="url"],
-    select {
-      width: 290px;
-      padding: 0.75%;
-      margin-bottom: 5px;
-      font-size: 12pt;
-      font-weight: bolder;
-      border: 1px solid grey;
-    }
-
-    input[type="radio"] {
-      width: 50px;
-    }
-
-    .btn-success,
-    .submit {
-      width: 290px;
-      border: none;
-      font-weight: bolder;
-    }
-  </style>
-</head>
+  .submit {
+    width: 290px;
+    border: none;
+  }
+</style>
 
 <div class="flex-container">
   <!-- SUPPLIER FORM-->
@@ -80,7 +71,7 @@
         name="address" /><br /><label>Telephone:</label><br /><input id="telephone" type="text"
         name="telephone" /><br /><label>Email:</label><br /><input id="email" type="email"
         name="email" /><br /><label>Website: </label><br /><input id="website" type="url" name="website" /><br /><button
-        class="btn btn-success submit" type="submit" onclick="showError()">Submit</button><br />
+        class="btn btn-success submit" type="submit">Submit</button><br />
     </fieldset>
   </form>
   <!-- PURCHASE FORM-->
@@ -88,11 +79,10 @@
     <fieldset>
       <legend>Bought from</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
         name="supplier_name" /><br /><label>Product bought:</label><br /><input id="product_name" type="text"
-        name="product_name" /><br /><label>Number of Units:</label><br /><input id="units" type="number"
-        name="units" /><br /><label>Unit Cost:</label><br /><input id="unit_cost" type="number"
-        name="unit_cost" /><br /><label>Total Cost:</label><br /><input id="total_cost" type="number"
-        name="total_cost" /><br /><button class="btn btn-success submit" type="submit"
-        onclick="showError()">Submit</button><br />
+        name="product_name" /><br /><label>text of Units:</label><br /><input id="units" type="text"
+        name="units" /><br /><label>Unit Cost:</label><br /><input id="unit_cost" type="text"
+        name="unit_cost" /><br /><label>Total Cost:</label><br /><input id="total_cost" type="text"
+        name="total_cost" /><br /><button class="btn btn-success submit" type="submit">Submit</button><br />
     </fieldset>
   </form>
   <!-- PRODUCT FORM-->
@@ -101,18 +91,17 @@
     <fieldset>
       <legend>Product</legend><br /><label>Product Name:</label><br /><input id="product_name" type="text"
         name="product_name" value="{{product.product_name}}" /><br /><label>Category:</label><br /><input id="category"
-        type="text" name="category" /><br /><label>Retail Price:</label><br /><input id="retail_price" type="number"
-        name="retail_price" /><br /><label>Units Received:</label><br /><input id="units_received" type="number"
-        name="units_received" /><br /><label>Value Received:</label><br /><input id="value_received" type="number"
-        name="value_received" /><br /><label>Units Issued:</label><br /><input id="units_issued" type="number"
-        name="units_issued" /><br /><label>Value Issued:</label><br /><input id="value_issued" type="number"
-        name="value_issued" /><br /><label>Units Instock:</label><br /><input id="units_instock" type="number"
-        name="units_instock" /><br /><label>Value Instock:</label><br /><input id="value_instock" type="number"
-        name="value_instock" /><br /><label>Sales Cost: </label><br /><input id="sales_cost" type="number"
-        name="sales_cost" /><br /><label>Gross Profit: </label><br /><input id="gross_profit" type="number"
+        type="text" name="category" /><br /><label>Retail Price:</label><br /><input id="retail_price" type="text"
+        name="retail_price" /><br /><label>Units Received:</label><br /><input id="units_received" type="text"
+        name="units_received" /><br /><label>Value Received:</label><br /><input id="value_received" type="text"
+        name="value_received" /><br /><label>Units Issued:</label><br /><input id="units_issued" type="text"
+        name="units_issued" /><br /><label>Value Issued:</label><br /><input id="value_issued" type="text"
+        name="value_issued" /><br /><label>Units Instock:</label><br /><input id="units_instock" type="text"
+        name="units_instock" /><br /><label>Value Instock:</label><br /><input id="value_instock" type="text"
+        name="value_instock" /><br /><label>Sales Cost: </label><br /><input id="sales_cost" type="text"
+        name="sales_cost" /><br /><label>Gross Profit: </label><br /><input id="gross_profit" type="text"
         name="gross_profit" /><br /><label>Discontinue: </label><br /><input id="discontinue" type="text"
-        name="discontinue" /><br /><button class="btn btn-success submit" type="submit"
-        onclick="showError()">Submit</button><br />
+        name="discontinue" /><br /><button class="btn btn-success submit" type="submit">Submit</button><br />
     </fieldset>
   </form>
   <!-- SALE FORM-->
@@ -120,11 +109,10 @@
     <fieldset>
       <legend>Sold to</legend><br /><label>Customer Name:</label><br /><input id="customer_name" type="text"
         name="customer_name" /><br /><label>Product sold:</label><br /><input id="product_name" type="text"
-        name="product_name" /><br /><label>Number of Units:</label><br /><input id="units" type="number"
-        name="units" /><br /><label>Unit Price:</label><br /><input id="unit_price" type="number"
-        name="unit_price" /><br /><label>Total Price:</label><br /><input id="total_price" type="number"
-        name="total_price" /><br /><button class="btn btn-success submit" type="submit"
-        onclick="showError()">Submit</button><br />
+        name="product_name" /><br /><label>text of Units:</label><br /><input id="units" type="text"
+        name="units" /><br /><label>Unit Price:</label><br /><input id="unit_price" type="text"
+        name="unit_price" /><br /><label>Total Price:</label><br /><input id="total_price" type="text"
+        name="total_price" /><br /><button class="btn btn-success submit" type="submit">Submit</button><br />
     </fieldset>
   </form>
   <!-- CUSTOMER FORM-->
@@ -138,9 +126,7 @@
         name="address" /><br /><label>Telephone:</label><br /><input id="telephone" type="text"
         name="telephone" /><br /><label>Email:</label><br /><input id="email" type="email"
         name="email" /><br /><label>Website: </label><br /><input id="website" type="url" name="website" /><br /><button
-        class="btn btn-success submit" type="submit" onclick="showError()">Submit</button><br />
+        class="btn btn-success submit" type="submit">Submit</button><br />
     </fieldset>
   </form>
 </div>
-
-</html>

@@ -1,12 +1,19 @@
-header {
+body {
+  /* Padding to prevent the content to go underneath the header */
+  padding-top: 75px;
+  font-family: Courier;
+}
+
+.navbar {
   width: 100%;
   position: fixed;
   top: 0;
 }
 
 span {
-  font-size: 24pt;
-  color: #068d68;
+  color: black;
+  font-size: 18pt;
+  font-weight: bolder;
 }
 
 .flex-container {
@@ -26,10 +33,6 @@ form {
   }
 }
 
-.listing-table {
-  margin: 0 auto;
-}
-
 legend,
 label,
 h6 {
@@ -38,7 +41,6 @@ h6 {
 }
 
 input[type="text"],
-input[type="number"],
 input[type="date"],
 input[type="email"],
 input[type="url"],
@@ -47,17 +49,10 @@ select {
   padding: 0.75%;
   margin-bottom: 5px;
   font-size: 12pt;
-  font-weight: bolder;
   border: 1px solid grey;
 }
 
-input[type="radio"] {
-  width: 50px;
-}
-
-.btn-success,
 .submit {
   width: 290px;
   border: none;
-  font-weight: bolder;
 }

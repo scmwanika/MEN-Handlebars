@@ -1,10 +1,10 @@
 const express = require('express');
 const Product = require('../models/product_model');
 
-// Creating a Router
+// CREATE A ROUTER
 const router = express.Router();
 
-// GET PRODUCT FORM
+// GET FORM TO INSERT PRODUCT
 router.get('/products', (req, res) => {
   try {
     res.render('create_entity')
@@ -13,36 +13,50 @@ router.get('/products', (req, res) => {
   }
 });
 
-// ADD OR UPDATE PRODUCT DEPENDING ON CONDITION
+// INSERT OR UPDATE PRODUCT DEPENDING ID STATE
 router.post('/products', (req, res) => {
   if (req.body._id == '')
-    insert_product(req, res);
+    insertProduct(req, res);
   else
-    update_product(req, res);
+    updateProduct(req, res);
 });
 
-// function to insert data
-function insert_product(req, res) {
+// FUNCTION TO INSERT PRODUCT TO STORE
+const insertProduct = (req, res) => {
   const product = new Product();
+
   product.product_name = req.body.product_name;
   product.category = req.body.category;
   product.retail_price = req.body.retail_price;
-  product.save((err, doc) => {
+  product.units_received = req.body.units_received;
+  product.value_received = req.body.value_received;
+  product.units_issued = req.body.units_issued;
+  product.value_issued = req.body.value_issued;
+  product.units_instock = req.body.units_instock;
+  product.value_instock = req.body.value_instock;
+  product.sales_cost = req.body.sales_cost;
+  product.gross_profit = req.body.gross_profit;
+  product.discontinue = req.body.discontinue;
+
+  product.save((err) => {
     if (!err)
       res.redirect('products/list');
     else
-      console.log('Error during record insertion : ' + err);
+      console.log('insertion error: ' + err);
   });
 }
 
-// function to update data
-function update_product(req, res) {
-  Product.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err, doc) => {
-    if (!err) { res.redirect('products/list'); }
+// FUNCTION TO UPDATE PRODUCT IN STORE
+const updateProduct = (req, res) => {
+  Product.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err) => {
+    if (!err)
+      res.redirect('products/list');
+    else
+      console.log('update error: ' + err);
   });
 }
 
-// SEARCH PRODUCT
+// SEARCH PRODUCT BY PRODUCT_NAME
 router.get('/products/list', async (req, res) => {
   try {
     const products = await Product.find({ product_name: req.query.product_name });
@@ -52,7 +66,7 @@ router.get('/products/list', async (req, res) => {
   }
 });
 
-// GET A PRODUCT USING IT'S ID
+// GET PRODUCT BY ID
 router.get('/products/:id', async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
@@ -62,7 +76,7 @@ router.get('/products/:id', async (req, res) => {
   }
 });
 
-// DELETE PRODUCT
+// DELETE PRODUCT BY ID
 router.get('/products/delete/:id', async (req, res) => {
   try {
     const product = await Product.deleteOne({ _id: req.params.id });
@@ -72,5 +86,4 @@ router.get('/products/delete/:id', async (req, res) => {
   }
 });
 
-//
 module.exports = router;
