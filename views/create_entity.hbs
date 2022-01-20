@@ -10,7 +10,7 @@
         name="address" /><br /><label>Telephone:</label><br /><input id="telephone" type="text"
         name="telephone" /><br /><label>Email:</label><br /><input id="email" type="email"
         name="email" /><br /><label>Website: </label><br /><input id="website" type="url" name="website" /><br /><button
-        class="btn btn-success submit" type="submit">Submit</button><br />
+        class="btn btn-success submit" type="submit">Save</button><br />
     </fieldset>
   </form>
   <!-- PURCHASE FORM-->
@@ -18,17 +18,18 @@
     <fieldset>
       <legend>Bought from</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
         name="supplier_name" /><br /><label>Product bought:</label><br /><input id="product_name" type="text"
-        name="product_name" /><br /><label>text of Units:</label><br /><input id="units" type="text"
-        name="units" /><br /><label>Unit Cost:</label><br /><input id="unit_cost" type="text"
-        name="unit_cost" /><br /><label>Total Cost:</label><br /><input id="total_cost" type="text"
-        name="total_cost" /><br /><button class="btn btn-success submit" type="submit">Submit</button><br />
+        name="product_name" /><br /><label>Units Purchased:</label><br /><input id="units_purchased" type="text"
+        name="units_purchased" /><br /><label>Unit Value:</label><br /><input id="unit_value" type="text"
+        name="unit_value" /><br /><label>Purchased Value:</label><br /><input id="purchased_value" type="text"
+        name="purchased_value" /><br /><button class="btn btn-success submit" type="submit">Save</button><br />
     </fieldset>
   </form>
   <!-- PRODUCT FORM-->
   <form method="POST" action="/products">
-    <input type="hidden" name="_id" />
+    <input type="hidden" name="_id">
     <fieldset>
-      <legend>Product</legend><br /><label>Product Name:</label><br /><input id="product_name" type="text"
+      <legend>Product</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
+        name="supplier_name" /><br /><label>Product Name:</label><br /><input id="product_name" type="text"
         name="product_name" /><br /><label>Category:</label><br /><input id="category" type="text"
         name="category" /><br /><label>Retail Price:</label><br /><input id="retail_price" type="text"
         name="retail_price" /><br /><label>Units Received:</label><br /><input id="units_received" type="text"
@@ -39,8 +40,11 @@
         name="units_instock" /><br /><label>Value Instock:</label><br /><input id="value_instock" type="text"
         name="value_instock" /><br /><label>Sales Cost: </label><br /><input id="sales_cost" type="text"
         name="sales_cost" /><br /><label>Gross Profit: </label><br /><input id="gross_profit" type="text"
-        name="gross_profit" /><br /><label>Discontinue: </label><br /><input id="discontinue" type="text"
-        name="discontinue" /><br /><button class="btn btn-success submit" type="submit">Submit</button><br />
+        name="gross_profit" /><br /><label>Discontinue: </label><br /><select id="discontinue" name="discontinue">
+        <option value="">-- Select --</option>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select><br /><button class="btn btn-success submit" type="submit">Save</button><br />
     </fieldset>
   </form>
   <!-- SALE FORM-->
@@ -48,10 +52,10 @@
     <fieldset>
       <legend>Sold to</legend><br /><label>Customer Name:</label><br /><input id="customer_name" type="text"
         name="customer_name" /><br /><label>Product sold:</label><br /><input id="product_name" type="text"
-        name="product_name" /><br /><label>text of Units:</label><br /><input id="units" type="text"
-        name="units" /><br /><label>Unit Price:</label><br /><input id="unit_price" type="text"
-        name="unit_price" /><br /><label>Total Price:</label><br /><input id="total_price" type="text"
-        name="total_price" /><br /><button class="btn btn-success submit" type="submit">Submit</button><br />
+        name="product_name" /><br /><label>Units Sold:</label><br /><input id="units_sold" type="text"
+        name="units_sold" /><br /><label>Unit Value:</label><br /><input id="unit_value" type="text"
+        name="unit_value" /><br /><label>Sold Value:</label><br /><input id="sold_value" type="text"
+        name="sold_value" /><br /><button class="btn btn-success submit" type="submit">Save</button><br />
     </fieldset>
   </form>
   <!-- CUSTOMER FORM-->
@@ -65,7 +69,7 @@
         name="address" /><br /><label>Telephone:</label><br /><input id="telephone" type="text"
         name="telephone" /><br /><label>Email:</label><br /><input id="email" type="email"
         name="email" /><br /><label>Website: </label><br /><input id="website" type="url" name="website" /><br /><button
-        class="btn btn-success submit" type="submit">Submit</button><br />
+        class="btn btn-success submit" type="submit">Save</button><br />
     </fieldset>
   </form>
 </div>

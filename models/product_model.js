@@ -3,6 +3,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const productSchema = new Schema({
+  supplier_name: {
+    type: String,
+  },
   product_name: {
     type: String,
   },

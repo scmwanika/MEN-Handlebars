@@ -23,22 +23,23 @@ router.post('/products', (req, res) => {
 
 // FUNCTION TO INSERT PRODUCT TO STORE
 const insertProduct = (req, res) => {
-  const product = new Product();
+  const newProduct = new Product();
+  
+  newProduct.supplier_name = req.body.supplier_name;
+  newProduct.product_name = req.body.product_name;
+  newProduct.category = req.body.category;
+  newProduct.retail_price = req.body.retail_price;
+  newProduct.units_received = req.body.units_received;
+  newProduct.value_received = req.body.value_received;
+  newProduct.units_issued = req.body.units_issued;
+  newProduct.value_issued = req.body.value_issued;
+  newProduct.units_instock = req.body.units_instock;
+  newProduct.value_instock = req.body.value_instock;
+  newProduct.sales_cost = req.body.sales_cost;
+  newProduct.gross_profit = req.body.gross_profit;
+  newProduct.discontinue = req.body.discontinue;
 
-  product.product_name = req.body.product_name;
-  product.category = req.body.category;
-  product.retail_price = req.body.retail_price;
-  product.units_received = req.body.units_received;
-  product.value_received = req.body.value_received;
-  product.units_issued = req.body.units_issued;
-  product.value_issued = req.body.value_issued;
-  product.units_instock = req.body.units_instock;
-  product.value_instock = req.body.value_instock;
-  product.sales_cost = req.body.sales_cost;
-  product.gross_profit = req.body.gross_profit;
-  product.discontinue = req.body.discontinue;
-
-  product.save((err) => {
+  newProduct.save((err) => {
     if (!err)
       res.redirect('products/list');
     else

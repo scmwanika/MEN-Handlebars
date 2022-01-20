@@ -62,8 +62,8 @@
   <!-- SUPPLIER FORM-->
   <form method="POST" action="/suppliers">
     <fieldset>
-      <legend>Supplier</legend><br /><label>Supplier Name:</label><br /><input id="supplied_by" type="text"
-        name="supplied_by" /><br /><label>Country:</label><br /><input id="country" type="text"
+      <legend>Supplier</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
+        name="supplier_name" /><br /><label>Country:</label><br /><input id="country" type="text"
         name="country" /><br /><label>City/Town:</label><br /><input id="city" type="text"
         name="city" /><br /><label>Street:</label><br /><input id="street" type="text"
         name="street" /><br /><label>Address:</label><br /><input id="address" type="text"
@@ -74,26 +74,26 @@
     </fieldset>
   </form>
   <!-- PURCHASE FORM-->
-  <form method="POST" action="/purchases" oninput='runApp()'>
+  <form method="POST" action="/purchases">
     <fieldset>
-      <legend>Purchases from</legend><br /><label>Supplier Name:</label><br /><input id="supplier" type="text"
-        name="supplier" /><br /><label>Purchases:</label><br /><input id="product_purchased" type="text"
+      <legend>Bought from</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
+        name="supplier_name" /><br /><label>Product bought:</label><br /><input id="product_purchased" type="text"
         name="product_purchased" /><br /><label>Units Purchased:</label><br /><input id="units_purchased" type="text"
-        name="units_purchased" /><br /><label>Unit Value:</label><br /><input id="unit_cost" type="text"
-        name="unit_cost" /><br /><label>Purchased Value:</label><br /><input id="total_cost" type="text"
-        name="total_cost" /><br /><button class="btn btn-success submit" type="submit">Save</button><br />
+        name="units_purchased" oninput='runApp()' /><br /><label>Unit Value:</label><br /><input id="unit_cost"
+        type="text" name="unit_cost" oninput='runApp()' /><br /><label>Purchased Value:</label><br /><input
+        id="total_cost" type="text" name="total_cost" /><br /><button class="btn btn-success submit"
+        type="submit">Save</button><br />
     </fieldset>
   </form>
   <!-- PRODUCT FORM-->
   <form method="POST" action="/products">
     <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
-      <legend>Product</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
-        name="supplier_name" value="{{product.supplier_name}}" /><br /><label>Product Name:</label><br /><input
-        id="product_name" type="text" name="product_name"
-        value="{{product.product_name}}" /><br /><label>Category:</label><br /><input id="category" type="text"
-        name="category" value="{{product.category}}" /><br /><label>Retail Price:</label><br /><input id="retail_price"
-        type="text" name="retail_price" value="{{product.retail_price}}" /><br /><label>Units
+      <legend>Product</legend><br /><label>Product Name:</label><br /><input id="product_name" type="text"
+        name="product_name" value="{{product.product_name}}"
+        oninput='runApp()' /><br /><label>Category:</label><br /><input id="category" type="text" name="category"
+        value="{{product.category}}" /><br /><label>Retail Price:</label><br /><input id="retail_price" type="text"
+        name="retail_price" value="{{product.retail_price}}" oninput='runApp()' /><br /><label>Units
         Received:</label><br /><input id="units_received" type="text" name="units_received"
         value="{{product.units_received}}" /><br /><label>Value Received:</label><br /><input id="value_received"
         type="text" name="value_received" value="{{product.value_received}}" /><br /><label>Units
@@ -113,13 +113,13 @@
     </fieldset>
   </form>
   <!-- SALE FORM-->
-  <form method="POST" action="/sales" oninput='runApp()'>
+  <form method="POST" action="/sales">
     <fieldset>
-      <legend>Sales to</legend><br /><label>Customer Name:</label><br /><input id="sold_to" type="text"
-        name="sold_to" /><br /><label>Sales:</label><br /><input id="product_sold" type="text"
-        name="product_sold" /><br /><label>Units Sold:</label><br /><input id="units_sold" type="text"
-        name="units_sold" /><br /><label>Unit Value:</label><br /><input id="unit_price" type="text"
-        name="unit_price" /><br /><label>Sold Value:</label><br /><input id="total_price" type="text"
+      <legend>Sold to</legend><br /><label>Customer Name:</label><br /><input id="customer_name" type="text"
+        name="customer_name" /><br /><label>Product sold:</label><br /><input id="product_sold" type="text"
+        name="product_sold" /><br /><label>Units Sold:</label><br /><input id="units_sold" type="text" name="units_sold"
+        oninput='runApp()' /><br /><label>Unit Value:</label><br /><input id="unit_price" type="text" name="unit_price"
+        oninput='runApp()' /><br /><label>Sold Value:</label><br /><input id="total_price" type="text"
         name="total_price" /><br /><button class="btn btn-success submit" type="submit">Save</button><br />
     </fieldset>
   </form>
@@ -143,8 +143,6 @@
   // FUNCTION TO MANAGE APP
   const runApp = () => {
     // PRODUCT
-    document.getElementById('supplied_by').value = document.getElementById('supplier_name').value;
-    document.getElementById('supplier').value = document.getElementById('supplier_name').value;
     document.getElementById('product_purchased').value = document.getElementById('product_name').value;
     document.getElementById('product_sold').value = document.getElementById('product_name').value;
     document.getElementById('unit_price').value = document.getElementById('retail_price').value;
@@ -156,7 +154,5 @@
     var units_sold = document.getElementById('units_sold').value;
     var unit_price = document.getElementById('unit_price').value;
     document.getElementById('total_price').value = units_sold * unit_price;
-    // CUSTOMER
-    document.getElementById('sold_to').value = document.getElementById('customer_name').value;
   }
 </script>
