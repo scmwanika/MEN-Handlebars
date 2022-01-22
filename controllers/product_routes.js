@@ -4,16 +4,7 @@ const Product = require('../models/product_model');
 // CREATE A ROUTER
 const router = express.Router();
 
-// GET FORM TO INSERT PRODUCT
-router.get('/products', (req, res) => {
-  try {
-    res.render('create_entity')
-  } catch (error) {
-    res.status(400).send('Unable to open page');
-  }
-});
-
-// INSERT OR UPDATE PRODUCT DEPENDING ID STATE
+// INSERT OR UPDATE PRODUCT DEPENDING ON ID
 router.post('/products', (req, res) => {
   if (req.body._id == '')
     insertProduct(req, res);
@@ -24,8 +15,8 @@ router.post('/products', (req, res) => {
 // FUNCTION TO INSERT PRODUCT TO STORE
 const insertProduct = (req, res) => {
   const newProduct = new Product();
-  
-  newProduct.supplier_name = req.body.supplier_name;
+
+  newProduct.supplied_by = req.body.supplied_by;
   newProduct.product_name = req.body.product_name;
   newProduct.category = req.body.category;
   newProduct.retail_price = req.body.retail_price;
@@ -61,7 +52,7 @@ const updateProduct = (req, res) => {
 router.get('/products/list', async (req, res) => {
   try {
     const products = await Product.find({ product_name: req.query.product_name });
-    res.render('read_entity', { products });
+    res.render('search_product', { products });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -71,7 +62,7 @@ router.get('/products/list', async (req, res) => {
 router.get('/products/:id', async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
-    res.render('edit_entity', { product });
+    res.render('product_form', { product });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -81,7 +72,7 @@ router.get('/products/:id', async (req, res) => {
 router.get('/products/delete/:id', async (req, res) => {
   try {
     const product = await Product.deleteOne({ _id: req.params.id });
-    res.render('read_entity', { product });
+    res.render('search_product', { product });
   } catch (error) {
     res.status(400).send('Unable to delete the record from the database');
   }

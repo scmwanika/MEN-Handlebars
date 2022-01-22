@@ -1,0 +1,76 @@
+<style>
+  body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: Courier;
+  }
+
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
+
+  span {
+    color: black;
+    font-size: 18pt;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  form {
+    flex: 20%;
+    text-align: center;
+  }
+
+  /* Responsive layout */
+  @media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
+
+  legend,
+  label,
+  h6 {
+    color: orange;
+    margin-bottom: 0;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="email"],
+  input[type="url"],
+  select {
+    width: 290px;
+    padding: 0.75%;
+    margin-bottom: 5px;
+    font-size: 12pt;
+    border: 1px solid grey;
+  }
+
+  .submit {
+    width: 290px;
+    border: none;
+  }
+</style>
+
+<div class="flex-container">
+
+  <!-- ACCOUNT FORM -->
+  <form class="account" method="POST" action="/accounts">
+    <input type="hidden" name="_id" value="{{account._id}}">
+    <fieldset>
+      <legend>Account</legend><br /><label>Account Name:</label><br /><input id="account_name" type="text"
+        name="account_name" value="{{account.account_name}}" /><br /><label>Amount:</label><br /><input id="amount"
+        type="text" name="amount" value="{{account.amount}}" /><br /><label>Notes:</label><br /><input id="notes"
+        type="text" name="notes" value="{{account.notes}}" /><br /><button class="btn btn-success submit btn-supplier"
+        type="submit">Save</button><br />
+      <span id="msg"></span>
+    </fieldset>
+  </form>
+
+</div>

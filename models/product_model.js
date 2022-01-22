@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const productSchema = new Schema({
-  supplier_name: {
+  supplied_by: {
     type: String,
   },
   product_name: {

@@ -85,7 +85,7 @@
     </fieldset>
   </form>
   <!-- PRODUCT FORM-->
-  <form method="POST" action="/products">
+  <form method="POST" action="/products" oninput='runApp()'>
     <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
       <legend>Product</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
@@ -148,15 +148,28 @@
     document.getElementById('product_purchased').value = document.getElementById('product_name').value;
     document.getElementById('product_sold').value = document.getElementById('product_name').value;
     document.getElementById('unit_price').value = document.getElementById('retail_price').value;
+
     // PURCHASES
-    var units_purchased = document.getElementById('units_purchased').value;
-    var unit_cost = document.getElementById('unit_cost').value;
-    document.getElementById('total_cost').value = units_purchased * unit_cost;
+    document.getElementById('total_cost').value = Number(document.getElementById('units_purchased').value) * Number(document.getElementById('unit_cost').value);
+
     // SALES
-    var units_sold = document.getElementById('units_sold').value;
-    var unit_price = document.getElementById('unit_price').value;
-    document.getElementById('total_price').value = units_sold * unit_price;
+    document.getElementById('total_price').value = Number(document.getElementById('units_sold').value) * Number(document.getElementById('unit_price').value);
+
     // CUSTOMER
     document.getElementById('sold_to').value = document.getElementById('customer_name').value;
+
+    // pro
+    document.getElementById('units_instock').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_issued').value);
+    document.getElementById('value_instock').value = Number(document.getElementById('value_instock').value) + Number(document.getElementById('total_cost').value);
+    document.getElementById('sales_cost').value = Number(document.getElementById('value_received').value) - Number(document.getElementById('value_instock').value);
+    document.getElementById('gross_profit').value = Number(document.getElementById('value_issued').value) - Number(document.getElementById('value_received').value) + Number(document.getElementById('value_instock').value);
+
+    // pur
+    document.getElementById('units_received').value = Number(document.getElementById('units_received').value) + Number(document.getElementById('units_purchased').value);
+    document.getElementById('value_received').value = Number(document.getElementById('value_received').value) + Number(document.getElementById('total_cost').value);
+
+    // sal
+    document.getElementById('units_issued').value = Number(document.getElementById('units_issued').value) + Number(document.getElementById('units_sold').value);
+    document.getElementById('value_issued').value = Number(document.getElementById('value_issued').value) + Number(document.getElementById('total_price').value);
   }
 </script>

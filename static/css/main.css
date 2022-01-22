@@ -21,7 +21,7 @@ span {
 }
 
 form {
-  flex: 20%;
+  flex: 50%;
   text-align: center;
 }
 
@@ -54,4 +54,11 @@ select {
 .submit {
   width: 290px;
   border: none;
+}
+
+#msg {
+  color: orange;
+  font-size: medium;
+  text-align: center;
+  font-style: italic;
 }

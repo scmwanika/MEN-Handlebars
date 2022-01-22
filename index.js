@@ -65,19 +65,19 @@ mongoose.connection
   });
 
 // APP ROUTES
-//const supplierRouter = require('./controllers/supplier_routes');
+const supplierRouter = require('./controllers/supplier_routes');
 //const purchaseRouter = require('./controllers/purchase_routes');
 const productRouter = require('./controllers/product_routes');
 //const customerRouter = require('./controllers/customer_routes');
 //const saleRouter = require('./controllers/sale_routes');
-//const accountRouter = require('./controllers/account_routes');
+const accountRouter = require('./controllers/account_routes');
 
-//app.use(supplierRouter);
+app.use(supplierRouter);
 //app.use(purchaseRouter);
 app.use(productRouter);
 //app.use(customerRouter);
 //app.use(saleRouter);
-//app.use(accountRouter);
+app.use(accountRouter);
 
 // SERVER LISTENING TO REQUESTS
 app.listen(3000, () => {

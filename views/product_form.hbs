@@ -1,0 +1,124 @@
+<style>
+  body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: Courier;
+  }
+
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
+
+  span {
+    color: black;
+    font-size: 18pt;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  form {
+    flex: 20%;
+    text-align: center;
+  }
+
+  /* Responsive layout */
+  @media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
+
+  legend,
+  label,
+  h6 {
+    color: orange;
+    margin-bottom: 0;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="email"],
+  input[type="url"],
+  select {
+    width: 290px;
+    padding: 0.75%;
+    margin-bottom: 5px;
+    font-size: 12pt;
+    border: 1px solid grey;
+  }
+
+  .submit {
+    width: 290px;
+    border: none;
+  }
+</style>
+
+<div class="flex-container">
+
+  <!-- PURCHASES FORM -->
+  <form method="POST" action="/purchases" oninput='runInput()'>
+    <fieldset>
+      <legend>Purchases</legend><br /><label>Supplier:</label><br /><input id="purchased_from" type="text"
+        name="purchased_from" /><br /><label>Product:</label><br /><input id="product_purchased" type="text"
+        name="product_purchased" /><br /><label>Units Purchased:</label><br /><input id="units_purchased" type="text"
+        name="units_purchased" /><br /><label>Unit Cost:</label><br /><input id="unit_cost" type="text"
+        name="unit_cost" /><br /><label>Total Cost:</label><br /><input id="total_cost" type="text"
+        name="total_cost" /><br /><label>Purchase Note:</label><br /><input id="purchase_note" type="text"
+        name="purchase_note" /><br /><button class="btn btn-success submit" type="submit">Save</button><br />
+    </fieldset>
+  </form>
+
+  <!-- PRODUCT FORM -->
+  <form method="POST" action="/products">
+    <input type="hidden" name="_id" value="{{product._id}}">
+    <fieldset>
+      <legend>Product</legend><br /><label>Supplier Name:</label><br /><input id="supplied_by" type="text"
+        name="supplied_by" value="{{product.supplied_by}}" /><br /><label>Product Name:</label><br /><input
+        id="product_name" type="text" name="product_name"
+        value="{{product.product_name}}" /><br /><label>Category:</label><br /><input id="category" type="text"
+        name="category" value="{{product.category}}" /><br /><label>Retail Price:</label><br /><input id="retail_price"
+        type="text" name="retail_price" value="{{product.retail_price}}" /><br /><label>Units
+        Received:</label><br /><input id="units_received" type="text" name="units_received"
+        value="{{product.units_received}}" /><br /><label>Value Received:</label><br /><input id="value_received"
+        type="text" name="value_received" value="{{product.value_received}}" /><br /><label>Units
+        Issued:</label><br /><input id="units_issued" type="text" name="units_issued"
+        value="{{product.units_issued}}" /><br /><label>Value Issued:</label><br /><input id="value_issued" type="text"
+        name="value_issued" value="{{product.value_issued}}" /><br /><label>Units Instock:</label><br /><input
+        id="units_instock" type="text" name="units_instock" value="{{product.units_instock}}" /><br /><label>Value
+        Instock:</label><br /><input id="value_instock" type="text" name="value_instock"
+        value="{{product.value_instock}}" /><br /><label>Sales Cost: </label><br /><input id="sales_cost" type="text"
+        name="sales_cost" value="{{product.sales_cost}}" /><br /><label>Gross Profit: </label><br /><input
+        id="gross_profit" type="text" name="gross_profit" value="{{product.gross_profit}}" /><br /><label>Discontinue:
+      </label><br /><input id="discontinue" type="text" name="discontinue" value="{{product.discontinue}}" /><br /><button
+        class="btn btn-success submit" type="submit" onclick='runSubmit()'>Save</button><br />
+    </fieldset>
+  </form>
+
+</div>
+
+<script type="text/javascript">
+
+  // FUNCTION TO MANAGE PURCHASES
+  const runInput = () => {
+    document.getElementById('purchased_from').value = document.getElementById('supplied_by').value;
+    document.getElementById('product_purchased').value = document.getElementById('product_name').value;
+    document.getElementById('total_cost').value = Number(document.getElementById('units_purchased').value) * Number(document.getElementById('unit_cost').value);
+  }
+
+  const runSubmit = () => {
+    document.getElementById('units_received').value = Number(document.getElementById('units_received').value) + Number(document.getElementById('units_purchased').value);
+    document.getElementById('value_received').value = Number(document.getElementById('value_received').value) + Number(document.getElementById('total_cost').value);
+    document.getElementById('units_instock').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_issued').value);
+    document.getElementById('value_instock').value = (Number(document.getElementById('value_instock').value) + Number(document.getElementById('total_cost').value));
+    document.getElementById('sales_cost').value = Number(document.getElementById('value_received').value) - Number(document.getElementById('value_instock').value);
+    document.getElementById('gross_profit').value = Number(document.getElementById('value_issued').value) - Number(document.getElementById('value_received').value) + Number(document.getElementById('value_instock').value);
+  }
+
+</script>
+
+{{!-- document.getElementById('value_instock').value = (Number(document.getElementById('value_instock').value) + Number(document.getElementById('total_cost').value)) - (Number(document.getElementById('units_instock').value) * Number(document.getElementById('value_received').value) / Number(document.getElementById('units_received').value)); --}}

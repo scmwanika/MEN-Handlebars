@@ -1,0 +1,35 @@
+<div class="flex-container">
+
+  <!-- SUPPLIER FORM -->
+  <form class="supplier" method="POST" action="/suppliers" oninput='runApp()'>
+    <fieldset>
+      <legend>Supplier</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
+        name="supplier_name" /><br /><label>Country:</label><br /><input id="country" type="text"
+        name="country" /><br /><label>City/Town:</label><br /><input id="city" type="text"
+        name="city" /><br /><label>Street:</label><br /><input id="street" type="text"
+        name="street" /><br /><label>Address:</label><br /><input id="address" type="text"
+        name="address" /><br /><label>Telephone:</label><br /><input id="telephone" type="text"
+        name="telephone" /><br /><label>Email:</label><br /><input id="email" type="email"
+        name="email" /><br /><label>Website: </label><br /><input id="website" type="url" name="website" /><br /><button
+        class="btn btn-success submit btn-supplier" type="submit" onclick="supplier()">Save</button><br />
+      <span id="msg"></span>
+    </fieldset>
+  </form>
+
+  <!-- PRODUCT FORM -->
+  <form method="POST" action="/products">
+    <input type="hidden" name="_id">
+    <fieldset>
+      <legend>Product</legend><br /><label>Supplied By:</label><br /><input id="supplied_by" type="text"
+        name="supplied_by" /><br /><label>Product Name:</label><br /><input id="product_name" type="text"
+        name="product_name" /><br /><label>Category:</label><br /><input id="category" type="text"
+        name="category" /><br /><label>Retail Price:</label><br /><input id="retail_price" type="text"
+        name="retail_price" /><br /><label>Discontinue: </label><br /><select id="discontinue" name="discontinue">
+        <option value=""> Select... </option>
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select><br /><button class="btn btn-success submit" type="submit">Save</button><br />
+    </fieldset>
+  </form>
+
+</div>
