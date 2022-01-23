@@ -51,7 +51,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // ESTABLISHING DATABASE CONNECTION
 mongoose.connect(process.env.DATABASE, {
-  //useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -66,17 +65,15 @@ mongoose.connection
 
 // APP ROUTES
 const supplierRouter = require('./controllers/supplier_routes');
-//const purchaseRouter = require('./controllers/purchase_routes');
 const productRouter = require('./controllers/product_routes');
-//const customerRouter = require('./controllers/customer_routes');
-//const saleRouter = require('./controllers/sale_routes');
+const transactionRouter = require('./controllers/transaction_routes');
+const customerRouter = require('./controllers/customer_routes');
 const accountRouter = require('./controllers/account_routes');
 
 app.use(supplierRouter);
-//app.use(purchaseRouter);
 app.use(productRouter);
-//app.use(customerRouter);
-//app.use(saleRouter);
+app.use(transactionRouter);
+app.use(customerRouter);
 app.use(accountRouter);
 
 // SERVER LISTENING TO REQUESTS
