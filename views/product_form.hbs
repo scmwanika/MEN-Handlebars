@@ -95,7 +95,7 @@
   </form>
 
   <!-- PRODUCT FORM -->
-  <form method="POST" action="/products">
+  <form method="POST" action="/products" onsubmit='runSubmit()'>
     <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
       <legend>Product</legend><br /><label>Supplier Name:</label><br /><input id="supplied_by" type="text"
@@ -116,8 +116,7 @@
         name="sales_cost" value="{{product.sales_cost}}" /><br /><label>Gross Profit: </label><br /><input
         id="gross_profit" type="text" name="gross_profit" value="{{product.gross_profit}}" /><br /><label>Discontinue:
       </label><br /><input id="discontinue" type="text" name="discontinue"
-        value="{{product.discontinue}}" /><br /><button class="btn btn-success submit" type="submit"
-        onclick='runSubmit()'>Save</button><br />
+        value="{{product.discontinue}}" /><br /><button class="btn btn-success submit" type="submit">Save</button><br />
     </fieldset>
   </form>
 
@@ -129,16 +128,14 @@
   const runInput = () => {
     document.getElementById('product').value = document.getElementById('product_name').value;
     document.getElementById('total_value').value = Number(document.getElementById('units_transacted').value) * Number(document.getElementById('unit_value').value);
-    document.getElementById('units_instock').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_issued').value);
-    document.getElementById('sales_cost').value = Number(document.getElementById('value_received').value) - Number(document.getElementById('value_instock').value);
-    document.getElementById('gross_profit').value = Number(document.getElementById('value_issued').value) - Number(document.getElementById('value_received').value) + Number(document.getElementById('value_instock').value);
 
+    // purchase
     if (document.getElementById('transaction_type').value == "Purchase")
       document.getElementById('witness').value = document.getElementById('supplied_by').value;
     else
       document.getElementById('witness').value = document.getElementById('customer_name').value;
 
-    //
+    // sale
     if (document.getElementById('transaction_type').value == "Sale")
       document.getElementById('unit_value').value = document.getElementById('retail_price').value;
     else
@@ -158,15 +155,20 @@
     else
       document.getElementById('value_issued').value = Number(document.getElementById('value_issued').value) + Number(document.getElementById('total_value').value);
 
+    // units instock
+    document.getElementById('units_instock').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_issued').value);
+
     // value instock
     if (document.getElementById('transaction_type').value == "Purchase")
-      document.getElementById('value_instock').value = (Number(document.getElementById('value_instock').value) + Number(document.getElementById('total_value').value));
-    else
-      document.getElementById('value_instock').value = 0;
+      document.getElementById('value_instock').value = Number(document.getElementById('value_instock').value) + Number(document.getElementById('total_value').value);
+    if (document.getElementById('transaction_type').value == "Sale")
+      document.getElementById('value_instock').value = Number(document.getElementById('units_instock').value) * Number(document.getElementById('value_instock').value) / (Number(document.getElementById('units_instock').value) + Number(document.getElementById('units_transacted').value));
+
+    // sales cost
+    document.getElementById('sales_cost').value = Number(document.getElementById('value_received').value) - Number(document.getElementById('value_instock').value);
+
+    // gross profit
+    document.getElementById('gross_profit').value = Number(document.getElementById('value_issued').value) - Number(document.getElementById('value_received').value) + Number(document.getElementById('value_instock').value);
   }
 
 </script>
-
-{{!-- document.getElementById('value_instock').value = (Number(document.getElementById('value_instock').value) +
-Number(document.getElementById('total_cost').value)) - (Number(document.getElementById('units_instock').value) *
-Number(document.getElementById('value_received').value) / Number(document.getElementById('units_received').value)); --}}
