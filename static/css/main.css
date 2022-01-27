@@ -52,6 +52,7 @@ select {
 }
 
 .submit {
+  width: 290px;
   border: none;
 }
 

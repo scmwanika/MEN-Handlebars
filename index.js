@@ -1,7 +1,6 @@
 // IMPORTING DEPENDENCIES
 require('dotenv').config();
 const express = require('express');
-//const multer = require('multer');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
@@ -17,32 +16,6 @@ SERVING STATIC FILES WITH MIDDLEWARE FUNCTION express.static
 */
 app.use(express.static('static/css'));
 app.use(express.static('static/js'));
-app.use(express.static('static/img'));
-app.use(express.static('static/json'));
-app.use(express.static('uploads'));
-
-// // STORE FOR UPLOADED FILES
-// const storage = multer.diskStorage({
-//   destination(req, file, callback) {
-//     callback(null, './uploads');
-//   },
-//   filename(req, file, callback) {
-//     callback(null, file.originalname);
-//   },
-// });
-
-// const upload = multer({ storage }).single('file');
-
-// // UPLOAD FILE
-// app.post('/uploads', (req, res) => {
-//   // eslint-disable-next-line consistent-return
-//   upload(req, res, (err) => {
-//     if (err) {
-//       return res.end('file not uploaded');
-//     }
-//     res.end('uploaded file successfully');
-//   });
-// });
 
 // MANIPULATE DATABASE USING JSON
 app.use(express.json());
@@ -68,13 +41,11 @@ const supplierRouter = require('./controllers/supplier_routes');
 const productRouter = require('./controllers/product_routes');
 const transactionRouter = require('./controllers/transaction_routes');
 const customerRouter = require('./controllers/customer_routes');
-const accountRouter = require('./controllers/account_routes');
 
 app.use(supplierRouter);
 app.use(productRouter);
 app.use(transactionRouter);
 app.use(customerRouter);
-app.use(accountRouter);
 
 // SERVER LISTENING TO REQUESTS
 app.listen(3000, () => {

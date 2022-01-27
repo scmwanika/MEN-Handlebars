@@ -53,6 +53,7 @@
   }
 
   .submit {
+    width: 290px;
     border: none;
   }
 </style>
@@ -81,8 +82,10 @@
     <fieldset>
       <legend>Transaction</legend><br /><label>Transaction Type:</label><br /><select id="transaction_type"
         name="transaction_type">
-        <option value="Purchase">PURCHASE</option>
-        <option value="Sale">SALE</option>
+        <option value="Purchases">PURCHASES</option>
+        <option value="Sales">SALES</option>
+        <option value="Purchases Returns">PURCHASES RETURNS</option>
+        <option value="Sales Returns">SALES RETURNS</option>
       </select><br /><label>Transaction
         Note:</label><br /><select id="transaction_note" name="transaction_note">
         <option value="cash purchase">cash purchase</option>
@@ -123,7 +126,8 @@
       </label><br /><input id="gross_profit" type="text" name="gross_profit" value="{{product.gross_profit}}"
         readonly /><br /><label>Discontinue:
       </label><br /><input id="discontinue" type="text" name="discontinue" value="{{product.discontinue}}"
-        readonly /><br /><button class="btn btn-success submit btn-product" type="submit">Save</button><br />
+        readonly /><br /><button class="btn btn-success submit btn-product" type="submit">Conclude
+        Transaction</button><br />
     </fieldset>
   </form>
 
@@ -141,23 +145,23 @@
     document.getElementById('product').value = document.getElementById('product_name').value;
 
     // total_value
-    if (document.getElementById('transaction_type').value == "Sale")
+    if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('total_value').value = Number(document.getElementById('units_transacted').value) * Number(document.getElementById('unit_value').value);
 
-    if ((document.getElementById('transaction_type').value == "Sale") && (document.getElementById('customer_name').value == ""))
-      document.getElementById('transaction_type').value = "Purchase";
+    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Purchases Returns") || (document.getElementById('transaction_type').value == "Sales Returns")) && (document.getElementById('customer_name').value == ""))
+      document.getElementById('transaction_type').value = "Purchases";
 
     // disable the select field
     $('#transaction_type').prop('disabled', true);
 
     // witness the transaction
-    if (document.getElementById('transaction_type').value == "Purchase")
+    if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('witness').value = document.getElementById('supplied_by').value;
     else
       document.getElementById('witness').value = document.getElementById('customer_name').value;
 
     // unit_value for transaction
-    if (document.getElementById('transaction_type').value == "Sale")
+    if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('unit_value').value = document.getElementById('retail_price').value;
     else
       document.getElementById('unit_value').value = document.getElementById('total_value').value / document.getElementById('units_transacted').value;
@@ -165,13 +169,13 @@
 
   const productForm = () => {
     // units transacted
-    if (document.getElementById('transaction_type').value == "Purchase")
+    if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('units_received').value = Number(document.getElementById('units_received').value) + Number(document.getElementById('units_transacted').value);
     else
       document.getElementById('units_issued').value = Number(document.getElementById('units_issued').value) + Number(document.getElementById('units_transacted').value);
 
     // value transacted
-    if (document.getElementById('transaction_type').value == "Purchase")
+    if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('value_received').value = Number(document.getElementById('value_received').value) + Number(document.getElementById('total_value').value);
     else
       document.getElementById('value_issued').value = Number(document.getElementById('value_issued').value) + Number(document.getElementById('total_value').value);
@@ -180,9 +184,9 @@
     document.getElementById('units_instock').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_issued').value);
 
     // value instock
-    if (document.getElementById('transaction_type').value == "Purchase")
+    if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('value_instock').value = Number(document.getElementById('value_instock').value) + Number(document.getElementById('total_value').value);
-    if (document.getElementById('transaction_type').value == "Sale")
+    if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('value_instock').value = Number(document.getElementById('units_instock').value) * Number(document.getElementById('value_instock').value) / (Number(document.getElementById('units_instock').value) + Number(document.getElementById('units_transacted').value));
 
     // sales cost
