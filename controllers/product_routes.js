@@ -20,15 +20,15 @@ const insertProduct = (req, res) => {
   newProduct.product_name = req.body.product_name;
   newProduct.category = req.body.category;
   newProduct.retail_price = req.body.retail_price;
-  newProduct.units_received = req.body.units_received;
-  newProduct.value_received = req.body.value_received;
-  newProduct.units_issued = req.body.units_issued;
-  newProduct.value_issued = req.body.value_issued;
-  newProduct.units_instock = req.body.units_instock;
-  newProduct.value_instock = req.body.value_instock;
-  newProduct.sales_cost = req.body.sales_cost;
+  newProduct.quantity_purchased = req.body.units_purchased;
+  newProduct.purchases = req.body.purchases;
+  newProduct.quantity_sold = req.body.units_sold;
+  newProduct.sales = req.body.sales;
+  newProduct.quantity_instock = req.body.units_instock;
+  newProduct.closing_stock = req.body.closing_stock;
+  newProduct.cost_of_sales = req.body.cost_of_sales;
   newProduct.gross_profit = req.body.gross_profit;
-  newProduct.discontinue = req.body.discontinue;
+  newProduct.discontinued = req.body.discontinued;
 
   newProduct.save((err) => {
     if (!err)

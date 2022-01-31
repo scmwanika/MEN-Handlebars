@@ -12,13 +12,13 @@ const transactionSchema = new Schema({
   product: {
     type: String,
   },
-  units_transacted: {
+  quantity: {
     type: Number,
   },
-  unit_value: {
+  unit_cost: {
     type: Number,
   },
-  total_value: {
+  total_cost: {
     type: Number,
   },
   transaction_note: {

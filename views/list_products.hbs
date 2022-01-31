@@ -34,23 +34,23 @@
   <tr>
     <th>Product Name:</th>
     <th>Category:</th>
-    <th>Value Received:</th>
-    <th>Value Issued:</th>
-    <th>Value Instock:</th>
-    <th>Sales Cost:</th>
+    <th>Purchases:</th>
+    <th>Sales:</th>
+    <th>Closing Stock:</th>
+    <th>Cost of Sales:</th>
     <th>Gross Profit:</th>
-    <th>Discontinue:</th>
+    <th>Discontinued:</th>
   </tr>
   {{#each products}}
   <tr>
     <td>{{this.product_name}}</td>
     <td>{{this.category}}</td>
-    <td>{{this.value_received}}</td>
-    <td>{{this.value_issued}}</td>
-    <td>{{this.value_instock}}</td>
-    <td>{{this.sales_cost}}</td>
+    <td>{{this.purchases}}</td>
+    <td>{{this.sales}}</td>
+    <td>{{this.closing_stock}}</td>
+    <td>{{this.cost_of_sales}}</td>
     <td>{{this.gross_profit}}</td>
-    <td>{{this.discontinue}}</td>
+    <td>{{this.discontinued}}</td>
   </tr>
   {{/each}}
 </table>

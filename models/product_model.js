@@ -15,31 +15,31 @@ const productSchema = new Schema({
   retail_price: {
     type: Number,
   },
-  units_received: {
+  quantity_purchased: {
     type: Number,
   },
-  value_received: {
+  purchases: {
     type: Number,
   },
-  units_issued: {
+  quantity_sold: {
     type: Number,
   },
-  value_issued: {
+  sales: {
     type: Number,
   },
-  units_instock: {
+  quantity_instock: {
     type: Number,
   },
-  value_instock: {
+  closing_stock: {
     type: Number,
   },
-  sales_cost: {
+  cost_of_sales: {
     type: Number,
   },
   gross_profit: {
     type: Number,
   },
-  discontinue: {
+  discontinued: {
     type: String,
   },
 }, {

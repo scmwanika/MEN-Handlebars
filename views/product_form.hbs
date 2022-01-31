@@ -93,11 +93,11 @@
         <option value="credit purchase">credit</option>
         <option value="cash sale">private use</option>
       </select><br /><label>Product:</label><br /><input id="product" type="text" name="product"
-        readonly /><br /><label>Units
-        Transacted:</label><br /><input id="units_transacted" type="text" name="units_transacted" /><br /><label>Unit
-        value:</label><br /><input id="unit_value" type="text" name="unit_value" /><br /><label>Total
-        Value:</label><br /><input id="total_value" type="text"
-        name="total_value" /><br /><label>Witness:</label><br /><input id="witness" type="text" name="witness"
+        readonly /><br /><label>Quantity:
+      </label><br /><input id="quantity" type="text" name="quantity" /><br /><label>Unit
+        Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" /><br /><label>Total
+        Cost:</label><br /><input id="total_cost" type="text"
+        name="total_cost" /><br /><label>Witness:</label><br /><input id="witness" type="text" name="witness"
         readonly /><br /><button class="btn btn-success submit btn-transaction" type="submit">Save</button><br />
     </fieldset>
   </form>
@@ -111,21 +111,20 @@
         id="product_name" type="text" name="product_name" value="{{product.product_name}}"
         readonly /><br /><label>Category:</label><br /><input id="category" type="text" name="category"
         value="{{product.category}}" readonly /><br /><label>Retail Price:</label><br /><input id="retail_price"
-        type="text" name="retail_price" value="{{product.retail_price}}" /><br /><label>Units
-        Received:</label><br /><input id="units_received" type="text" name="units_received"
-        value="{{product.units_received}}" readonly /><br /><label>Value Received:</label><br /><input
-        id="value_received" type="text" name="value_received" value="{{product.value_received}}"
-        readonly /><br /><label>Units
-        Issued:</label><br /><input id="units_issued" type="text" name="units_issued" value="{{product.units_issued}}"
-        readonly /><br /><label>Value Issued:</label><br /><input id="value_issued" type="text" name="value_issued"
-        value="{{product.value_issued}}" readonly /><br /><label>Units Instock:</label><br /><input id="units_instock"
-        type="text" name="units_instock" value="{{product.units_instock}}" readonly /><br /><label>Value
-        Instock:</label><br /><input id="value_instock" type="text" name="value_instock"
-        value="{{product.value_instock}}" readonly /><br /><label>Sales Cost: </label><br /><input id="sales_cost"
-        type="text" name="sales_cost" value="{{product.sales_cost}}" readonly /><br /><label>Gross Profit:
+        type="text" name="retail_price" value="{{product.retail_price}}" /><br /><label>Quantity
+        Purchased:</label><br /><input id="quantity_purchased" type="text" name="quantity_purchased"
+        value="{{product.quantity_purchased}}" readonly /><br /><label>Purchases:</label><br /><input id="purchases"
+        type="text" name="purchases" value="{{product.purchases}}" readonly /><br /><label>Quantity
+        Sold:</label><br /><input id="quantity_sold" type="text" name="quantity_sold" value="{{product.quantity_sold}}"
+        readonly /><br /><label>Sales:</label><br /><input id="sales" type="text" name="sales" value="{{product.sales}}"
+        readonly /><br /><label>Quantity Instock:</label><br /><input id="quantity_instock" type="text"
+        name="quantity_instock" value="{{product.quantity_instock}}" readonly /><br /><label>Closing Stock:
+      </label><br /><input id="closing_stock" type="text" name="closing_stock" value="{{product.closing_stock}}"
+        readonly /><br /><label>Cost of Sales: </label><br /><input id="cost_of_sales" type="text" name="cost_of_sales"
+        value="{{product.cost_of_sales}}" readonly /><br /><label>Gross Profit:
       </label><br /><input id="gross_profit" type="text" name="gross_profit" value="{{product.gross_profit}}"
-        readonly /><br /><label>Discontinue:
-      </label><br /><input id="discontinue" type="text" name="discontinue" value="{{product.discontinue}}"
+        readonly /><br /><label>Discontinued:
+      </label><br /><input id="discontinued" type="text" name="discontinued" value="{{product.discontinued}}"
         readonly /><br /><button class="btn btn-success submit btn-product" type="submit">Conclude
         Transaction</button><br />
     </fieldset>
@@ -144,9 +143,9 @@
   const runTransaction = () => {
     document.getElementById('product').value = document.getElementById('product_name').value;
 
-    // total_value
+    // total_cost
     if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('total_value').value = Number(document.getElementById('units_transacted').value) * Number(document.getElementById('unit_value').value);
+      document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
 
     if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Drawings") || (document.getElementById('transaction_type').value == "Purchases Returns") || (document.getElementById('transaction_type').value == "Sales Returns")) && (document.getElementById('customer_name').value == ""))
       document.getElementById('transaction_type').value = "Purchases";
@@ -160,52 +159,55 @@
     else
       document.getElementById('witness').value = document.getElementById('customer_name').value;
 
-    // unit_value for transaction
+    // unit_cost for transaction
     if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('unit_value').value = document.getElementById('retail_price').value;
+      document.getElementById('unit_cost').value = document.getElementById('retail_price').value;
     else
-      document.getElementById('unit_value').value = document.getElementById('total_value').value / document.getElementById('units_transacted').value;
+      document.getElementById('unit_cost').value = document.getElementById('total_cost').value / document.getElementById('quantity').value;
   }
 
   const productForm = () => {
-    // units transacted
+    // Purchases and Sales -- quantity(quantity_purchased, quantity_sold)
     if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('units_received').value = Number(document.getElementById('units_received').value) + Number(document.getElementById('units_transacted').value);
+      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) + Number(document.getElementById('quantity').value);
     if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('units_issued').value = Number(document.getElementById('units_issued').value) + Number(document.getElementById('units_transacted').value);
+      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) + Number(document.getElementById('quantity').value);
     if (document.getElementById('transaction_type').value == "Purchases Returns")
-      document.getElementById('units_received').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_transacted').value);
+      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
     if (document.getElementById('transaction_type').value == "Sales Returns")
-      document.getElementById('units_issued').value = Number(document.getElementById('units_issued').value) - Number(document.getElementById('units_transacted').value);
+      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) - Number(document.getElementById('quantity').value);
     if (document.getElementById('transaction_type').value == "Drawings")
-      document.getElementById('units_received').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_transacted').value);
+      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
 
-    // value transacted
+    // Purchases and Sales -- total value(total_cost)
     if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('value_received').value = Number(document.getElementById('value_received').value) + Number(document.getElementById('total_value').value);
+      document.getElementById('purchases').value = Number(document.getElementById('purchases').value) + Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('value_issued').value = Number(document.getElementById('value_issued').value) + Number(document.getElementById('total_value').value);
+      document.getElementById('sales').value = Number(document.getElementById('sales').value) + Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Purchases Returns")
-      document.getElementById('value_received').value = Number(document.getElementById('value_received').value) - Number(document.getElementById('total_value').value);
+      document.getElementById('purchases').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Sales Returns")
-      document.getElementById('value_issued').value = Number(document.getElementById('value_issued').value) - Number(document.getElementById('total_value').value);
+      document.getElementById('sales').value = Number(document.getElementById('sales').value) - Number(document.getElementById('total_cost').value);
+
+    // Drawings
     //if (document.getElementById('transaction_type').value == "Drawings")
-      //document.getElementById('value_received').value = Number(document.getElementById('value_received').value) - Number(document.getElementById('total_value').value);
+    //document.getElementById('purchases').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('total_cost').value);
 
-    // units instock
-    document.getElementById('units_instock').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_issued').value);
+    // Units Instock
+    document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
 
-    // value instock
+    // Closing Stock
     if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('value_instock').value = Number(document.getElementById('value_instock').value) + Number(document.getElementById('total_value').value);
+      document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) + Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('value_instock').value = Number(document.getElementById('units_instock').value) * Number(document.getElementById('value_instock').value) / (Number(document.getElementById('units_instock').value) + Number(document.getElementById('units_transacted').value));
+      document.getElementById('closing_stock').value = Number(document.getElementById('quantity_instock').value) * Number(document.getElementById('closing_stock').value)
+        / (Number(document.getElementById('quantity_instock').value) + Number(document.getElementById('quantity').value));
 
-    // sales cost
-    document.getElementById('sales_cost').value = Number(document.getElementById('value_received').value) - Number(document.getElementById('value_instock').value);
+    // Sales Cost
+    document.getElementById('cost_of_sales').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('closing_stock').value);
 
-    // gross profit
-    document.getElementById('gross_profit').value = Number(document.getElementById('value_issued').value) - Number(document.getElementById('value_received').value) + Number(document.getElementById('value_instock').value);
+    // Gross Profit
+    document.getElementById('gross_profit').value = Number(document.getElementById('sales').value) - Number(document.getElementById('cost_of_sales').value);
 
     // hide the button
     $('.btn-product').css('display', 'none');
