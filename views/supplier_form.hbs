@@ -4,20 +4,20 @@
   <form class="supplier" method="POST" action="/suppliers" oninput="supplierName()" onsubmit="supplierForm()">
     <fieldset>
       <legend>Supplier</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
-        name="supplier_name" /><br /><label>Country:</label><br /><input id="country" type="text"
-        name="country" /><br /><label>City/Town:</label><br /><input id="city" type="text"
-        name="city" /><br /><label>Street:</label><br /><input id="street" type="text"
-        name="street" /><br /><label>Address:</label><br /><input id="address" type="text"
-        name="address" /><br /><label>Telephone:</label><br /><input id="telephone" type="text"
-        name="telephone" /><br /><label>Email:</label><br /><input id="email" type="email"
-        name="email" /><br /><label>Website: </label><br /><input id="website" type="url" name="website" /><br /><button
+        name="supplier_name" required /><br /><label>Country:</label><br /><input id="country" type="text"
+        name="country" required /><br /><label>City/Town:</label><br /><input id="city" type="text" name="city"
+        required /><br /><label>Street:</label><br /><input id="street" type="text" name="street"
+        required /><br /><label>Address:</label><br /><input id="address" type="text" name="address"
+        required /><br /><label>Telephone:</label><br /><input id="telephone" type="text" name="telephone"
+        required /><br /><label>Email:</label><br /><input id="email" type="email" name="email"
+        required /><br /><label>Website: </label><br /><input id="website" type="url" name="website" /><br /><button
         class="btn btn-success submit btn-supplier" type="submit">Save</button><br />
       <span id="msg"></span>
     </fieldset>
   </form>
 
   <!-- PRODUCT FORM -->
-  <form method="POST" action="/products" onsubmit="productForm()">
+  <form method="POST" action="/products">
     <input type="hidden" name="_id">
     <fieldset>
       <legend>Product</legend><br /><label>Supplied By:</label><br /><input id="supplied_by" type="text"
@@ -27,7 +27,9 @@
         name="retail_price" /><br /><label>Discontinued: </label><br /><select id="discontinued" name="discontinued">
         <option value="No">No</option>
         <option value="Yes">Yes</option>
-      </select><br /><button class="btn btn-success submit btn-product" type="submit">Save</button><br />
+      </select><br /><label>Created
+        At:</label><br /><input id="created_at" type="date" name="created_at" value="{{product.created_at}}"
+        readonly /><br /><button class="btn btn-success submit btn-product" type="submit">Save</button><br />
     </fieldset>
   </form>
 

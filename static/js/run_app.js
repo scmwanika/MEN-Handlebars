@@ -6,11 +6,9 @@ const supplierName = () => {
 const supplierForm = () => {
   // hide the button
   $('.btn-supplier').css('display', 'none');
-}
-
-const productForm = () => {
-  // hide the button
-  $('.btn-product').css('display', 'none');
+  
+  // display the button
+  $('.btn-product').css('display', 'inline');
 }
 
 $(function () {

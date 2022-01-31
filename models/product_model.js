@@ -42,6 +42,12 @@ const productSchema = new Schema({
   discontinued: {
     type: String,
   },
+  created_at: {
+    type: Date,
+  },
+  updated_at: {
+    type: Date,
+  },
 }, {
   collection: 'products',
 });

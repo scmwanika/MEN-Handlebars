@@ -56,6 +56,10 @@ select {
   border: none;
 }
 
+.btn-product {
+  display: none;
+}
+
 #msg {
   color: orange;
   font-size: medium;
