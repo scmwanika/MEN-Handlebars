@@ -84,14 +84,14 @@
         name="transaction_type">
         <option value="Purchases">PURCHASES</option>
         <option value="Sales">SALES</option>
+        <option value="Drawings">DRAWINGS</option>
         <option value="Purchases Returns">PURCHASES RETURNS</option>
         <option value="Sales Returns">SALES RETURNS</option>
       </select><br /><label>Transaction
         Note:</label><br /><select id="transaction_note" name="transaction_note">
-        <option value="cash purchase">cash purchase</option>
-        <option value="credit purchase">credit purchase</option>
-        <option value="cash sale">cash sale</option>
-        <option value="credit sale">credit sale</option>
+        <option value="cash purchase">cash</option>
+        <option value="credit purchase">credit</option>
+        <option value="cash sale">private use</option>
       </select><br /><label>Product:</label><br /><input id="product" type="text" name="product"
         readonly /><br /><label>Units
         Transacted:</label><br /><input id="units_transacted" type="text" name="units_transacted" /><br /><label>Unit
@@ -111,7 +111,7 @@
         id="product_name" type="text" name="product_name" value="{{product.product_name}}"
         readonly /><br /><label>Category:</label><br /><input id="category" type="text" name="category"
         value="{{product.category}}" readonly /><br /><label>Retail Price:</label><br /><input id="retail_price"
-        type="text" name="retail_price" value="{{product.retail_price}}" readonly /><br /><label>Units
+        type="text" name="retail_price" value="{{product.retail_price}}" /><br /><label>Units
         Received:</label><br /><input id="units_received" type="text" name="units_received"
         value="{{product.units_received}}" readonly /><br /><label>Value Received:</label><br /><input
         id="value_received" type="text" name="value_received" value="{{product.value_received}}"
@@ -148,7 +148,7 @@
     if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('total_value').value = Number(document.getElementById('units_transacted').value) * Number(document.getElementById('unit_value').value);
 
-    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Purchases Returns") || (document.getElementById('transaction_type').value == "Sales Returns")) && (document.getElementById('customer_name').value == ""))
+    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Drawings") || (document.getElementById('transaction_type').value == "Purchases Returns") || (document.getElementById('transaction_type').value == "Sales Returns")) && (document.getElementById('customer_name').value == ""))
       document.getElementById('transaction_type').value = "Purchases";
 
     // disable the select field
@@ -171,14 +171,26 @@
     // units transacted
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('units_received').value = Number(document.getElementById('units_received').value) + Number(document.getElementById('units_transacted').value);
-    else
+    if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('units_issued').value = Number(document.getElementById('units_issued').value) + Number(document.getElementById('units_transacted').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('units_received').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_transacted').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('units_issued').value = Number(document.getElementById('units_issued').value) - Number(document.getElementById('units_transacted').value);
+    if (document.getElementById('transaction_type').value == "Drawings")
+      document.getElementById('units_received').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_transacted').value);
 
     // value transacted
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('value_received').value = Number(document.getElementById('value_received').value) + Number(document.getElementById('total_value').value);
-    else
+    if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('value_issued').value = Number(document.getElementById('value_issued').value) + Number(document.getElementById('total_value').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('value_received').value = Number(document.getElementById('value_received').value) - Number(document.getElementById('total_value').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('value_issued').value = Number(document.getElementById('value_issued').value) - Number(document.getElementById('total_value').value);
+    //if (document.getElementById('transaction_type').value == "Drawings")
+      //document.getElementById('value_received').value = Number(document.getElementById('value_received').value) - Number(document.getElementById('total_value').value);
 
     // units instock
     document.getElementById('units_instock').value = Number(document.getElementById('units_received').value) - Number(document.getElementById('units_issued').value);

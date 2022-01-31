@@ -4,7 +4,7 @@ const Customer = require('../models/customer_model');
 // CREATE A ROUTER
 const router = express.Router();
 
-// INSERT CUSTOMER
+// INSERT THE CUSTOMER
 router.post('/customers', async (req, res) => {
   try {
     const newCustomer = new Customer(req.body);

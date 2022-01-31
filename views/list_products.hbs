@@ -1,0 +1,56 @@
+<style>
+  body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: Courier;
+  }
+
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
+
+  span {
+    color: black;
+    font-size: 18pt;
+  }
+
+  form {
+    text-align: center;
+  }
+
+  .listing-table {
+    margin: 0 auto;
+  }
+
+  th {
+    width: 150px;
+  }
+</style>
+
+<!-- LIST PRODUCTS -->
+<table class="listing-table table-striped">
+  <tr>
+    <th>Product Name:</th>
+    <th>Category:</th>
+    <th>Value Received:</th>
+    <th>Value Issued:</th>
+    <th>Value Instock:</th>
+    <th>Sales Cost:</th>
+    <th>Gross Profit:</th>
+    <th>Discontinue:</th>
+  </tr>
+  {{#each products}}
+  <tr>
+    <td>{{this.product_name}}</td>
+    <td>{{this.category}}</td>
+    <td>{{this.value_received}}</td>
+    <td>{{this.value_issued}}</td>
+    <td>{{this.value_instock}}</td>
+    <td>{{this.sales_cost}}</td>
+    <td>{{this.gross_profit}}</td>
+    <td>{{this.discontinue}}</td>
+  </tr>
+  {{/each}}
+</table>

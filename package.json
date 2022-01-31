@@ -1,11 +1,11 @@
 {
   "name": "stock-manager",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "app.js",
   "author": "Mwanika Stephen Crispin",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon app.js"
   },
   "dependencies": {
     "body-parser": "^1.19.1",

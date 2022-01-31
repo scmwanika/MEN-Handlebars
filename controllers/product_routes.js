@@ -4,7 +4,7 @@ const Product = require('../models/product_model');
 // CREATE A ROUTER
 const router = express.Router();
 
-// INSERT OR UPDATE PRODUCT DEPENDING ON ID
+// INSERT OR UPDATE THE PRODUCT BY ID
 router.post('/products', (req, res) => {
   if (req.body._id == '')
     insertProduct(req, res);
@@ -12,7 +12,7 @@ router.post('/products', (req, res) => {
     updateProduct(req, res);
 });
 
-// FUNCTION TO INSERT PRODUCT TO STORE
+// FUNCTION TO INSERT THE PRODUCT TO STORE
 const insertProduct = (req, res) => {
   const newProduct = new Product();
 
@@ -32,24 +32,24 @@ const insertProduct = (req, res) => {
 
   newProduct.save((err) => {
     if (!err)
-      res.redirect('products/list');
+      res.redirect('products/search');
     else
       console.log('insertion error: ' + err);
   });
 }
 
-// FUNCTION TO UPDATE PRODUCT IN STORE
+// FUNCTION TO UPDATE THE PRODUCT IN STORE
 const updateProduct = (req, res) => {
-  Product.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, (err) => {
+  Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
     if (!err)
-      res.redirect('products/list');
+      res.redirect('products/search');
     else
       console.log('update error: ' + err);
   });
 }
 
-// SEARCH PRODUCT BY PRODUCT_NAME
-router.get('/products/list', async (req, res) => {
+// SEARCH THE PRODUCT BY PRODUCT_NAME
+router.get('/products/search', async (req, res) => {
   try {
     const products = await Product.find({ product_name: req.query.product_name });
     res.render('search_product', { products });
@@ -58,7 +58,17 @@ router.get('/products/list', async (req, res) => {
   }
 });
 
-// GET PRODUCT BY ID
+// LIST PRODUCTS
+router.get('/products/list', async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.render('list_products', { products });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// GET THE PRODUCT BY ID
 router.get('/products/:id', async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
@@ -68,7 +78,7 @@ router.get('/products/:id', async (req, res) => {
   }
 });
 
-// DELETE PRODUCT BY ID
+// DELETE THE PRODUCT BY ID
 router.get('/products/delete/:id', async (req, res) => {
   try {
     const product = await Product.deleteOne({ _id: req.params.id });

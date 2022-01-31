@@ -1,8 +1,12 @@
 // IMPORTING DEPENDENCIES
 require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+
+const hostname = '127.0.0.1';
+const port = 3000;
 
 const app = express();
 
@@ -48,6 +52,6 @@ app.use(transactionRouter);
 app.use(customerRouter);
 
 // SERVER LISTENING TO REQUESTS
-app.listen(3000, () => {
-  console.log('listening on port 3000');
+app.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });

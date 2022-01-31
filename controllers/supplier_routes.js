@@ -4,7 +4,7 @@ const Supplier = require('../models/supplier_model');
 // CREATE A ROUTER
 const router = express.Router();
 
-// GET THE FORM TO INSERT SUPPLIER
+// GET THE FORM TO INSERT THE SUPPLIER
 router.get('/suppliers', (req, res) => {
   try {
     res.render('supplier_form')
@@ -13,7 +13,7 @@ router.get('/suppliers', (req, res) => {
   }
 });
 
-// INSERT SUPPLIER
+// INSERT THE SUPPLIER
 router.post('/suppliers', async (req, res) => {
   try {
     const newSupplier = new Supplier(req.body);

@@ -4,7 +4,7 @@ const Transaction = require('../models/transaction_model');
 // CREATE A ROUTER
 const router = express.Router();
 
-// INSERT CUSTOMER
+// INSERT THE TRANSACTION
 router.post('/transactions', async (req, res) => {
   try {
     const newTransaction = new Transaction(req.body);
