@@ -51,6 +51,12 @@ app.use(productRouter);
 app.use(transactionRouter);
 app.use(customerRouter);
 
+// LOGOUT
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
 // SERVER LISTENING TO REQUESTS
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);

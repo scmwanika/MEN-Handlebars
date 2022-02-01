@@ -16,6 +16,11 @@
     font-size: 18pt;
   }
 
+  .logout {
+    color: red;
+    font-size: 12pt;
+  }
+
   .flex-container {
     display: flex;
     flex-direction: row;
@@ -105,7 +110,10 @@
         Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" /><br /><label>Total
         Cost:</label><br /><input id="total_cost" type="text" name="total_cost"
         required /><br /><label>Witness:</label><br /><input id="witness" type="text" name="witness"
-        readonly /><br /><button class="btn btn-success submit btn-transaction" type="submit">Save</button><br />
+        readonly /><br /><label>Transaction
+        Date:</label><br /><input id="transaction_date" type="date" name="transaction_date"
+        value="{{product.transaction_date}}" readonly /><br /><button class="btn btn-success submit btn-transaction"
+        type="submit">Save</button><br />
     </fieldset>
   </form>
 

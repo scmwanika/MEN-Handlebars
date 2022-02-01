@@ -24,6 +24,9 @@ const transactionSchema = new Schema({
   transaction_note: {
     type: String,
   },
+  transaction_date: {
+    type: Date,
+  },
 }, {
   collection: 'transactions',
 });

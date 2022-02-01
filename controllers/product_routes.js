@@ -1,11 +1,32 @@
+require('dotenv').config()
+const session = require('express-session');
+
 const express = require('express');
+const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 const Product = require('../models/product_model');
 
 // CREATE A ROUTER
 const router = express.Router();
 
+router.use(session({
+  cookie: { httpOnly: true },
+  secret: `${process.env.OKTA_CLIENT_SECRET}`,
+  resave: true,
+  saveUninitialized: false
+}));
+
+const oidc = new ExpressOIDC({
+  appBaseUrl: `${process.env.HOST_URL}`,
+  issuer: `${process.env.OKTA_ORG_URL}`,
+  client_id: process.env.OKTA_CLIENT_ID,
+  client_secret: process.env.OKTA_CLIENT_SECRET,
+  scope: 'openid profile email'
+});
+
+router.use(oidc.router);
+
 // INSERT OR UPDATE THE PRODUCT BY ID
-router.post('/products', (req, res) => {
+router.post('/products', oidc.ensureAuthenticated(), (req, res) => {
   if (req.body._id == '')
     insertProduct(req, res);
   else
@@ -49,7 +70,7 @@ const updateProduct = (req, res) => {
 }
 
 // SEARCH THE PRODUCT BY PRODUCT_NAME
-router.get('/products/search', async (req, res) => {
+router.get('/products/search', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const products = await Product.find({ product_name: req.query.product_name });
     res.render('search_product', { products });
@@ -59,7 +80,7 @@ router.get('/products/search', async (req, res) => {
 });
 
 // LIST PRODUCTS
-router.get('/products/list', async (req, res) => {
+router.get('/products/list', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const products = await Product.find();
     res.render('list_products', { products });
@@ -69,7 +90,7 @@ router.get('/products/list', async (req, res) => {
 });
 
 // GET THE PRODUCT BY ID
-router.get('/products/:id', async (req, res) => {
+router.get('/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
     res.render('product_form', { product });
@@ -79,7 +100,7 @@ router.get('/products/:id', async (req, res) => {
 });
 
 // DELETE THE PRODUCT BY ID
-router.get('/products/delete/:id', async (req, res) => {
+router.get('/products/delete/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.deleteOne({ _id: req.params.id });
     res.render('search_product', { product });
