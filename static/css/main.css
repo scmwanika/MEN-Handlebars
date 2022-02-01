@@ -71,3 +71,10 @@ select {
   text-align: center;
   font-style: italic;
 }
+
+footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  text-align: center;
+}

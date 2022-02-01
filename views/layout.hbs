@@ -11,6 +11,10 @@
   <link data-require="font-awesome@*" data-semver="4.2.0" rel="stylesheet"
     href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.css" />
   <link rel="stylesheet" href="main.css">
+  <!-- Disable Right Clicking -->
+  <script type='text/javascript'>
+    document.addEventListener('contextmenu', event => event.preventDefault()); 
+  </script>
 </head>
 <!-- Navbar-->
 <nav class="navbar navbar-expand-md bg-light navbar-dark">
@@ -33,7 +37,8 @@
           <a class="dropdown-item" href="/suppliers">New Product</a>
           <a class="dropdown-item" href="/products/search">Search Product</a>
           <a class="dropdown-item" href="/products/list">List Products</a>
-          <form method="POST" action="/logout"><button class="btn btn-white" type="submit"><span class="logout">LOGOUT</span></button></form>
+          <form method="POST" action="/logout"><button class="btn btn-white" type="submit"><span
+                class="logout">LOGOUT</span></button></form>
         </div>
       </li>
     </ul>
@@ -50,6 +55,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 <script src="run_app.js"></script>
+<footer>
+  &copy; Copyright 2022 Mwanika Stephen Crispin
+</footer>
 <br>
 
 </html>

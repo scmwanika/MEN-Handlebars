@@ -67,6 +67,13 @@
   .btn-product {
     display: none;
   }
+
+  footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+  }
 </style>
 
 <div class="flex-container">
@@ -111,7 +118,7 @@
         Cost:</label><br /><input id="total_cost" type="text" name="total_cost"
         required /><br /><label>Witness:</label><br /><input id="witness" type="text" name="witness"
         readonly /><br /><label>Transaction
-        Date:</label><br /><input id="transaction_date" type="date" name="transaction_date"
+        Date:</label><br /><input id="transaction_date" type="text" name="transaction_date"
         value="{{product.transaction_date}}" readonly /><br /><button class="btn btn-success submit btn-transaction"
         type="submit">Save</button><br />
     </fieldset>
@@ -136,8 +143,8 @@
           id="gross_profit" type="hidden" name="gross_profit" value="{{product.gross_profit}}"
           readonly /><label>Discontinued:</label><br /><input id="discontinued" type="text" name="discontinued"
           value="{{product.discontinued}}" /><br /><label>Created
-          At:</label><br /><input id="created_at" type="date" name="created_at" value="{{product.created_at}}"
-          readonly /><br /><label>Updated At:</label><br /><input id="updated_at" type="date" name="updated_at"
+          At:</label><br /><input id="created_at" type="text" name="created_at" value="{{product.created_at}}"
+          readonly /><br /><label>Updated At:</label><br /><input id="updated_at" type="text" name="updated_at"
           value="{{product.updated_at}}" readonly /><br /><button class="btn btn-success submit btn-product"
           type="submit">Conclude
           Transaction</button><br />
@@ -175,6 +182,10 @@
       document.getElementById('unit_cost').value = document.getElementById('retail_price').value;
     else
       document.getElementById('unit_cost').value = document.getElementById('total_cost').value / document.getElementById('quantity').value;
+
+    // insert date automatically
+    document.getElementById('transaction_date').value = Date();
+    document.getElementById('updated_at').value = document.getElementById('transaction_date').value;
 
     //
     if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Purchases Returns"))
