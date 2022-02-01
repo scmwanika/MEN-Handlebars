@@ -51,6 +51,15 @@ app.use(productRouter);
 app.use(transactionRouter);
 app.use(customerRouter);
 
+// INDEX
+app.get('/', (req, res) => {
+  try {
+    res.render('index')
+  } catch (error) {
+    res.status(400).send('index page closed; please try again.');
+  }
+});
+
 // LOGOUT
 app.get('/logout', (req, res) => {
   req.logout();
