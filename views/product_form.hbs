@@ -3,6 +3,7 @@
     /* Padding to prevent the content to go underneath the header */
     padding-top: 75px;
     font-family: Courier;
+    background-color: #ebebed;
   }
 
   .navbar {
@@ -162,7 +163,12 @@
 
   // manage transactions
   const runTransaction = () => {
+    // insert product automatically
     document.getElementById('product').value = document.getElementById('product_name').value;
+    
+    // insert date automatically
+    document.getElementById('transaction_date').value = Date();
+    document.getElementById('updated_at').value = document.getElementById('transaction_date').value;
 
     // total_cost
     if (document.getElementById('transaction_type').value == "Sales")
@@ -182,10 +188,6 @@
       document.getElementById('unit_cost').value = document.getElementById('retail_price').value;
     else
       document.getElementById('unit_cost').value = document.getElementById('total_cost').value / document.getElementById('quantity').value;
-
-    // insert date automatically
-    document.getElementById('transaction_date').value = Date();
-    document.getElementById('updated_at').value = document.getElementById('transaction_date').value;
 
     //
     if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Purchases Returns"))

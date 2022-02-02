@@ -80,7 +80,7 @@ router.get('/products/search', oidc.ensureAuthenticated(), async (req, res) => {
 });
 
 // LIST PRODUCTS
-router.get('/products/list', oidc.ensureAuthenticated(), async (req, res) => {
+router.get('/products/list', async (req, res) => {
   try {
     const products = await Product.find();
     res.render('list_products', { products });
