@@ -69,7 +69,7 @@ const updateProduct = (req, res) => {
   });
 }
 
-// SEARCH THE PRODUCT BY PRODUCT_NAME
+// SEARCH THE PRODUCT BY NAME
 router.get('/products/search', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const products = await Product.find({ product_name: req.query.product_name });
@@ -80,10 +80,27 @@ router.get('/products/search', oidc.ensureAuthenticated(), async (req, res) => {
 });
 
 // LIST PRODUCTS
-router.get('/products/list', async (req, res) => {
+router.get('/products/list', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const products = await Product.find();
     res.render('list_products', { products });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// Trading Profit & Loss Accounts (TPL Accounts)
+router.get('/products/report', async (req, res) => {
+  try {
+    const products = await Product.aggregate(
+      [{
+        "$group": {
+          "_id": "$product_name",
+          totalProfit: { $sum: "$gross_profit" }
+        }
+      }]
+    );
+    res.json(products);
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
