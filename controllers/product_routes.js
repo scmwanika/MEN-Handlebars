@@ -96,10 +96,31 @@ router.get('/products/report', async (req, res) => {
       [{
         "$group": {
           "_id": "$product_name",
-          totalProfit: { $sum: "$gross_profit" }
+          Cash: { $sum: { $subtract: ["$gross_profit", "$closing_stock"] } }
         }
       }]
     );
+    res.json(products);
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// Join the matching "products" and "suppliers"
+router.get('/products/supplier', async (req, res) => {
+  try {
+    const products = await Product.aggregate
+      ([
+        {
+          $lookup:
+          {
+            from: 'suppliers',
+            localField: 'supplied_by',
+            foreignField: 'supplier_name',
+            as: 'supplier_details'
+          }
+        }
+      ]);
     res.json(products);
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
