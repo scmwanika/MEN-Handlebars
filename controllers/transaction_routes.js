@@ -81,13 +81,13 @@ router.get('/transactions/customer', async (req, res) => {
 });
 
 // Summarize Transactions
-router.get('/transactions-summary', async (req, res) => {
+router.get('/transactions/summary', async (req, res) => {
   try {
     const transactions = await Transaction.aggregate(
       [{
         "$group": {
           "_id": "$transaction_type",
-          total: { $sum: ["$total_cost"] }
+          total: { $sum: "$total_cost" }
         }
       }]
     );

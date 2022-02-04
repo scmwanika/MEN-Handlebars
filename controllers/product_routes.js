@@ -113,7 +113,7 @@ router.get('/products/supplier', async (req, res) => {
 });
 
 // Trading Profit & Loss Accounts (TPL Accounts)
-router.get('/products-summary', async (req, res) => {
+router.get('/products/report', async (req, res) => {
   try {
     const products = await Product.aggregate(
       [{
