@@ -107,17 +107,16 @@
         <option value="Drawings">DRAWINGS</option>
         <option value="Purchases Returns">PURCHASES RETURNS</option>
         <option value="Sales Returns">SALES RETURNS</option>
-      </select><br /><label>Transaction
-        Note:</label><br /><select id="transaction_note" name="transaction_note">
-        <option value="cash purchase">cash</option>
-        <option value="credit purchase">credit</option>
-        <option value="cash sale">private use</option>
       </select><br /><label>Product:</label><br /><input id="product" type="text" name="product"
-        readonly /><br /><label>Quantity:
-      </label><br /><input id="quantity" type="text" name="quantity" /><br /><label>Unit
+        readonly /><br /><label>Quantity:</label><br /><input id="quantity" type="text"
+        name="quantity" /><br /><label>Unit
         Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" /><br /><label>Total
         Cost:</label><br /><input id="total_cost" type="text" name="total_cost"
-        required /><br /><label>Witness:</label><br /><input id="witness" type="text" name="witness"
+        required /><br /><label>Payment:</label><br /><input id="payment" type="text"
+        name="payment" /><br /><label>Amount:</label><br /><input id="amount" type="text" name="amount"
+        required /><br /><label>Balance:</label><br /><input id="balance" type="text" name="balance"
+        required /><br /><label>Transaction Note:</label><br /><input id="transaction_note" type="text"
+        name="transaction_note" /><br /><label>Witness:</label><br /><input id="witness" type="text" name="witness"
         readonly /><br /><label>Transaction
         Date:</label><br /><input id="transaction_date" type="text" name="transaction_date"
         value="{{product.transaction_date}}" readonly /><br /><button class="btn btn-success submit btn-transaction"
@@ -163,19 +162,34 @@
 
   // manage transactions
   const runTransaction = () => {
+    // disable the select field(transaction_type)
+    // $('#transaction_type').prop('disabled', true);
+
     // insert product automatically
     document.getElementById('product').value = document.getElementById('product_name').value;
-    
+
+    // balance after payment(issued, received)
+    document.getElementById('balance').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('amount').value);
+
+    // status of cash or credit account 
+    if (document.getElementById('balance').value > 0)
+      document.getElementById('transaction_note').value = 'credit';
+    else
+      document.getElementById('transaction_note').value = 'cash';
+
     // insert date automatically
     document.getElementById('transaction_date').value = Date();
     document.getElementById('updated_at').value = document.getElementById('transaction_date').value;
 
+    // payment(issued, received)
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('payment').value = "Issued"
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('payment').value = "Received"
+
     // total_cost
     if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
-
-    // disable the select field(transaction_type)
-    // $('#transaction_type').prop('disabled', true);
 
     // witness the transaction
     if (document.getElementById('transaction_type').value == "Purchases")

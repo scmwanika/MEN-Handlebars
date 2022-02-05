@@ -21,6 +21,15 @@ const transactionSchema = new Schema({
   total_cost: {
     type: Number,
   },
+  payment: {
+    type: String,
+  },
+  amount: {
+    type: Number,
+  },
+  balance: {
+    type: Number,
+  },
   transaction_note: {
     type: String,
   },
