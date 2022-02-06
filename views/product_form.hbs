@@ -63,8 +63,7 @@
     border: none;
   }
 
-  .btn-customer,
-  .btn-transaction,
+  .customer,
   .btn-product {
     display: none;
   }
@@ -114,12 +113,10 @@
         Cost:</label><br /><input id="total_cost" type="text" name="total_cost"
         required /><br /><label>Payment:</label><br /><input id="payment" type="text"
         name="payment" /><br /><label>Amount:</label><br /><input id="amount" type="text" name="amount"
-        required /><br /><label>Balance:</label><br /><input id="balance" type="text" name="balance"
-        required /><br /><label>Transaction Note:</label><br /><input id="transaction_note" type="text"
-        name="transaction_note" /><br /><label>Witness:</label><br /><input id="witness" type="text" name="witness"
-        readonly /><br /><label>Transaction
-        Date:</label><br /><input id="transaction_date" type="text" name="transaction_date"
-        value="{{product.transaction_date}}" readonly /><br /><button class="btn btn-success submit btn-transaction"
+        required /><br /><label>Balance:</label><br /><input id="balance" type="text" name="balance" required /><input
+        id="transaction_note" type="hidden" name="transaction_note" /><br /><input id="witness" type="hidden"
+        name="witness" readonly /><input id="transaction_date" type="hidden" name="transaction_date"
+        value="{{product.transaction_date}}" readonly /><button class="btn btn-success submit btn-transaction"
         type="submit">Save</button><br />
     </fieldset>
   </form>
@@ -142,9 +139,8 @@
           id="cost_of_sales" type="hidden" name="cost_of_sales" value="{{product.cost_of_sales}}" readonly /><input
           id="gross_profit" type="hidden" name="gross_profit" value="{{product.gross_profit}}"
           readonly /><label>Discontinued:</label><br /><input id="discontinued" type="text" name="discontinued"
-          value="{{product.discontinued}}" /><br /><label>Created
-          At:</label><br /><input id="created_at" type="text" name="created_at" value="{{product.created_at}}"
-          readonly /><br /><label>Updated At:</label><br /><input id="updated_at" type="text" name="updated_at"
+          value="{{product.discontinued}}" /><br /><input id="created_at" type="hidden" name="created_at"
+          value="{{product.created_at}}" readonly /><input id="updated_at" type="hidden" name="updated_at"
           value="{{product.updated_at}}" readonly /><br /><button class="btn btn-success submit btn-product"
           type="submit">Conclude
           Transaction</button><br />
@@ -162,22 +158,10 @@
 
   // manage transactions
   const runTransaction = () => {
-    // disable the select field(transaction_type)
-    // $('#transaction_type').prop('disabled', true);
-
     // insert product automatically
     document.getElementById('product').value = document.getElementById('product_name').value;
 
-    // balance after payment(issued, received)
-    document.getElementById('balance').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('amount').value);
-
-    // status of cash or credit account 
-    if (document.getElementById('balance').value > 0)
-      document.getElementById('transaction_note').value = 'credit';
-    else
-      document.getElementById('transaction_note').value = 'cash';
-
-    // insert date automatically
+    // insert transaction_date automatically
     document.getElementById('transaction_date').value = Date();
     document.getElementById('updated_at').value = document.getElementById('transaction_date').value;
 
@@ -203,20 +187,39 @@
     else
       document.getElementById('unit_cost').value = document.getElementById('total_cost').value / document.getElementById('quantity').value;
 
-    //
-    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Purchases Returns"))
-      // display the button
-      $('.btn-transaction').css('display', 'inline');
+    // balance after payment(issued, received)
+    document.getElementById('balance').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('amount').value);
+
+    // transaction_note 
+    if (document.getElementById('balance').value > 0)
+      document.getElementById('transaction_note').value = 'credit';
+    else
+      document.getElementById('transaction_note').value = 'cash';
 
     //
     if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
-      // display the button
-      $('.btn-customer').css('display', 'inline');
+      // display the form
+      $('.customer').css('display', 'inline');
 
     //
-    if (document.getElementById('customer_name').value != "")
-      // hide the button
-      $('.btn-customer').css('display', 'none');
+    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
+      // hide the form
+      $('.transaction').css('display', 'none');
+
+    //
+    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns")) && document.getElementById('witness').value != "")
+      // hide the form
+      $('.customer').css('display', 'none');
+
+    //
+    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns")) && document.getElementById('witness').value != "")
+      // display the form
+      $('.transaction').css('display', 'inline');
+
+    //
+    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Purchases Returns"))
+      // display the form
+      $('.transaction').css('display', 'inline');
   }
 
   const productForm = () => {
@@ -243,8 +246,11 @@
       document.getElementById('sales').value = Number(document.getElementById('sales').value) - Number(document.getElementById('total_cost').value);
 
     // Drawings
-    //if (document.getElementById('transaction_type').value == "Drawings")
-    //document.getElementById('purchases').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Drawings")
+      document.getElementById('purchases').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Drawings")
+      document.getElementById('closing_stock').value = Number(document.getElementById('quantity_instock').value) * Number(document.getElementById('closing_stock').value)
+        / (Number(document.getElementById('quantity_instock').value) - Number(document.getElementById('quantity').value));
 
     // Units Instock
     document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
@@ -264,17 +270,15 @@
   }
 
   const customerForm = () => {
-    // hide the button
-    $('.btn-customer').css('display', 'none');
-
-    // display the button
-    $('.btn-transaction').css('display', 'inline');
+    // hide the form
+    $('.customer').css('display', 'none');
+    // display the form
+    $('.transaction').css('display', 'inline');
   }
 
   const transactionForm = () => {
     // hide the button
     $('.btn-transaction').css('display', 'none');
-
     // display the button
     $('.btn-product').css('display', 'inline');
   }
