@@ -16,8 +16,12 @@ span {
   font-size: 18pt;
 }
 
+.btn-danger {
+  border: none;
+}
+
 .logout {
-  color: red;
+  color: white;
   font-size: 12pt;
 }
 

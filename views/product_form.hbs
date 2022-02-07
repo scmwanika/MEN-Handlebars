@@ -17,8 +17,12 @@
     font-size: 18pt;
   }
 
+  .btn-danger {
+    border: none;
+  }
+
   .logout {
-    color: red;
+    color: white;
     font-size: 12pt;
   }
 
@@ -161,19 +165,13 @@
     // insert product automatically
     document.getElementById('product').value = document.getElementById('product_name').value;
 
-    // insert transaction_date automatically
-    document.getElementById('transaction_date').value = Date();
-    document.getElementById('updated_at').value = document.getElementById('transaction_date').value;
-
-    // payment(issued, received)
+    // payment Issued or payment Received
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('payment').value = "Issued"
     if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('payment').value = "Received"
-
-    // total_cost
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
+    if (document.getElementById('transaction_type').value == "Drawings")
+      document.getElementById('payment').value = "None"
 
     // witness the transaction
     if (document.getElementById('transaction_type').value == "Purchases")
@@ -181,20 +179,38 @@
     else
       document.getElementById('witness').value = document.getElementById('customer_name').value;
 
-    // unit_cost for transaction
+    // insert dates automatically
+    document.getElementById('transaction_date').value = Date();
+    document.getElementById('updated_at').value = document.getElementById('transaction_date').value;
+
+    // unit_cost for Sales
     if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('unit_cost').value = document.getElementById('retail_price').value;
-    else
+
+    // unit_cost for Purchases
+    if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('unit_cost').value = document.getElementById('total_cost').value / document.getElementById('quantity').value;
+
+    // unit_cost for Drawings
+    if (document.getElementById('transaction_type').value == "Drawings")
+      document.getElementById('unit_cost').value = document.getElementById('closing_stock').value / document.getElementById('quantity_instock').value;
+
+    // total_cost for Sales and Drawings
+    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Drawings"))
+      document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
 
     // balance after payment(issued, received)
     document.getElementById('balance').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('amount').value);
 
-    // transaction_note 
+    // transaction_note for credit Purchase or credit Sale
     if (document.getElementById('balance').value > 0)
       document.getElementById('transaction_note').value = 'credit';
     else
       document.getElementById('transaction_note').value = 'cash';
+
+    // transaction_note for Drawings
+    if (document.getElementById('transaction_type').value == "Drawings")
+      document.getElementById('transaction_note').value = 'private';
 
     //
     if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
@@ -249,8 +265,7 @@
     if (document.getElementById('transaction_type').value == "Drawings")
       document.getElementById('purchases').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Drawings")
-      document.getElementById('closing_stock').value = Number(document.getElementById('quantity_instock').value) * Number(document.getElementById('closing_stock').value)
-        / (Number(document.getElementById('quantity_instock').value) - Number(document.getElementById('quantity').value));
+      document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) - Number(document.getElementById('total_cost').value);
 
     // Units Instock
     document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
