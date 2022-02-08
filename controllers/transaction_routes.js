@@ -25,18 +25,54 @@ const oidc = new ExpressOIDC({
 
 router.use(oidc.router);
 
-// INSERT THE TRANSACTION
-router.post('/transactions', oidc.ensureAuthenticated(), async (req, res) => {
+// INSERT OR UPDATE THE TRANSACTION BY ID
+router.post('/transactions', oidc.ensureAuthenticated(), (req, res) => {
+  if (req.body._id == '')
+    insertTransaction(req, res);
+  else
+    updateTransaction(req, res);
+});
+
+// FUNCTION TO INSERT THE TRANSACTION
+const insertTransaction = (req, res) => {
+  const newTransaction = new Transaction();
+
+  newTransaction.supplied_by = req.body.supplied_by;
+  newTransaction.product_name = req.body.product_name;
+
+  newTransaction.save((err) => {
+    if (err)
+      console.log('insertion error: ' + err);
+  });
+}
+
+// FUNCTION TO UPDATE THE TRANSACTION
+const updateTransaction = (req, res) => {
+  Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
+    if (err)
+      console.log('update error: ' + err);
+  });
+}
+
+// SEARCH THE TRANSACTION BY TRANSACTION_NOTE
+router.get('/transactions/search', oidc.ensureAuthenticated(), async (req, res) => {
   try {
-    const newTransaction = new Transaction(req.body);
-    await newTransaction.save()
-    // res.send('Transaction saved.');
+    const transactions = await Transaction.find({ transaction_note: req.query.transaction_note });
+    res.render('search_transactions', { transactions });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
   }
-  catch (err) {
-    console.error(err)
-    res.send('Transaction not saved; please try again.')
+});
+
+// GET THE TRANSACTION BY ID
+router.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => {
+  try {
+    const transaction = await Transaction.findOne({ _id: req.params.id });
+    res.render('payment_form', { transaction });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
   }
-})
+});
 
 // Join the matching "transactions" and "suppliers"
 router.get('/transactions/supplier', async (req, res) => {

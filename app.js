@@ -45,11 +45,12 @@ const supplierRouter = require('./controllers/supplier_routes');
 const productRouter = require('./controllers/product_routes');
 const transactionRouter = require('./controllers/transaction_routes');
 const customerRouter = require('./controllers/customer_routes');
-
+const paymentRouter = require('./controllers/payment_routes');
 app.use(supplierRouter);
 app.use(productRouter);
 app.use(transactionRouter);
 app.use(customerRouter);
+app.use(paymentRouter);
 
 // INDEX
 app.get('/', (req, res) => {

@@ -1,0 +1,76 @@
+<style>
+  body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: Courier;
+    background-color: #ebebed;
+  }
+
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
+
+  span {
+    color: black;
+    font-size: 18pt;
+  }
+
+  .btn-danger {
+    border: none;
+  }
+
+  .logout {
+    color: white;
+    font-size: 12pt;
+  }
+
+  form {
+    text-align: center;
+  }
+
+  .listing-table {
+    margin: 0 auto;
+  }
+
+  th {
+    font-family: Arial, Helvetica, sans-serif;
+    font-stretch: condensed;
+    width: 140px;
+  }
+
+  footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+  }
+</style>
+
+<form class="search" action="/transactions/search"><input name="transaction_note"
+    placeholder="transaction_note" /><button class="btn btn-white" type="submit">Search</button></form>
+
+<!-- LIST DEBTORS AND CREDITOR -->
+<table class="listing-table table-striped">
+  <tr>
+    <th>Transaction Type:</th>
+    <th>Product:</th>
+    <th>Total Cost:</th>
+    <th>Payment:</th>
+    <th>Amount:</th>
+    <th>Balance:</th>
+    <th></th>
+  </tr>
+  {{#each transactions}}
+  <tr>
+    <td>{{this.transaction_type}}</td>
+    <td>{{this.product}}</td>
+    <td>{{this.total_cost}}</td>
+    <td>{{this.payment}}</td>
+    <td>{{this.amount}}</td>
+    <td>{{this.balance}}</td>
+    <td><a href="/transactions/{{this._id}}"> PAY OFF DEBT </a></td>
+  </tr>
+  {{/each}}
+</table>

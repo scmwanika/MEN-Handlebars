@@ -101,6 +101,7 @@
   <!-- TRANSACTION FORM -->
   <form class="transaction" method="POST" action="/transactions" oninput="runTransaction()"
     onsubmit="transactionForm()">
+    <input type="hidden" name="_id">
     <fieldset>
       <legend>Transaction</legend><br /><label>Transaction Type:</label><br /><select id="transaction_type"
         name="transaction_type">
@@ -115,13 +116,12 @@
         name="quantity" /><br /><label>Unit
         Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" /><br /><label>Total
         Cost:</label><br /><input id="total_cost" type="text" name="total_cost"
-        required /><br /><label>Payment:</label><br /><input id="payment" type="text"
-        name="payment" /><br /><label>Amount:</label><br /><input id="amount" type="text" name="amount"
-        required /><br /><label>Balance:</label><br /><input id="balance" type="text" name="balance" required /><input
+        required /><br /><label>Payment:</label><br /><input id="payment" type="text" name="payment"
+        readonly /><br /><label>Amount:</label><br /><input id="amount" type="text" name="amount"
+        required /><br /><label>Balance:</label><br /><input id="balance" type="text" name="balance" readonly /><input
         id="transaction_note" type="hidden" name="transaction_note" /><br /><input id="witness" type="hidden"
-        name="witness" readonly /><input id="transaction_date" type="hidden" name="transaction_date"
-        value="{{product.transaction_date}}" readonly /><button class="btn btn-success submit btn-transaction"
-        type="submit">Save</button><br />
+        name="witness" readonly /><input id="transaction_date" type="hidden" name="transaction_date" readonly /><button
+        class="btn btn-success submit btn-transaction" type="submit">Save</button><br />
     </fieldset>
   </form>
 
