@@ -24,7 +24,7 @@ const transactionSchema = new Schema({
   payment: {
     type: String,
   },
-  amount: {
+  initial_payment: {
     type: Number,
   },
   balance: {

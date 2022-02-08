@@ -6,7 +6,7 @@ const paymentSchema = new Schema({
   payment_date: {
     type: Date,
   },
-  amount_paid: {
+  later_payment: {
     type: Number,
   },
 }, {

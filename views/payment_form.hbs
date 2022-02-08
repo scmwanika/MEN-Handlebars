@@ -13,8 +13,19 @@
   }
 
   span {
-    color: black;
-    font-size: 18pt;
+    color: blue;
+    font-size: 24pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+  }
+
+  a {
+    font-family: Arial, Helvetica, sans-serif;
+    font-stretch: condensed;
+  }
+
+  .dropdown-menu {
+    border: none;
   }
 
   .btn-danger {
@@ -24,6 +35,7 @@
   .logout {
     color: white;
     font-size: 12pt;
+    text-align: right;
   }
 
   .flex-container {
@@ -44,17 +56,12 @@
   }
 
   legend,
-  label,
-  h6 {
+  label {
     color: orange;
     margin-bottom: 0;
   }
 
-  input[type="text"],
-  input[type="date"],
-  input[type="email"],
-  input[type="url"],
-  select {
+  input[type="text"] {
     width: 290px;
     padding: 0.75%;
     margin-bottom: 5px;
@@ -67,8 +74,7 @@
     border: none;
   }
 
-  .customer,
-  .btn-product {
+  .btn-transaction {
     display: none;
   }
 
@@ -83,18 +89,18 @@
 <div class="flex-container">
 
   <!-- PAY OFF DEBT FORM -->
-  <form method="POST" action="/payments">
+  <form class="payment" method="POST" action="/payments" onsubmit="paymentForm()">
     <fieldset>
-      <legend>Pay off debts</legend><br /><label>Payment Date:</label><br /><input id="payment_date" type="text"
-        name="payment_date" required /><br /><label>Amount Paid:</label><br /><input id="amount_paid" type="text"
-        name="amount_paid" required /><br /><button class="btn btn-success submit btn-debt"
+      <legend>Pay off debt</legend><br /><label>Payment Date:</label><br /><input id="payment_date" type="text"
+        name="payment_date" readonly /><br /><label>Later Payment:</label><br /><input id="later_payment" type="text"
+        name="later_payment" required /><br /><button class="btn btn-success submit btn-debt"
         type="submit">Save</button><br />
       <span id="msg"></span>
     </fieldset>
   </form>
 
   <!-- TRANSACTION FORM -->
-  <form class="transaction" method="POST" action="/transactions" onsubmit="transactionForm()">
+  <form method="POST" action="/transactions">
     <input type="hidden" name="_id" value="{{transaction._id}}">
     <fieldset>
       <legend>Transaction</legend><br /><label>Transaction Type:</label><br /><input id="transaction_type" type="text"
@@ -106,13 +112,15 @@
         readonly /><br /><label>Total
         Cost:</label><br /><input id="total_cost" type="text" name="total_cost" value="{{transaction.total_cost}}"
         readonly /><br /><label>Payment:</label><br /><input id="payment" type="text" name="payment"
-        value="{{transaction.payment}}" readonly /><br /><label>Amount:</label><br /><input id="amount" type="text"
-        name="amount" value="{{transaction.amount}}" readonly /><br /><label>Balance:</label><br /><input id="balance"
-        type="text" name="balance" value="{{transaction.balance}}" readonly /><input id="transaction_note" type="hidden"
-        name="transaction_note" value="{{transaction.transaction_note}}" readonly /><br /><input id="witness"
-        type="hidden" name="witness" value="{{transaction.witness}}" readonly /><input id="transaction_date"
-        type="hidden" name="transaction_date" value="{{transaction.transaction_date}}" readonly /><button
-        class="btn btn-success submit btn-transaction" type="submit">Save</button><br />
+        value="{{transaction.payment}}" readonly /><br /><label>Initial Payment:</label><br /><input
+        id="initial_payment" type="text" name="initial_payment" value="{{transaction.initial_payment}}"
+        readonly /><br /><label>Balance:</label><br /><input id="balance" type="text" name="balance"
+        value="{{transaction.balance}}" readonly /><input id="transaction_note" type="hidden" name="transaction_note"
+        value="{{transaction.transaction_note}}" readonly /><br /><input id="witness" type="hidden" name="witness"
+        value="{{transaction.witness}}" readonly /><input id="transaction_date" type="hidden" name="transaction_date"
+        value="{{transaction.transaction_date}}" readonly /><button class="btn btn-success submit btn-transaction"
+        type="submit">Conclude
+        Payment</button><br />
     </fieldset>
   </form>
 
@@ -120,12 +128,22 @@
 
 <script type="text/javascript">
 
-  const transactionForm = () => {
-    // insert dates automatically
+  const paymentForm = () => {
+    // insert date automatically
     document.getElementById('payment_date').value = Date();
+    // balance after payment(Issued, Received)
+    document.getElementById('balance').value = Number(document.getElementById('balance').value) - Number(document.getElementById('later_payment').value);
 
-    // balance after payment(issued, received)
-    document.getElementById('balance').value = Number(document.getElementById('balance').value) - Number(document.getElementById('amount_paid').value);
+    // transaction_note for credit Purchase or credit Sale
+    if (document.getElementById('balance').value > 0)
+      document.getElementById('transaction_note').value = 'Debt';
+    else
+      document.getElementById('transaction_note').value = 'No Debt';
+
+    // hide the form
+    $('.payment').css('display', 'none');
+    // display the button
+    $('.btn-transaction').css('display', 'inline');
   }
 
 </script>

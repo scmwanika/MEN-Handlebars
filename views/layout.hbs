@@ -19,9 +19,9 @@
 <!-- Navbar-->
 <nav class="navbar navbar-expand-md bg-light">
   <a class="navbar-brand" href="/">
-    <span> STOCK MANAGER </span>
+    <span> Stock Manager </span>
   </a>
-  <button class="navbar-toggler" style="background-color: #000000" data-toggle="collapse"
+  <button class="navbar-toggler" style="background-color: #ebebed" data-toggle="collapse"
     data-target="#collapsibleNavbar">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -30,15 +30,16 @@
     <ul class="navbar-nav ml-auto">
       <!--Dropdown-->
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" style="color: #000000" id="navbardrop" data-toggle="dropdown">
+        <div class="nav-link dropdown-toggle" style="color: #000000" id="navbardrop" data-toggle="dropdown">
           YOUR MENU HERE:
-        </a>
+        </div>
         <div class="dropdown-menu">
           <a class="dropdown-item" href="/suppliers">New Product</a>
           <a class="dropdown-item" href="/products/search">Search Product</a>
           <a class="dropdown-item" href="/transactions/search">Search Transaction</a>
-          <form method="POST" action="/logout"><button class="btn-danger" type="submit"><span
-                class="logout">LOGOUT</span></button></form>
+          <form class="logout" method="POST" action="/logout"><button class="btn-danger" type="submit">
+              <div>logout</div>
+            </button></form>
         </div>
       </li>
     </ul>

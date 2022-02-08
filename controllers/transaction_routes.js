@@ -37,11 +37,22 @@ router.post('/transactions', oidc.ensureAuthenticated(), (req, res) => {
 const insertTransaction = (req, res) => {
   const newTransaction = new Transaction();
 
-  newTransaction.supplied_by = req.body.supplied_by;
-  newTransaction.product_name = req.body.product_name;
+  newTransaction.transaction_type = req.body.transaction_type;
+  newTransaction.product = req.body.product;
+  newTransaction.quantity = req.body.quantity;
+  newTransaction.unit_cost = req.body.unit_cost;
+  newTransaction.total_cost = req.body.total_cost;
+  newTransaction.payment = req.body.payment;
+  newTransaction.initial_payment = req.body.initial_payment;
+  newTransaction.balance = req.body.balance;
+  newTransaction.transaction_note = req.body.transaction_note;
+  newTransaction.witness = req.body.witness;
+  newTransaction.transaction_date = req.body.transaction_date;
 
   newTransaction.save((err) => {
-    if (err)
+    if (!err)
+      res.redirect('transactions/search');
+    else
       console.log('insertion error: ' + err);
   });
 }
@@ -49,7 +60,9 @@ const insertTransaction = (req, res) => {
 // FUNCTION TO UPDATE THE TRANSACTION
 const updateTransaction = (req, res) => {
   Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
-    if (err)
+    if (!err)
+      res.redirect('transactions/search');
+    else
       console.log('update error: ' + err);
   });
 }
