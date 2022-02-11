@@ -50,20 +50,16 @@ const insertTransaction = (req, res) => {
   newTransaction.transaction_date = req.body.transaction_date;
 
   newTransaction.save((err) => {
-    if (!err)
-      res.redirect('transactions/search');
-    else
-      console.log('insertion error: ' + err);
+    if (err)
+      res.send('Unable to save the transaction; please try again.');
   });
 }
 
 // FUNCTION TO UPDATE THE TRANSACTION
 const updateTransaction = (req, res) => {
   Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
-    if (!err)
-      res.redirect('transactions/search');
-    else
-      console.log('update error: ' + err);
+    if (err)
+      res.send('Unable to save the transaction; please try again.');
   });
 }
 

@@ -1,4 +1,10 @@
 <style>
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
+
   body {
     /* Padding to prevent the content to go underneath the header */
     padding-top: 75px;
@@ -6,36 +12,21 @@
     background-color: #ebebed;
   }
 
-  .navbar {
-    width: 100%;
-    position: fixed;
-    top: 0;
-  }
-
   span {
     color: blue;
-    font-size: 24pt;
+    font-size: 22pt;
     font-weight: bolder;
     font-family: Monotype Corsiva;
-  }
-
-  a {
-    font-family: Arial, Helvetica, sans-serif;
-    font-stretch: condensed;
   }
 
   .dropdown-menu {
     border: none;
   }
 
-  .btn-danger {
-    border: none;
-  }
-
-  .logout {
-    color: white;
-    font-size: 12pt;
-    text-align: right;
+  a,
+  label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-stretch: condensed;
   }
 
   .flex-container {
@@ -44,24 +35,24 @@
   }
 
   form {
-    flex: 50%;
+    margin: 0 auto;
+  }
+
+  legend {
     text-align: center;
+    color: orange;
   }
 
-  /* Responsive layout */
-  @media (max-width: 800px) {
-    .flex-container {
-      flex-direction: column;
-    }
-  }
-
-  legend,
   label {
+    margin-left: 10px;
     color: orange;
     margin-bottom: 0;
   }
 
-  input[type="text"] {
+  input[type="text"],
+  input[type="email"],
+  input[type="url"],
+  select {
     width: 290px;
     padding: 0.75%;
     margin-bottom: 5px;
@@ -69,13 +60,27 @@
     border: 1px solid grey;
   }
 
+  .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+  }
+
+  .customer,
+  .btn-product {
+    display: none;
+  }
+
   .submit {
     width: 290px;
     border: none;
   }
 
-  .btn-transaction {
-    display: none;
+  /* Responsive layout */
+  @media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
   }
 
   footer {

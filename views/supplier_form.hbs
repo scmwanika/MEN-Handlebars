@@ -20,8 +20,8 @@
   <form method="POST" action="/products">
     <input type="hidden" name="_id">
     <fieldset>
-      <legend>Product</legend><input id="supplied_by" type="hidden" name="supplied_by" /><br /><label>Product
-        Name:</label><br /><input id="product_name" type="text"
+      <legend>Product</legend><br /><label>Supplied By:</label><br /><input id="supplied_by" type="text"
+        name="supplied_by" /><br /><label>Product Name:</label><br /><input id="product_name" type="text"
         name="product_name" /><br /><label>Category:</label><br /><input id="category" type="text"
         name="category" /><br /><input id="discontinued" type="hidden" name="discontinued" value="No" /><input
         id="created_at" type="hidden" name="created_at" value="{{product.created_at}}" readonly /><button

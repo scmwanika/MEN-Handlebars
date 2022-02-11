@@ -1,4 +1,10 @@
 <style>
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
+
   body {
     /* Padding to prevent the content to go underneath the header */
     padding-top: 75px;
@@ -6,36 +12,21 @@
     background-color: #ebebed;
   }
 
-  .navbar {
-    width: 100%;
-    position: fixed;
-    top: 0;
-  }
-
   span {
     color: blue;
-    font-size: 24pt;
+    font-size: 22pt;
     font-weight: bolder;
     font-family: Monotype Corsiva;
-  }
-
-  a {
-    font-family: Arial, Helvetica, sans-serif;
-    font-stretch: condensed;
   }
 
   .dropdown-menu {
     border: none;
   }
 
-  .btn-danger {
-    border: none;
-  }
-
-  .logout {
-    color: white;
-    font-size: 12pt;
-    text-align: right;
+  a,
+  label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-stretch: condensed;
   }
 
   .flex-container {
@@ -44,26 +35,21 @@
   }
 
   form {
-    flex: 50%;
+    margin: 0 auto;
+  }
+
+  legend {
     text-align: center;
+    color: orange;
   }
 
-  /* Responsive layout */
-  @media (max-width: 800px) {
-    .flex-container {
-      flex-direction: column;
-    }
-  }
-
-  legend,
-  label,
-  h6 {
+  label {
+    margin-left: 10px;
     color: orange;
     margin-bottom: 0;
   }
 
   input[type="text"],
-  input[type="date"],
   input[type="email"],
   input[type="url"],
   select {
@@ -74,14 +60,27 @@
     border: 1px solid grey;
   }
 
+  .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+  }
+
+  .customer,
+  .product {
+    display: none;
+  }
+
   .submit {
     width: 290px;
     border: none;
   }
 
-  .customer,
-  .btn-product {
-    display: none;
+  /* Responsive layout */
+  @media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
   }
 
   footer {
@@ -139,23 +138,22 @@
   </form>
 
   <!-- PRODUCT FORM -->
-  <form method="POST" action="/products" onsubmit="productForm()">
+  <form class="product" method="POST" action="/products" onsubmit="productForm()">
     <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
-      <legend>Product</legend><br /><label><input id="supplied_by" type="hidden" name="supplied_by"
+      <legend></legend><br /><label><input id="supplied_by" type="hidden" name="supplied_by"
           value="{{product.supplied_by}}" readonly /><input id="product_name" type="hidden" name="product_name"
           value="{{product.product_name}}" readonly /><input id="category" type="hidden" name="category"
-          value="{{product.category}}" readonly /><label>Retail Price:</label><br /><input id="retail_price" type="text"
-          name="retail_price" value="{{product.retail_price}}" /><input id="quantity_purchased" type="hidden"
-          name="quantity_purchased" value="{{product.quantity_purchased}}" readonly /><input id="purchases"
-          type="hidden" name="purchases" value="{{product.purchases}}" readonly /><input id="quantity_sold"
-          type="hidden" name="quantity_sold" value="{{product.quantity_sold}}" readonly /><input id="sales"
-          type="hidden" name="sales" value="{{product.sales}}" readonly /><br /><input id="quantity_instock"
-          type="hidden" name="quantity_instock" value="{{product.quantity_instock}}" readonly /><input
-          id="closing_stock" type="hidden" name="closing_stock" value="{{product.closing_stock}}" readonly /><input
-          id="cost_of_sales" type="hidden" name="cost_of_sales" value="{{product.cost_of_sales}}" readonly /><input
-          id="gross_profit" type="hidden" name="gross_profit" value="{{product.gross_profit}}"
-          readonly /><label>Discontinued:</label><br /><input id="discontinued" type="text" name="discontinued"
+          value="{{product.category}}" readonly /><input id="retail_price" type="hidden" name="retail_price"
+          value="{{product.retail_price}}" /><input id="quantity_purchased" type="hidden" name="quantity_purchased"
+          value="{{product.quantity_purchased}}" readonly /><input id="purchases" type="hidden" name="purchases"
+          value="{{product.purchases}}" readonly /><input id="quantity_sold" type="hidden" name="quantity_sold"
+          value="{{product.quantity_sold}}" readonly /><input id="sales" type="hidden" name="sales"
+          value="{{product.sales}}" readonly /><br /><input id="quantity_instock" type="hidden" name="quantity_instock"
+          value="{{product.quantity_instock}}" readonly /><input id="closing_stock" type="hidden" name="closing_stock"
+          value="{{product.closing_stock}}" readonly /><input id="cost_of_sales" type="hidden" name="cost_of_sales"
+          value="{{product.cost_of_sales}}" readonly /><input id="gross_profit" type="hidden" name="gross_profit"
+          value="{{product.gross_profit}}" readonly /><input id="discontinued" type="hidden" name="discontinued"
           value="{{product.discontinued}}" /><br /><input id="created_at" type="hidden" name="created_at"
           value="{{product.created_at}}" readonly /><input id="updated_at" type="hidden" name="updated_at"
           value="{{product.updated_at}}" readonly /><br /><button class="btn btn-success submit btn-product"
@@ -310,8 +308,8 @@
   const transactionForm = () => {
     // hide the button
     $('.btn-transaction').css('display', 'none');
-    // display the button
-    $('.btn-product').css('display', 'inline');
+    // display the form
+    $('.product').css('display', 'inline');
   }
 
 </script>
