@@ -145,19 +145,19 @@
           value="{{product.supplied_by}}" readonly /><input id="product_name" type="hidden" name="product_name"
           value="{{product.product_name}}" readonly /><input id="category" type="hidden" name="category"
           value="{{product.category}}" readonly /><input id="retail_price" type="hidden" name="retail_price"
-          value="{{product.retail_price}}" /><input id="quantity_purchased" type="hidden" name="quantity_purchased"
-          value="{{product.quantity_purchased}}" readonly /><input id="purchases" type="hidden" name="purchases"
-          value="{{product.purchases}}" readonly /><input id="quantity_sold" type="hidden" name="quantity_sold"
-          value="{{product.quantity_sold}}" readonly /><input id="sales" type="hidden" name="sales"
-          value="{{product.sales}}" readonly /><br /><input id="quantity_instock" type="hidden" name="quantity_instock"
-          value="{{product.quantity_instock}}" readonly /><input id="closing_stock" type="hidden" name="closing_stock"
-          value="{{product.closing_stock}}" readonly /><input id="cost_of_sales" type="hidden" name="cost_of_sales"
-          value="{{product.cost_of_sales}}" readonly /><input id="gross_profit" type="hidden" name="gross_profit"
-          value="{{product.gross_profit}}" readonly /><input id="discontinued" type="hidden" name="discontinued"
-          value="{{product.discontinued}}" /><br /><input id="created_at" type="hidden" name="created_at"
-          value="{{product.created_at}}" readonly /><input id="updated_at" type="hidden" name="updated_at"
-          value="{{product.updated_at}}" readonly /><br /><button class="btn btn-success submit btn-product"
-          type="submit">Conclude
+          value="{{product.retail_price}}" readonly /><input id="quantity_purchased" type="hidden"
+          name="quantity_purchased" value="{{product.quantity_purchased}}" readonly /><input id="purchases"
+          type="hidden" name="purchases" value="{{product.purchases}}" readonly /><input id="quantity_sold"
+          type="hidden" name="quantity_sold" value="{{product.quantity_sold}}" readonly /><input id="sales"
+          type="hidden" name="sales" value="{{product.sales}}" readonly /><br /><input id="quantity_instock"
+          type="hidden" name="quantity_instock" value="{{product.quantity_instock}}" readonly /><input
+          id="closing_stock" type="hidden" name="closing_stock" value="{{product.closing_stock}}" readonly /><input
+          id="cost_of_sales" type="hidden" name="cost_of_sales" value="{{product.cost_of_sales}}" readonly /><input
+          id="gross_profit" type="hidden" name="gross_profit" value="{{product.gross_profit}}" readonly /><input
+          id="discontinued" type="hidden" name="discontinued" value="{{product.discontinued}}" readonly /><br /><input
+          id="created_at" type="hidden" name="created_at" value="{{product.created_at}}" readonly /><input
+          id="updated_at" type="hidden" name="updated_at" value="{{product.updated_at}}" readonly /><br /><button
+          class="btn btn-success submit btn-product" type="submit">Conclude
           Transaction</button><br />
     </fieldset>
   </form>
@@ -166,17 +166,38 @@
 
 <script type="text/javascript">
 
-  // field witness == field customer_name
+  // Witness == Customer Name
   const customerName = () => {
     document.getElementById('witness').value = document.getElementById('customer_name').value;
   }
 
-  // manage transactions
   const runTransaction = () => {
-    // insert product automatically
+    // Insert Product automatically
     document.getElementById('product').value = document.getElementById('product_name').value;
 
-    // payment(Issued, Received, None)
+    // Transaction Witnessed By: supplier_name(supplied_by), or customer_name
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('witness').value = document.getElementById('supplied_by').value;
+    else
+      document.getElementById('witness').value = document.getElementById('customer_name').value;
+
+    // Insert Dates automatically
+    document.getElementById('transaction_date').value = Date();
+    document.getElementById('updated_at').value = document.getElementById('transaction_date').value;
+
+    // Unit Cost
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('unit_cost').value = document.getElementById('total_cost').value / document.getElementById('quantity').value;
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('unit_cost').value = document.getElementById('retail_price').value;
+    if (document.getElementById('transaction_type').value == "Drawings")
+      document.getElementById('unit_cost').value = document.getElementById('closing_stock').value / document.getElementById('quantity_instock').value;
+
+    // Total Cost
+    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Drawings"))
+      document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
+
+    // Payment: Issued, Received, or None
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('payment').value = "Issued"
     if (document.getElementById('transaction_type').value == "Sales")
@@ -184,105 +205,75 @@
     if (document.getElementById('transaction_type').value == "Drawings")
       document.getElementById('payment').value = "None"
 
-    // witness the transaction
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('witness').value = document.getElementById('supplied_by').value;
-    else
-      document.getElementById('witness').value = document.getElementById('customer_name').value;
-
-    // insert dates automatically
-    document.getElementById('transaction_date').value = Date();
-    document.getElementById('updated_at').value = document.getElementById('transaction_date').value;
-
-    // unit_cost for Sales
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('unit_cost').value = document.getElementById('retail_price').value;
-
-    // unit_cost for Purchases
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('unit_cost').value = document.getElementById('total_cost').value / document.getElementById('quantity').value;
-
-    // unit_cost for Drawings
-    if (document.getElementById('transaction_type').value == "Drawings")
-      document.getElementById('unit_cost').value = document.getElementById('closing_stock').value / document.getElementById('quantity_instock').value;
-
-    // total_cost for Sales and Drawings
-    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Drawings"))
-      document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
-
-    // balance after payment(Issued, Received, None)
+    // Balance After Payment: Issued, Received, or None
     if ((document.getElementById('payment').value == "Issued") || (document.getElementById('payment').value == "Received"))
       document.getElementById('balance').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
     else
       document.getElementById('balance').value = 0;
 
-    // transaction_note for credit Purchase or credit Sale
+    // Transaction Note to reflect Balance After Payment
     if (document.getElementById('balance').value > 0)
       document.getElementById('transaction_note').value = 'Debt';
     else
       document.getElementById('transaction_note').value = 'No Debt';
 
-    // transaction_note for Drawings
-    if (document.getElementById('transaction_type').value == "Drawings")
-      document.getElementById('transaction_note').value = 'Own Use';
-
-    //
+    // Display the Customer Form
     if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
-      // display the form
       $('.customer').css('display', 'inline');
 
-    //
+    // Hide the Transaction Form
     if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
-      // hide the form
       $('.transaction').css('display', 'none');
 
-    //
+    // Hide the Customer Form
     if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns")) && document.getElementById('witness').value != "")
-      // hide the form
       $('.customer').css('display', 'none');
 
-    //
+    // Display the Transaction Form
     if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns")) && document.getElementById('witness').value != "")
-      // display the form
       $('.transaction').css('display', 'inline');
 
-    //
+    // Display the 
     if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Purchases Returns"))
-      // display the form
       $('.transaction').css('display', 'inline');
   }
 
   const productForm = () => {
-    // Purchases and Sales -- quantity(quantity_purchased, quantity_sold)
+    // Quantity Purchased
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) + Number(document.getElementById('quantity').value);
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) + Number(document.getElementById('quantity').value);
     if (document.getElementById('transaction_type').value == "Purchases Returns")
       document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
-    if (document.getElementById('transaction_type').value == "Sales Returns")
-      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) - Number(document.getElementById('quantity').value);
     if (document.getElementById('transaction_type').value == "Drawings")
       document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
 
-    // Purchases and Sales -- total value(total_cost)
+    // Quantity Sold
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) + Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) - Number(document.getElementById('quantity').value);
+
+    // Purchases
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('purchases').value = Number(document.getElementById('purchases').value) + Number(document.getElementById('total_cost').value);
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('sales').value = Number(document.getElementById('sales').value) + Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Purchases Returns")
       document.getElementById('purchases').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Drawings")
+      document.getElementById('purchases').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('total_cost').value);
+
+    // Sales
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('sales').value = Number(document.getElementById('sales').value) + Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Sales Returns")
       document.getElementById('sales').value = Number(document.getElementById('sales').value) - Number(document.getElementById('total_cost').value);
 
-    // Drawings
-    if (document.getElementById('transaction_type').value == "Drawings")
-      document.getElementById('purchases').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('total_cost').value);
-    if (document.getElementById('transaction_type').value == "Drawings")
-      document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) - Number(document.getElementById('total_cost').value);
-
-    // Units Instock
-    document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
+    // Quantity Instock
+    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value) - Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value);
 
     // Closing Stock
     if (document.getElementById('transaction_type').value == "Purchases")
@@ -290,6 +281,8 @@
     if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('closing_stock').value = Number(document.getElementById('quantity_instock').value) * Number(document.getElementById('closing_stock').value)
         / (Number(document.getElementById('quantity_instock').value) + Number(document.getElementById('quantity').value));
+    if (document.getElementById('transaction_type').value == "Drawings")
+      document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) - Number(document.getElementById('total_cost').value);
 
     // Cost of Sales
     document.getElementById('cost_of_sales').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('closing_stock').value);
