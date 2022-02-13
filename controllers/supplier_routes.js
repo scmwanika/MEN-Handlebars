@@ -25,26 +25,64 @@ const oidc = new ExpressOIDC({
 
 router.use(oidc.router);
 
-// GET THE FORM TO INSERT THE SUPPLIER
+// GET THE SUPPLIER FORM
 router.get('/suppliers', oidc.ensureAuthenticated(), (req, res) => {
+  res.render('supplier_form');
+});
+
+// INSERT OR UPDATE THE SUPPLIER BY ID
+router.post('/suppliers', oidc.ensureAuthenticated(), (req, res) => {
+  if (req.body._id == '')
+    insertSupplier(req, res);
+  else
+    updateSupplier(req, res);
+});
+
+// FUNCTION TO INSERT THE SUPPLIER
+const insertSupplier = (req, res) => {
+  const newsupplier = new supplier();
+
+  newsupplier.supplier_name = req.body.supplier_name;
+  newsupplier.country = req.body.country;
+  newsupplier.city = req.body.city;
+  newsupplier.street = req.body.street;
+  newsupplier.address = req.body.address;
+  newsupplier.telephone = req.body.telephone;
+  newsupplier.email = req.body.email;
+  newsupplier.url = req.body.url;
+
+  newsupplier.save((err) => {
+    if (err)
+      res.send('Unable to save the supplier; please try again.');
+  });
+}
+
+// FUNCTION TO UPDATE THE SUPPLIER
+const updateSupplier = (req, res) => {
+  supplier.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
+    if (err)
+      res.send('Unable to save the supplier; please try again.');
+  });
+}
+
+// LIST SUPPLIERS
+router.get('/suppliers/list', oidc.ensureAuthenticated(), async (req, res) => {
   try {
-    res.render('supplier_form')
+    const suppliers = await Supplier.find();
+    res.render('list_suppliers', { suppliers });
   } catch (error) {
-    res.status(400).send('Supplier form closed; please try again.');
+    res.status(400).send('Unable to find the record in the list');
   }
 });
 
-// INSERT THE SUPPLIER
-router.post('/suppliers', oidc.ensureAuthenticated(), async (req, res) => {
+// GET THE SUPPLIER BY ID
+router.get('/suppliers/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
-    const newSupplier = new Supplier(req.body);
-    await newSupplier.save()
-    // res.send('Supplier saved.');
+    const supplier = await Supplier.findOne({ _id: req.params.id });
+    res.render('supplier_product_form', { supplier });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
   }
-  catch (err) {
-    console.error(err)
-    res.send('Supplier not saved; please try again.')
-  }
-})
+});
 
 module.exports = router;

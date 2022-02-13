@@ -7,7 +7,7 @@
 body {
   /* Padding to prevent the content to go underneath the header */
   padding-top: 75px;
-  font-family: Courier;
+  font-family: Arial, Helvetica, sans-serif;
   background-color: #ebebed;
 }
 
@@ -19,7 +19,7 @@ span {
 }
 
 #msg {
-  color: orange;
+  color: grey;
   font-size: medium;
 }
 
@@ -30,7 +30,7 @@ span {
 a,
 label {
   font-family: Arial, Helvetica, sans-serif;
-  font-stretch: condensed;
+  font-size: 10pt;
 }
 
 .flex-container {
@@ -44,12 +44,11 @@ form {
 
 legend {
   text-align: center;
-  color: orange;
+  color: grey;
 }
 
 label {
-  margin-left: 10px;
-  color: orange;
+  color: grey;
   margin-bottom: 0;
 }
 
@@ -60,18 +59,14 @@ select {
   width: 290px;
   padding: 0.75%;
   margin-bottom: 5px;
-  font-size: 12pt;
-  border: 1px solid grey;
+  font-size: 14pt;
+  border: none;
 }
 
 .logout {
   color: white;
   font-size: 12pt;
   margin-left: 24px;
-}
-
-.btn-product {
-  display: none;
 }
 
 .submit {

@@ -1,0 +1,75 @@
+<style>
+  body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: Courier;
+    background-color: #ebebed;
+  }
+
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
+
+  span {
+    color: blue;
+    font-size: 24pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+  }
+
+  a {
+    font-family: Arial, Helvetica, sans-serif;
+    font-stretch: condensed;
+  }
+
+  .dropdown-menu {
+    border: none;
+  }
+
+  .btn-danger {
+    border: none;
+  }
+
+  .logout {
+    color: white;
+    font-size: 12pt;
+    text-align: right;
+  }
+
+  form {
+    text-align: center;
+  }
+
+  .listing-table {
+    margin: 0 auto;
+  }
+
+  th {
+    font-family: Arial, Helvetica, sans-serif;
+    font-stretch: condensed;
+    width: 140px;
+  }
+
+  footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+  }
+</style>
+
+<!-- LIST PRODUCTS -->
+<table class="listing-table table-striped">
+  <tr>
+    <th>Supplier Name:</th>
+    <th></th>
+  </tr>
+  {{#each suppliers}}
+  <tr>
+    <td>{{this.supplier_name}}</td>
+    <td><a href="/suppliers/{{this._id}}"> Open </a></td>
+  </tr>
+  {{/each}}
+</table>

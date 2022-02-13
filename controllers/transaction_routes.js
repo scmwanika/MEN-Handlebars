@@ -63,10 +63,12 @@ const updateTransaction = (req, res) => {
   });
 }
 
+//await MyModel.find({ name: 'john', age: { $gte: 18 } }).exec();
 // SEARCH THE TRANSACTION BY TRANSACTION_NOTE
 router.get('/transactions/search', oidc.ensureAuthenticated(), async (req, res) => {
   try {
-    const transactions = await Transaction.find({ transaction_note: req.query.transaction_note });
+    const transactions = await Transaction.find({ transaction_note: 'Creditor' || 'Debtor' });
+    //const transactions = await Transaction.find({ transaction_note: req.query.transaction_note });
     res.render('search_transactions', { transactions });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');

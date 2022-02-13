@@ -8,7 +8,7 @@
   body {
     /* Padding to prevent the content to go underneath the header */
     padding-top: 75px;
-    font-family: Courier;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: #ebebed;
   }
 
@@ -27,7 +27,7 @@
   a,
   label {
     font-family: Arial, Helvetica, sans-serif;
-    font-stretch: condensed;
+    font-size: 10pt;
   }
 
   .listing-table {
@@ -65,29 +65,27 @@
   }
 </style>
 
-<form class="search" action="/transactions/search"><input name="transaction_note" placeholder="transaction_note"
-    value="Debt" readonly /><button class="btn btn-white" type="submit">Search</button></form>
+<form class="search" action="/transactions/search"><input name="transaction_note"
+    placeholder="transaction_note" /><button class="btn btn-white" type="submit">Search</button></form>
 <br />
 <!-- LIST DEBTORS AND CREDITOR -->
 <table class="listing-table table-striped">
   <tr>
-    <th>Transaction Type:</th>
+    <th>Transaction Note:</th>
     <th>Product:</th>
     <th>Total Cost:</th>
-    <th>Payment:</th>
     <th>Initial Payment:</th>
     <th>Balance:</th>
     <th></th>
   </tr>
   {{#each transactions}}
   <tr>
-    <th>{{this.transaction_type}}</th>
+    <th>{{this.transaction_note}}</th>
     <td>{{this.product}}</td>
     <td>{{this.total_cost}}</td>
-    <td>{{this.payment}}</td>
     <td>{{this.initial_payment}}</td>
     <td>{{this.balance}}</td>
-    <td><a href="/transactions/{{this._id}}"> OPEN </a></td>
+    <td><a href="/transactions/{{this._id}}"> Open </a></td>
   </tr>
   {{/each}}
 </table>

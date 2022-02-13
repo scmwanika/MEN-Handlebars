@@ -1,0 +1,162 @@
+<style>
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
+
+  body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ebebed;
+  }
+
+  span {
+    color: blue;
+    font-size: 22pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+  }
+
+  .dropdown-menu {
+    border: none;
+  }
+
+  a,
+  label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  form {
+    margin: 0 auto;
+  }
+
+  legend {
+    text-align: center;
+    color: grey;
+  }
+
+  label {
+    color: grey;
+    margin-bottom: 0;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="url"],
+  select {
+    width: 290px;
+    padding: 0.75%;
+    margin-bottom: 5px;
+    font-size: 14pt;
+    border: none;
+  }
+
+  .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+  }
+
+  .customer {
+    display: none;
+  }
+
+  .submit {
+    width: 290px;
+    border: none;
+  }
+
+  /* Responsive layout */
+  @media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
+
+  footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    text-align: center;
+  }
+</style>
+
+<div class="flex-container">
+  <!-- SUPPLIER FORM -->
+  <form class="supplier" method="POST" action="/suppliers" oninput="supplierName()" onsubmit="supplierForm()">
+    <input type="hidden" name="_id" value="{{supplier._id}}">
+    <fieldset>
+      <legend>Supplier</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
+        name="supplier_name" value="{{supplier.supplier_name}}" required /><br /><label>Country:</label><br /><input
+        id="country" type="text" name="country" value="{{supplier.country}}"
+        required /><br /><label>City/Town:</label><br /><input id="city" type="text" name="city"
+        value="{{supplier.city}}" required /><br /><label>Street:</label><br /><input id="street" type="text"
+        name="street" value="{{supplier.street}}" required /><br /><label>Address:</label><br /><input id="address"
+        type="text" name="address" value="{{supplier.address}}" required /><br /><label>Telephone:</label><br /><input
+        id="telephone" type="text" name="telephone" value="{{supplier.telephone}}"
+        required /><br /><label>Email:</label><br /><input id="email" type="email" name="email"
+        value="{{supplier.email}}" required /><br /><label>Website: </label><br /><input id="website" type="url"
+        name="website" /><br /><button class="btn btn-success submit btn-supplier" type="submit">Save</button><br />
+      <span id="msg"></span>
+    </fieldset>
+  </form>
+
+  <!-- PRODUCT FORM -->
+  <form class="product" method="POST" action="/products" onformchange="productForm" onsubmit="productForm()">
+    <input type="hidden" name="_id">
+    <fieldset>
+      <legend>Product</legend><br /><label>Supplied By:</label><br /><input id="supplied_by" type="text"
+        name="supplied_by" /><br /><label>Product Name:</label><br /><input id="product_name" type="text"
+        name="product_name" /><br /><label>Category:</label><br /><input id="category" type="text"
+        name="category" /><br /><label>Retail Price:</label><br /><input id="retail_price" type="text"
+        name="retail_price" /><br /><label>Quantity Purchased:</label><br /><input id="quantity_purchased" type="text"
+        name="quantity_purchased" /><br /><label>Purchases:</label><br /><input id="purchases" type="text"
+        name="purchases" /><br /><label>Quantity
+        Sold:</label><br /><input id="quantity_sold" type="text"
+        name="quantity_sold" /><br /><label>Sales:</label><br /><input id="sales" type="text"
+        name="sales" /><br /><label>Quantity Instock:</label><br /><input id="quantity_instock" type="text"
+        name="quantity_instock" /><br /><label>Closing
+        Stock:</label><br /><input id="closing_stock" type="text" name="closing_stock" /><br /><label>Cost of
+        Sales:</label><br /><input id="cost_of_sales" type="text" name="cost_of_sales" /><br /><label>Gross
+        Profit:</label><br /><input id="gross_profit" type="text"
+        name="gross_profit" /><br /><label>Discontinued:</label><br /><select id="discontinued" name="discontinued">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select><br /><label>Created At:</label><br /><input id="created_at" type="text"
+        name="created_at" /><br /><label>Updated At:</label><br /><input id="updated_at" type="text"
+        name="updated_at" /><br /><button class="btn btn-success submit btn-product" type="submit">
+        Save</button><br />
+    </fieldset>
+  </form>
+</div>
+
+<script type="text/javascript">
+
+  const supplierName = () => {
+    // Supplied By == Supplier Name
+    document.getElementById('supplied_by').value = document.getElementById('supplier_name').value;
+    // Insert Date automatically
+    document.getElementById('created_at').value = Date();
+  }
+
+  const supplierForm = () => {
+    // hide the form
+    $('.supplier').css('display', 'none');
+  }
+
+  $(function () {
+    // MESSAGE TO CONFIRM DATA SUBMISSION
+    $('.supplier').submit(function () {
+      $('#msg').empty().text('Supplier saved successfully');
+    });
+  });
+
+</script>

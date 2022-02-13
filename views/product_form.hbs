@@ -8,7 +8,7 @@
   body {
     /* Padding to prevent the content to go underneath the header */
     padding-top: 75px;
-    font-family: Courier;
+    font-family: Arial, Helvetica, sans-serif;
     background-color: #ebebed;
   }
 
@@ -26,7 +26,7 @@
   a,
   label {
     font-family: Arial, Helvetica, sans-serif;
-    font-stretch: condensed;
+    font-size: 10pt;
   }
 
   .flex-container {
@@ -40,12 +40,12 @@
 
   legend {
     text-align: center;
-    color: orange;
+    color: grey;
   }
 
   label {
     margin-left: 10px;
-    color: orange;
+    color: grey;
     margin-bottom: 0;
   }
 
@@ -56,8 +56,8 @@
     width: 290px;
     padding: 0.75%;
     margin-bottom: 5px;
-    font-size: 12pt;
-    border: 1px solid grey;
+    font-size: 14pt;
+    border: none;
   }
 
   .logout {
@@ -116,12 +116,12 @@
     <fieldset>
       <legend>Transaction</legend><br /><label>Transaction Type:</label><br /><select id="transaction_type"
         name="transaction_type">
-        <option value="">SELECT...</option>
-        <option value="Purchases">PURCHASES</option>
-        <option value="Sales">SALES</option>
-        <option value="Drawings">DRAWINGS</option>
-        <option value="Purchases Returns">PURCHASES RETURNS</option>
-        <option value="Sales Returns">SALES RETURNS</option>
+        <option value="">Select...</option>
+        <option value="Purchases">Purchases</option>
+        <option value="Sales">Sales</option>
+        <option value="Drawings">Drawings</option>
+        <option value="Purchases Returns">Purchases Returns</option>
+        <option value="Sales Returns">Sales Returns</option>
       </select><br /><label>Product:</label><br /><input id="product" type="text" name="product"
         readonly /><br /><label>Quantity:</label><br /><input id="quantity" type="text"
         name="quantity" /><br /><label>Unit
@@ -172,6 +172,22 @@
   }
 
   const runTransaction = () => {
+    // Display the Customer Form
+    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
+      $('.customer').css('display', 'inline');
+
+    // Hide the Transaction Form
+    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
+      $('.transaction').css('display', 'none');
+
+    // Hide the Customer Form
+    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns")) && document.getElementById('witness').value != "")
+      $('.customer').css('display', 'none');
+
+    // Display the Transaction Form
+    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns")) && document.getElementById('witness').value != "")
+      $('.transaction').css('display', 'inline');
+
     // Insert Product automatically
     document.getElementById('product').value = document.getElementById('product_name').value;
 
@@ -194,7 +210,7 @@
       document.getElementById('unit_cost').value = document.getElementById('closing_stock').value / document.getElementById('quantity_instock').value;
 
     // Total Cost
-    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Drawings"))
+    if (document.getElementById('transaction_type').value != "Purchases")
       document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
 
     // Payment: Issued, Received, or None
@@ -211,31 +227,25 @@
     else
       document.getElementById('balance').value = 0;
 
-    // Transaction Note to reflect Balance After Payment
-    if (document.getElementById('balance').value > 0)
-      document.getElementById('transaction_note').value = 'Debt';
-    else
-      document.getElementById('transaction_note').value = 'No Debt';
+    // Transaction Note: Creditor, or Debtor
+    if (document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('balance').value > 0)
+      document.getElementById('transaction_note').value = 'Creditor';
+    if (document.getElementById('transaction_type').value == "Sales") && (document.getElementById('balance').value > 0)
+      document.getElementById('transaction_note').value = 'Debtor';
+  }
 
-    // Display the Customer Form
-    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
-      $('.customer').css('display', 'inline');
-
-    // Hide the Transaction Form
-    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
-      $('.transaction').css('display', 'none');
-
+  const customerForm = () => {
     // Hide the Customer Form
-    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns")) && document.getElementById('witness').value != "")
-      $('.customer').css('display', 'none');
-
+    $('.customer').css('display', 'none');
     // Display the Transaction Form
-    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns")) && document.getElementById('witness').value != "")
-      $('.transaction').css('display', 'inline');
+    $('.transaction').css('display', 'inline');
+  }
 
-    // Display the 
-    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Purchases Returns"))
-      $('.transaction').css('display', 'inline');
+  const transactionForm = () => {
+    // Hide the Transaction Form
+    $('.transaction').css('display', 'none');
+    // Display the Product Form
+    $('.product').css('display', 'inline');
   }
 
   const productForm = () => {
@@ -289,20 +299,6 @@
 
     // Gross Profit
     document.getElementById('gross_profit').value = Number(document.getElementById('sales').value) - Number(document.getElementById('cost_of_sales').value);
-  }
-
-  const customerForm = () => {
-    // hide the form
-    $('.customer').css('display', 'none');
-    // display the form
-    $('.transaction').css('display', 'inline');
-  }
-
-  const transactionForm = () => {
-    // hide the button
-    $('.btn-transaction').css('display', 'none');
-    // display the form
-    $('.product').css('display', 'inline');
   }
 
 </script>
