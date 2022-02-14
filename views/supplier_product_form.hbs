@@ -85,6 +85,7 @@
     width: 100%;
     position: fixed;
     bottom: 0;
+    font-size: 10pt;
     text-align: center;
   }
 </style>
@@ -110,7 +111,7 @@
   </form>
 
   <!-- PRODUCT FORM -->
-  <form class="product" method="POST" action="/products" onformchange="productForm" onsubmit="productForm()">
+  <form class="product" method="POST" action="/products" onsubmit="productForm()">
     <input type="hidden" name="_id">
     <fieldset>
       <legend>Product</legend><br /><label>Supplied By:</label><br /><input id="supplied_by" type="text"
@@ -146,17 +147,5 @@
     // Insert Date automatically
     document.getElementById('created_at').value = Date();
   }
-
-  const supplierForm = () => {
-    // hide the form
-    $('.supplier').css('display', 'none');
-  }
-
-  $(function () {
-    // MESSAGE TO CONFIRM DATA SUBMISSION
-    $('.supplier').submit(function () {
-      $('#msg').empty().text('Supplier saved successfully');
-    });
-  });
 
 </script>

@@ -10,8 +10,8 @@ const port = 3000;
 
 const app = express();
 
-// SET PUG AS VIEW TEMPLATE ENGINE
-app.set('view engine', 'hbs');
+// SET HANDLEBARS AS VIEW TEMPLATE ENGINE
+app.set('view engine', '.hbs');
 app.set('views', './views');
 
 /*

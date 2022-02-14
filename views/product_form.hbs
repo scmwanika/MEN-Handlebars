@@ -66,8 +66,8 @@
     margin-left: 24px;
   }
 
-  .customer,
-  .product {
+  .custome,
+  .produc {
     display: none;
   }
 
@@ -87,12 +87,12 @@
     width: 100%;
     position: fixed;
     bottom: 0;
+    font-size: 10pt;
     text-align: center;
   }
 </style>
 
 <div class="flex-container">
-
   <!-- CUSTOMER FORM -->
   <form class="customer" method="POST" action="/customers" oninput="customerName()" onsubmit="customerForm()">
     <fieldset>
@@ -131,7 +131,7 @@
         readonly /><br /><label>Initial Payment:</label><br /><input id="initial_payment" type="text"
         name="initial_payment" required /><br /><label>Balance:</label><br /><input id="balance" type="text"
         name="balance" readonly /><input id="transaction_note" type="hidden" name="transaction_note" /><br /><input
-        id="witness" type="hidden" name="witness" readonly /><input id="transaction_date" type="hidden"
+        id="witness" type="text" name="witness" readonly /><input id="transaction_date" type="hidden"
         name="transaction_date" readonly /><button class="btn btn-success submit btn-transaction"
         type="submit">Save</button><br />
     </fieldset>
@@ -141,10 +141,10 @@
   <form class="product" method="POST" action="/products" onsubmit="productForm()">
     <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
-      <legend></legend><br /><label><input id="supplied_by" type="hidden" name="supplied_by"
-          value="{{product.supplied_by}}" readonly /><input id="product_name" type="hidden" name="product_name"
-          value="{{product.product_name}}" readonly /><input id="category" type="hidden" name="category"
-          value="{{product.category}}" readonly /><input id="retail_price" type="hidden" name="retail_price"
+      <legend>Product</legend><br /><label><input id="supplied_by" type="text" name="supplied_by"
+          value="{{product.supplied_by}}" readonly /><input id="product_name" type="text" name="product_name"
+          value="{{product.product_name}}" readonly /><input id="category" type="text" name="category"
+          value="{{product.category}}" readonly /><input id="retail_price" type="text" name="retail_price"
           value="{{product.retail_price}}" readonly /><input id="quantity_purchased" type="hidden"
           name="quantity_purchased" value="{{product.quantity_purchased}}" readonly /><input id="purchases"
           type="hidden" name="purchases" value="{{product.purchases}}" readonly /><input id="quantity_sold"
@@ -161,7 +161,6 @@
           Transaction</button><br />
     </fieldset>
   </form>
-
 </div>
 
 <script type="text/javascript">
