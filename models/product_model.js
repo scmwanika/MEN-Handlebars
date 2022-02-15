@@ -42,10 +42,10 @@ const productSchema = new Schema({
   discontinued: {
     type: String,
   },
-  created_at: {
+  created_on: {
     type: Date,
   },
-  updated_at: {
+  updated_on: {
     type: Date,
   },
 }, {

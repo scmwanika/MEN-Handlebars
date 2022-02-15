@@ -1,15 +1,15 @@
 <style>
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
+
   body {
     /* Padding to prevent the content to go underneath the header */
     padding-top: 75px;
     font-family: Arial, Helvetica, sans-serif;
     background-color: #ebebed;
-  }
-
-  .navbar {
-    width: 100%;
-    position: fixed;
-    top: 0;
   }
 
   span {
@@ -19,27 +19,19 @@
     font-family: Monotype Corsiva;
   }
 
+  .dropdown-menu {
+    border: none;
+  }
+
   a {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10pt;
   }
 
-  .dropdown-menu {
-    border: none;
-  }
-
-  .btn-danger {
-    border: none;
-  }
-
   .logout {
     color: white;
     font-size: 12pt;
-    text-align: right;
-  }
-
-  form {
-    text-align: center;
+    margin-left: 24px;
   }
 
   .listing-table {
@@ -49,7 +41,7 @@
   th {
     font-family: Arial, Helvetica, sans-serif;
     font-stretch: condensed;
-    width: 140px;
+    width: 290px;
   }
 
   footer {
@@ -62,14 +54,14 @@
 </style>
 
 <!-- LIST PRODUCTS -->
+
 <table class="listing-table table-striped">
   <tr>
-    <th>Supplier Name:</th>
-    <th></th>
+    <td colspan="2">SUPPLIERS</td>
   </tr>
   {{#each suppliers}}
   <tr>
-    <td>{{this.supplier_name}}</td>
+    <th>{{this.supplier_name}}</th>
     <td><a href="/suppliers/{{this._id}}"> Open </a></td>
   </tr>
   {{/each}}

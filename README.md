@@ -1,2 +1,2 @@
-# Stock Manager
-stores management system
+# SMART
+Stock Management

@@ -40,7 +40,7 @@ router.post('/suppliers', oidc.ensureAuthenticated(), (req, res) => {
 
 // FUNCTION TO INSERT THE SUPPLIER
 const insertSupplier = (req, res) => {
-  const newsupplier = new supplier();
+  const newsupplier = new Supplier();
 
   newsupplier.supplier_name = req.body.supplier_name;
   newsupplier.country = req.body.country;
@@ -54,6 +54,8 @@ const insertSupplier = (req, res) => {
   newsupplier.save((err) => {
     if (err)
       res.send('Unable to save the supplier; please try again.');
+    else
+      res.redirect('suppliers/list');
   });
 }
 

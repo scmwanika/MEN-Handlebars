@@ -54,20 +54,20 @@ const insertProduct = (req, res) => {
   newProduct.updated_at = req.body.updated_at;
 
   newProduct.save((err) => {
-    if (!err)
-      res.redirect('products/search');
+    if (err)
+      res.send('Unable to save the product; please try again.');
     else
-      console.log('insertion error: ' + err);
+      res.redirect('products/search');
   });
 }
 
 // FUNCTION TO UPDATE THE PRODUCT IN STORE
 const updateProduct = (req, res) => {
   Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
-    if (!err)
-      res.redirect('products/search');
+    if (err)
+      res.send('Unable to save the product; please try again.');
     else
-      console.log('update error: ' + err);
+      res.redirect('products/search');
   });
 }
 

@@ -55,14 +55,18 @@
     width: 290px;
     padding: 0.75%;
     margin-bottom: 5px;
-    font-size: 12pt;
-    border: 1px solid grey;
+    font-size: 14pt;
+    border: none;
   }
 
   .logout {
     color: white;
     font-size: 12pt;
     margin-left: 24px;
+  }
+
+  .transaction {
+    display: none;
   }
 
   .submit {
@@ -87,20 +91,18 @@
 </style>
 
 <div class="flex-container">
-
   <!-- PAY OFF DEBT FORM -->
   <form class="payment" method="POST" action="/payments" onsubmit="paymentForm()">
     <fieldset>
-      <legend>Pay off debt</legend><br /><label>Payment Date:</label><br /><input id="payment_date" type="text"
-        name="payment_date" readonly /><br /><label>Later Payment:</label><br /><input id="later_payment" type="text"
-        name="later_payment" required /><br /><button class="btn btn-success submit btn-debt"
-        type="submit">Save</button><br />
+      <legend>Pay off debt</legend><input id="payment_date" type="hidden" name="payment_date"
+        readonly /><br /><label>Later Payment:</label><br /><input id="later_payment" type="text" name="later_payment"
+        required /><br /><button class="btn btn-success submit btn-payment" type="submit">Save</button><br />
       <span id="msg"></span>
     </fieldset>
   </form>
 
   <!-- TRANSACTION FORM -->
-  <form method="POST" action="/transactions">
+  <form class="transaction" method="POST" action="/transactions">
     <input type="hidden" name="_id" value="{{transaction._id}}">
     <fieldset>
       <legend>Transaction</legend><br /><label>Transaction Type:</label><br /><input id="transaction_type" type="text"
@@ -123,27 +125,35 @@
         Payment</button><br />
     </fieldset>
   </form>
-
 </div>
 
 <script type="text/javascript">
 
   const paymentForm = () => {
-    // insert date automatically
+    // Insert Date automatically
     document.getElementById('payment_date').value = Date();
-    // balance after payment(Issued, Received)
+
+    // Balance After Payment: Issued, Received or No Debt
     document.getElementById('balance').value = Number(document.getElementById('balance').value) - Number(document.getElementById('later_payment').value);
 
-    // transaction_note for credit Purchase or credit Sale
-    if (document.getElementById('balance').value > 0)
-      document.getElementById('transaction_note').value = 'Debt';
-    else
+    // Transaction Note: Creditor, or Debtor
+    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('balance').value > 0))
+      document.getElementById('transaction_note').value = 'Creditor';
+    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('balance').value == 0))
+      document.getElementById('transaction_note').value = 'No Debt';
+    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('balance').value < 0))
+      document.getElementById('transaction_note').value = 'No Debt';
+    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('balance').value > 0))
+      document.getElementById('transaction_note').value = 'Debtor';
+    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('balance').value == 0))
+      document.getElementById('transaction_note').value = 'No Debt';
+    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('balance').value < 0))
       document.getElementById('transaction_note').value = 'No Debt';
 
-    // hide the form
+    // Hide the Payment Form
     $('.payment').css('display', 'none');
-    // display the button
-    $('.btn-transaction').css('display', 'inline');
+    // Display the Transaction Form
+    $('.transaction').css('display', 'inline');
   }
 
 </script>

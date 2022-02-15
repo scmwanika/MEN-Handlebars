@@ -92,20 +92,20 @@
 
 <div class="flex-container">
   <!-- SUPPLIER FORM -->
-  <form class="supplier" method="POST" action="/suppliers" oninput="supplierName()" onsubmit="supplierForm()">
+  <form class="supplier" method="POST" action="/suppliers">
     <input type="hidden" name="_id" value="{{supplier._id}}">
     <fieldset>
       <legend>Supplier</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
-        name="supplier_name" value="{{supplier.supplier_name}}" required /><br /><label>Country:</label><br /><input
+        name="supplier_name" value="{{supplier.supplier_name}}" readonly /><br /><label>Country:</label><br /><input
         id="country" type="text" name="country" value="{{supplier.country}}"
-        required /><br /><label>City/Town:</label><br /><input id="city" type="text" name="city"
-        value="{{supplier.city}}" required /><br /><label>Street:</label><br /><input id="street" type="text"
-        name="street" value="{{supplier.street}}" required /><br /><label>Address:</label><br /><input id="address"
-        type="text" name="address" value="{{supplier.address}}" required /><br /><label>Telephone:</label><br /><input
+        readonly /><br /><label>City/Town:</label><br /><input id="city" type="text" name="city"
+        value="{{supplier.city}}" readonly /><br /><label>Street:</label><br /><input id="street" type="text"
+        name="street" value="{{supplier.street}}" readonly /><br /><label>Address:</label><br /><input id="address"
+        type="text" name="address" value="{{supplier.address}}" readonly /><br /><label>Telephone:</label><br /><input
         id="telephone" type="text" name="telephone" value="{{supplier.telephone}}"
-        required /><br /><label>Email:</label><br /><input id="email" type="email" name="email"
-        value="{{supplier.email}}" required /><br /><label>Website: </label><br /><input id="website" type="url"
-        name="website" /><br /><button class="btn btn-success submit btn-supplier" type="submit">Save</button><br />
+        readonly /><br /><label>Email:</label><br /><input id="email" type="email" name="email"
+        value="{{supplier.email}}" readonly /><br /><label>Website: </label><br /><input id="website" type="url"
+        name="website" value="{{supplier.website}}" readonly/><br />
       <span id="msg"></span>
     </fieldset>
   </form>
@@ -114,26 +114,13 @@
   <form class="product" method="POST" action="/products" onsubmit="productForm()">
     <input type="hidden" name="_id">
     <fieldset>
-      <legend>Product</legend><br /><label>Supplied By:</label><br /><input id="supplied_by" type="text"
-        name="supplied_by" /><br /><label>Product Name:</label><br /><input id="product_name" type="text"
+      <legend>Product</legend><input id="supplied_by" type="hidden" name="supplied_by" readonly /><br /><label>Product
+        Name:</label><br /><input id="product_name" type="text"
         name="product_name" /><br /><label>Category:</label><br /><input id="category" type="text"
         name="category" /><br /><label>Retail Price:</label><br /><input id="retail_price" type="text"
-        name="retail_price" /><br /><label>Quantity Purchased:</label><br /><input id="quantity_purchased" type="text"
-        name="quantity_purchased" /><br /><label>Purchases:</label><br /><input id="purchases" type="text"
-        name="purchases" /><br /><label>Quantity
-        Sold:</label><br /><input id="quantity_sold" type="text"
-        name="quantity_sold" /><br /><label>Sales:</label><br /><input id="sales" type="text"
-        name="sales" /><br /><label>Quantity Instock:</label><br /><input id="quantity_instock" type="text"
-        name="quantity_instock" /><br /><label>Closing
-        Stock:</label><br /><input id="closing_stock" type="text" name="closing_stock" /><br /><label>Cost of
-        Sales:</label><br /><input id="cost_of_sales" type="text" name="cost_of_sales" /><br /><label>Gross
-        Profit:</label><br /><input id="gross_profit" type="text"
-        name="gross_profit" /><br /><label>Discontinued:</label><br /><select id="discontinued" name="discontinued">
-        <option value="No">No</option>
-        <option value="Yes">Yes</option>
-      </select><br /><label>Created At:</label><br /><input id="created_at" type="text"
-        name="created_at" /><br /><label>Updated At:</label><br /><input id="updated_at" type="text"
-        name="updated_at" /><br /><button class="btn btn-success submit btn-product" type="submit">
+        name="retail_price" /><br /><label>Discontinued:</label><br /><input id="discontinued" type="text"
+        name="discontinued" value="No" readonly /><input id="created_on" type="hidden" name="created_on"
+        readonly /><br /><button class="btn btn-success submit btn-product" type="submit">
         Save</button><br />
     </fieldset>
   </form>
@@ -141,11 +128,11 @@
 
 <script type="text/javascript">
 
-  const supplierName = () => {
+  const productForm = () => {
     // Supplied By == Supplier Name
     document.getElementById('supplied_by').value = document.getElementById('supplier_name').value;
     // Insert Date automatically
-    document.getElementById('created_at').value = Date();
+    document.getElementById('created_on').value = Date();
   }
 
 </script>

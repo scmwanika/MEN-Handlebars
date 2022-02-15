@@ -52,6 +52,8 @@ const insertTransaction = (req, res) => {
   newTransaction.save((err) => {
     if (err)
       res.send('Unable to save the transaction; please try again.');
+    else
+      res.redirect('transactions/search');
   });
 }
 
@@ -60,6 +62,8 @@ const updateTransaction = (req, res) => {
   Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
     if (err)
       res.send('Unable to save the transaction; please try again.');
+    else
+      res.redirect('transactions/search');
   });
 }
 
@@ -84,7 +88,7 @@ router.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => 
 });
 
 // Join the matching "transactions" and "suppliers"
-router.get('/transactions/supplier', async (req, res) => {
+router.get('/transactions/supplier', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const transactions = await Transaction.aggregate
       ([
@@ -105,7 +109,7 @@ router.get('/transactions/supplier', async (req, res) => {
 });
 
 // Join the matching "transactions" and "customers"
-router.get('/transactions/customer', async (req, res) => {
+router.get('/transactions/customer', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const transactions = await Transaction.aggregate
       ([
@@ -126,7 +130,7 @@ router.get('/transactions/customer', async (req, res) => {
 });
 
 // Summarize Transactions
-router.get('/transactions/summary', async (req, res) => {
+router.get('/transactions/summary', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const transactions = await Transaction.aggregate(
       [{
