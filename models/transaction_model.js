@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const transactionSchema = new Schema({
-  witness: {
+  user_id: {
     type: String,
   },
   transaction_type: {

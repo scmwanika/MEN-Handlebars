@@ -57,12 +57,12 @@
 
 <table class="listing-table table-striped">
   <tr>
-    <td colspan="2">SUPPLIERS</td>
+    <td colspan="2">CUSTOMERS</td>
   </tr>
-  {{#each suppliers}}
+  {{#each customers}}
   <tr>
     <th>{{this.user_name}}</th>
-    <td><a href="/suppliers/{{this._id}}"> Open </a></td>
+    <td><a href="/customers/{{this._id}}"> Open </a></td>
   </tr>
   {{/each}}
 </table>

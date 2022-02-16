@@ -65,7 +65,6 @@
     margin-left: 24px;
   }
 
-  .customer,
   .product {
     display: none;
   }
@@ -92,25 +91,9 @@
 </style>
 
 <div class="flex-container">
-  <!-- CUSTOMER FORM -->
-  <form class="customer" method="POST" action="/customers" oninput="customerName()" onsubmit="customerForm()">
-    <fieldset>
-      <legend>Customer</legend><br /><label>Customer Name:</label><br /><input id="customer_name" type="text"
-        name="customer_name" required /><br /><label>Country:</label><br /><input id="country" type="text"
-        name="country" required /><br /><label>City/Town:</label><br /><input id="city" type="text" name="city"
-        required /><br /><label>Street:</label><br /><input id="street" type="text" name="street"
-        required /><br /><label>Address:</label><br /><input id="address" type="text" name="address"
-        required /><br /><label>Telephone:</label><br /><input id="telephone" type="text" name="telephone"
-        required /><br /><label>Email:</label><br /><input id="email" type="email" name="email"
-        required /><br /><label>Website: </label><br /><input id="website" type="url" name="website" /><br /><button
-        class="btn btn-success submit" type="submit">Save</button><br />
-      <span id="msg"></span>
-    </fieldset>
-  </form>
-
   <!-- TRANSACTION FORM -->
-  <form class="transaction" method="POST" action="/transactions" oninput="runTransaction()"
-    onsubmit="transactionForm()">
+  <form class="transaction" method="POST" action="/transactions" oninput="inputTransaction()"
+    onsubmit="submitTransaction()">
     <input type="hidden" name="_id">
     <fieldset>
       <legend>Transaction</legend><br /><label>Transaction Type:</label><br /><select id="transaction_type"
@@ -128,35 +111,33 @@
         Cost:</label><br /><input id="total_cost" type="text" name="total_cost"
         required /><br /><label>Payment:</label><br /><input id="payment" type="text" name="payment"
         readonly /><br /><label>Initial Payment:</label><br /><input id="initial_payment" type="text"
-        name="initial_payment" required /><br /><label>Balance:</label><br /><input id="balance" type="text"
-        name="balance" readonly /><input id="transaction_note" type="hidden" name="transaction_note" /><br /><input
-        id="witness" type="hidden" name="witness" readonly /><input id="transaction_date" type="hidden"
-        name="transaction_date" readonly /><button class="btn btn-success submit"
-        type="submit">Save</button><br />
+        name="initial_payment" required /><br /><label>debt:</label><br /><input id="debt" type="text" name="debt"
+        readonly /><input id="transaction_note" type="hidden" name="transaction_note" /><br /><input id="userId"
+        type="hidden" name="userId" readonly /><input id="transaction_date" type="hidden" name="transaction_date"
+        readonly /><button class="btn btn-success submit" type="submit">Save</button><br />
     </fieldset>
   </form>
 
   <!-- PRODUCT FORM -->
-  <form class="product" method="POST" action="/products" onsubmit="productForm()">
+  <form class="product" method="POST" action="/products" onsubmit="submitProduct()">
     <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
-      <legend></legend><br /><label><input id="supplied_by" type="hidden" name="supplied_by"
-          value="{{product.supplied_by}}" readonly /><input id="product_name" type="hidden" name="product_name"
-          value="{{product.product_name}}" readonly /><input id="category" type="hidden" name="category"
-          value="{{product.category}}" readonly /><input id="retail_price" type="hidden" name="retail_price"
-          value="{{product.retail_price}}" readonly /><input id="quantity_purchased" type="hidden"
-          name="quantity_purchased" value="{{product.quantity_purchased}}" readonly /><input id="purchases"
-          type="hidden" name="purchases" value="{{product.purchases}}" readonly /><input id="quantity_sold"
-          type="hidden" name="quantity_sold" value="{{product.quantity_sold}}" readonly /><input id="sales"
-          type="hidden" name="sales" value="{{product.sales}}" readonly /><br /><input id="quantity_instock"
-          type="hidden" name="quantity_instock" value="{{product.quantity_instock}}" readonly /><input
-          id="closing_stock" type="hidden" name="closing_stock" value="{{product.closing_stock}}" readonly /><input
-          id="cost_of_sales" type="hidden" name="cost_of_sales" value="{{product.cost_of_sales}}" readonly /><input
-          id="gross_profit" type="hidden" name="gross_profit" value="{{product.gross_profit}}" readonly /><input
-          id="discontinued" type="hidden" name="discontinued" value="{{product.discontinued}}" readonly /><br /><input
-          id="created_on" type="hidden" name="created_on" value="{{product.created_on}}" readonly /><input
-          id="updated_on" type="hidden" name="updated_on" value="{{product.updated_on}}" readonly /><br /><button
-          class="btn btn-success submit" type="submit">Conclude
+      <legend></legend><br /><label><input id="user_id" type="hidden" name="user_id" value="{{product.user_id}}"
+          readonly /><input id="product_name" type="hidden" name="product_name" value="{{product.product_name}}"
+          readonly /><input id="category" type="hidden" name="category" value="{{product.category}}" readonly /><input
+          id="retail_price" type="hidden" name="retail_price" value="{{product.retail_price}}" readonly /><input
+          id="quantity_purchased" type="hidden" name="quantity_purchased" value="{{product.quantity_purchased}}"
+          readonly /><input id="net_purchases" type="hidden" name="net_purchases" value="{{product.net_purchases}}"
+          readonly /><input id="quantity_sold" type="hidden" name="quantity_sold" value="{{product.quantity_sold}}"
+          readonly /><input id="net_sales" type="hidden" name="net_sales" value="{{product.net_sales}}"
+          readonly /><br /><input id="quantity_instock" type="hidden" name="quantity_instock"
+          value="{{product.quantity_instock}}" readonly /><input id="closing_stock" type="hidden" name="closing_stock"
+          value="{{product.closing_stock}}" readonly /><input id="cost_of_sales" type="hidden" name="cost_of_sales"
+          value="{{product.cost_of_sales}}" readonly /><input id="gross_profit" type="hidden" name="gross_profit"
+          value="{{product.gross_profit}}" readonly /><input id="discontinued" type="hidden" name="discontinued"
+          value="{{product.discontinued}}" readonly /><br /><input id="created_on" type="hidden" name="created_on"
+          value="{{product.created_on}}" readonly /><input id="updated_on" type="hidden" name="updated_on"
+          value="{{product.updated_on}}" readonly /><br /><button class="btn btn-success submit" type="submit">Conclude
           Transaction</button><br />
     </fieldset>
   </form>
@@ -164,40 +145,18 @@
 
 <script type="text/javascript">
 
-  // Witness == Customer Name
-  const customerName = () => {
-    document.getElementById('witness').value = document.getElementById('customer_name').value;
-  }
-
-  const runTransaction = () => {
-    // Display the Customer Form
-    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
-      $('.customer').css('display', 'inline');
-
-    // Hide the Transaction Form
-    if ((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns"))
-      $('.transaction').css('display', 'none');
-
-    // Hide the Customer Form
-    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns")) && document.getElementById('witness').value != "")
-      $('.customer').css('display', 'none');
-
-    // Display the Transaction Form
-    if (((document.getElementById('transaction_type').value == "Sales") || (document.getElementById('transaction_type').value == "Sales Returns")) && document.getElementById('witness').value != "")
-      $('.transaction').css('display', 'inline');
+  const inputTransaction = () => {
 
     // Insert Product automatically
     document.getElementById('product').value = document.getElementById('product_name').value;
 
-    // Transaction Witnessed By: supplier_name(supplied_by), or customer_name
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('witness').value = document.getElementById('supplied_by').value;
-    else
-      document.getElementById('witness').value = document.getElementById('customer_name').value;
-
     // Insert Dates automatically
     document.getElementById('transaction_date').value = Date();
     document.getElementById('updated_on').value = document.getElementById('transaction_date').value;
+
+    // Transactions by User ID
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('userId').value = document.getElementById('user_id').value;
 
     // Unit Cost
     if (document.getElementById('transaction_type').value == "Purchases")
@@ -219,42 +178,35 @@
     if (document.getElementById('transaction_type').value == "Drawings")
       document.getElementById('payment').value = "None"
 
-    // Balance After Payment: Issued, Received, or No Debt
+    // Debt
     if ((document.getElementById('payment').value == "Issued") || (document.getElementById('payment').value == "Received"))
-      document.getElementById('balance').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+      document.getElementById('debt').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
     else
-      document.getElementById('balance').value = 0;
+      document.getElementById('debt').value = 0;
 
     // Transaction Note: Creditor, or Debtor
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('balance').value > 0))
+    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value > 0))
       document.getElementById('transaction_note').value = 'Creditor';
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('balance').value == 0))
+    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value == 0))
       document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('balance').value < 0))
+    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value < 0))
       document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('balance').value > 0))
+    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value > 0))
       document.getElementById('transaction_note').value = 'Debtor';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('balance').value == 0))
+    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value == 0))
       document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('balance').value < 0))
+    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value < 0))
       document.getElementById('transaction_note').value = 'No Debt';
   }
 
-  const customerForm = () => {
-    // Hide the Customer Form
-    $('.customer').css('display', 'none');
-    // Display the Transaction Form
-    $('.transaction').css('display', 'inline');
-  }
-
-  const transactionForm = () => {
+  const submitTransaction = () => {
     // Hide the Transaction Form
     $('.transaction').css('display', 'none');
     // Display the Product Form
     $('.product').css('display', 'inline');
   }
 
-  const productForm = () => {
+  const submitProduct = () => {
     // Quantity Purchased
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) + Number(document.getElementById('quantity').value);
@@ -271,17 +223,17 @@
 
     // Purchases
     if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('purchases').value = Number(document.getElementById('purchases').value) + Number(document.getElementById('total_cost').value);
+      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) + Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Purchases Returns")
-      document.getElementById('purchases').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('total_cost').value);
+      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Drawings")
-      document.getElementById('purchases').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('total_cost').value);
+      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('total_cost').value);
 
     // Sales
     if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('sales').value = Number(document.getElementById('sales').value) + Number(document.getElementById('total_cost').value);
+      document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) + Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Sales Returns")
-      document.getElementById('sales').value = Number(document.getElementById('sales').value) - Number(document.getElementById('total_cost').value);
+      document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('total_cost').value);
 
     // Quantity Instock
     if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
@@ -301,10 +253,10 @@
       document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) - Number(document.getElementById('total_cost').value);
 
     // Cost of Sales
-    document.getElementById('cost_of_sales').value = Number(document.getElementById('purchases').value) - Number(document.getElementById('closing_stock').value);
+    document.getElementById('cost_of_sales').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('closing_stock').value);
 
     // Gross Profit
-    document.getElementById('gross_profit').value = Number(document.getElementById('sales').value) - Number(document.getElementById('cost_of_sales').value);
+    document.getElementById('gross_profit').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('cost_of_sales').value);
   }
 
 </script>
