@@ -39,7 +39,7 @@ router.post('/customers', oidc.ensureAuthenticated(), async (req, res) => {
 })
 
 // Join the matching "customers" and "transactions"
-router.get('/customers/transaction', async (req, res) => {
+router.get('/customers-transaction', async (req, res) => {
   try {
     const customers = await Customer.aggregate
       ([

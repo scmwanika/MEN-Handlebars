@@ -85,25 +85,8 @@ router.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => 
   }
 });
 
-// Summarize Transactions
-router.get('/transactions/summary', oidc.ensureAuthenticated(), async (req, res) => {
-  try {
-    const transactions = await Transaction.aggregate(
-      [{
-        "$group": {
-          "_id": "$transaction_type",
-          total: { $sum: "$total_cost" }
-        }
-      }]
-    );
-    res.json(transactions);
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
 // Summarize Transactions by transaction_type
-router.get('/transactions/summary', async (req, res) => {
+router.get('/summarize-transactions', async (req, res) => {
   try {
     const transactions = await Transaction.aggregate(
       [{

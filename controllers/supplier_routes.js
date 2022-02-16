@@ -87,4 +87,46 @@ router.get('/suppliers/:id', oidc.ensureAuthenticated(), async (req, res) => {
   }
 });
 
+// Join the matching "suppliers" and "transactions"
+router.get('/suppliers-transaction', async (req, res) => {
+  try {
+    const suppliers = await Supplier.aggregate
+      ([
+        {
+          $lookup:
+          {
+            from: 'transactions',
+            localField: 'supplier_name',
+            foreignField: 'witness',
+            as: 'transaction_details'
+          }
+        }
+      ]);
+    res.json(suppliers);
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// Join the matching "suppliers" and "products"
+router.get('/suppliers-product', async (req, res) => {
+  try {
+    const suppliers = await Supplier.aggregate
+      ([
+        {
+          $lookup:
+          {
+            from: 'products',
+            localField: 'supplier_name',
+            foreignField: 'supplied_by',
+            as: 'product_details'
+          }
+        }
+      ]);
+    res.json(suppliers);
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
 module.exports = router;
