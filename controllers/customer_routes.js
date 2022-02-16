@@ -38,4 +38,25 @@ router.post('/customers', oidc.ensureAuthenticated(), async (req, res) => {
   }
 })
 
+// Join the matching "customers" and "transactions"
+router.get('/customers/transaction', async (req, res) => {
+  try {
+    const customers = await Customer.aggregate
+      ([
+        {
+          $lookup:
+          {
+            from: 'transactions',
+            localField: 'customer_name',
+            foreignField: 'witness',
+            as: 'transaction_details'
+          }
+        }
+      ]);
+    res.json(customers);
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
 module.exports = router;

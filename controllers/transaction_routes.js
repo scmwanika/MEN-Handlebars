@@ -52,8 +52,6 @@ const insertTransaction = (req, res) => {
   newTransaction.save((err) => {
     if (err)
       res.send('Unable to save the transaction; please try again.');
-    else
-      res.redirect('transactions/search');
   });
 }
 
@@ -87,48 +85,6 @@ router.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => 
   }
 });
 
-// Join the matching "transactions" and "suppliers"
-router.get('/transactions/supplier', oidc.ensureAuthenticated(), async (req, res) => {
-  try {
-    const transactions = await Transaction.aggregate
-      ([
-        {
-          $lookup:
-          {
-            from: 'suppliers',
-            localField: 'witness',
-            foreignField: 'supplier_name',
-            as: 'supplier_details'
-          }
-        }
-      ]);
-    res.json(transactions);
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
-// Join the matching "transactions" and "customers"
-router.get('/transactions/customer', oidc.ensureAuthenticated(), async (req, res) => {
-  try {
-    const transactions = await Transaction.aggregate
-      ([
-        {
-          $lookup:
-          {
-            from: 'customers',
-            localField: 'witness',
-            foreignField: 'customer_name',
-            as: 'customer_details'
-          }
-        }
-      ]);
-    res.json(transactions);
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
 // Summarize Transactions
 router.get('/transactions/summary', oidc.ensureAuthenticated(), async (req, res) => {
   try {
@@ -137,6 +93,23 @@ router.get('/transactions/summary', oidc.ensureAuthenticated(), async (req, res)
         "$group": {
           "_id": "$transaction_type",
           total: { $sum: "$total_cost" }
+        }
+      }]
+    );
+    res.json(transactions);
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// Summarize Transactions by transaction_type
+router.get('/transactions/summary', async (req, res) => {
+  try {
+    const transactions = await Transaction.aggregate(
+      [{
+        "$group": {
+          "_id": "$transaction_type",
+          value: { $sum: "$total_cost" }
         }
       }]
     );

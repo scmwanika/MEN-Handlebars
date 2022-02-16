@@ -96,7 +96,7 @@
     <fieldset>
       <legend>Pay off debt</legend><input id="payment_date" type="hidden" name="payment_date"
         readonly /><br /><label>Later Payment:</label><br /><input id="later_payment" type="text" name="later_payment"
-        required /><br /><button class="btn btn-success submit btn-payment" type="submit">Save</button><br />
+        required /><br /><button class="btn btn-success submit" type="submit">Save</button><br />
       <span id="msg"></span>
     </fieldset>
   </form>
@@ -120,7 +120,7 @@
         value="{{transaction.balance}}" readonly /><input id="transaction_note" type="hidden" name="transaction_note"
         value="{{transaction.transaction_note}}" readonly /><br /><input id="witness" type="hidden" name="witness"
         value="{{transaction.witness}}" readonly /><input id="transaction_date" type="hidden" name="transaction_date"
-        value="{{transaction.transaction_date}}" readonly /><button class="btn btn-success submit btn-transaction"
+        value="{{transaction.transaction_date}}" readonly /><button class="btn btn-success submit"
         type="submit">Conclude
         Payment</button><br />
     </fieldset>

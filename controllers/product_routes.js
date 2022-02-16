@@ -50,8 +50,8 @@ const insertProduct = (req, res) => {
   newProduct.cost_of_sales = req.body.cost_of_sales;
   newProduct.gross_profit = req.body.gross_profit;
   newProduct.discontinued = req.body.discontinued;
-  newProduct.created_at = req.body.created_at;
-  newProduct.updated_at = req.body.updated_at;
+  newProduct.created_on = req.body.created_on;
+  newProduct.updated_on = req.body.updated_on;
 
   newProduct.save((err) => {
     if (err)
@@ -86,44 +86,6 @@ router.get('/products/list', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const products = await Product.find();
     res.render('list_products', { products });
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
-// Join the matching "products" and "suppliers"
-router.get('/products/supplier', async (req, res) => {
-  try {
-    const products = await Product.aggregate
-      ([
-        {
-          $lookup:
-          {
-            from: 'suppliers',
-            localField: 'supplied_by',
-            foreignField: 'supplier_name',
-            as: 'supplier_details'
-          }
-        }
-      ]);
-    res.json(products);
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
-// Trading Profit & Loss Accounts (TPL Accounts)
-router.get('/products/report', async (req, res) => {
-  try {
-    const products = await Product.aggregate(
-      [{
-        "$group": {
-          "_id": "$product_name",
-          cash: { $sum: { $subtract: ["$gross_profit", "$closing_stock"] } }
-        }
-      }]
-    );
-    res.json(products);
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
