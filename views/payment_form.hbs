@@ -92,11 +92,12 @@
 
 <div class="flex-container">
   <!-- PAY OFF DEBT FORM -->
-  <form class="payment" method="POST" action="/payments" onsubmit="paymentForm()">
+  <form class="payment" method="POST" action="/payments" onsubmit="submitPayment()">
     <fieldset>
-      <legend>Pay off debt</legend><input id="payment_date" type="hidden" name="payment_date"
-        readonly /><br /><label>Later Payment:</label><br /><input id="later_payment" type="text" name="later_payment"
-        required /><br /><button class="btn btn-success submit" type="submit">Save</button><br />
+      <legend>Pay off debt</legend><input id="user_id" type="hidden" name="user_id" readonly /><br /><input
+        id="payment_date" type="hidden" name="payment_date" readonly /><label>Later Payment:</label><br /><input
+        id="later_payment" type="text" name="later_payment" required /><br /><button class="btn btn-success submit"
+        type="submit">Save</button><br />
       <span id="msg"></span>
     </fieldset>
   </form>
@@ -116,10 +117,10 @@
         readonly /><br /><label>Payment:</label><br /><input id="payment" type="text" name="payment"
         value="{{transaction.payment}}" readonly /><br /><label>Initial Payment:</label><br /><input
         id="initial_payment" type="text" name="initial_payment" value="{{transaction.initial_payment}}"
-        readonly /><br /><label>Balance:</label><br /><input id="balance" type="text" name="balance"
-        value="{{transaction.balance}}" readonly /><input id="transaction_note" type="hidden" name="transaction_note"
-        value="{{transaction.transaction_note}}" readonly /><br /><input id="witness" type="hidden" name="witness"
-        value="{{transaction.witness}}" readonly /><input id="transaction_date" type="hidden" name="transaction_date"
+        readonly /><br /><label>Debt:</label><br /><input id="debt" type="text" name="debt" value="{{transaction.debt}}"
+        readonly /><input id="transaction_note" type="hidden" name="transaction_note"
+        value="{{transaction.transaction_note}}" readonly /><br /><input id="userId" type="hidden" name="userId"
+        value="{{transaction.userId}}" readonly /><input id="transaction_date" type="hidden" name="transaction_date"
         value="{{transaction.transaction_date}}" readonly /><button class="btn btn-success submit"
         type="submit">Conclude
         Payment</button><br />
@@ -129,25 +130,28 @@
 
 <script type="text/javascript">
 
-  const paymentForm = () => {
+  const submitPayment = () => {
+    // user_id == transaction.userId
+    document.getElementById('user_id').value = "{{transaction.userId}}";
+
     // Insert Date automatically
     document.getElementById('payment_date').value = Date();
 
-    // Balance After Payment: Issued, Received or No Debt
-    document.getElementById('balance').value = Number(document.getElementById('balance').value) - Number(document.getElementById('later_payment').value);
+    // Debt
+    document.getElementById('debt').value = Number(document.getElementById('debt').value) - Number(document.getElementById('later_payment').value);
 
     // Transaction Note: Creditor, or Debtor
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('balance').value > 0))
+    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value > 0))
       document.getElementById('transaction_note').value = 'Creditor';
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('balance').value == 0))
+    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value == 0))
       document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('balance').value < 0))
+    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value < 0))
       document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('balance').value > 0))
+    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value > 0))
       document.getElementById('transaction_note').value = 'Debtor';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('balance').value == 0))
+    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value == 0))
       document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('balance').value < 0))
+    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value < 0))
       document.getElementById('transaction_note').value = 'No Debt';
 
     // Hide the Payment Form

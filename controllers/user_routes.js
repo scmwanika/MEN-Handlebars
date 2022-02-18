@@ -54,6 +54,7 @@ router.post('/customers', oidc.ensureAuthenticated(), (req, res) => {
 // FUNCTION TO CREATE NEW USER
 const insertUser = (req, res) => {
   const newuser = new User();
+  
   newuser.user = req.body.user;
   newuser.user_name = req.body.user_name;
   newuser.country = req.body.country;

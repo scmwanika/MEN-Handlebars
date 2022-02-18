@@ -36,7 +36,8 @@ router.post('/transactions', oidc.ensureAuthenticated(), (req, res) => {
 // FUNCTION TO INSERT THE TRANSACTION
 const insertTransaction = (req, res) => {
   const newTransaction = new Transaction();
-
+  
+  newTransaction.userId = req.body.userId;
   newTransaction.transaction_type = req.body.transaction_type;
   newTransaction.product = req.body.product;
   newTransaction.quantity = req.body.quantity;
@@ -44,9 +45,8 @@ const insertTransaction = (req, res) => {
   newTransaction.total_cost = req.body.total_cost;
   newTransaction.payment = req.body.payment;
   newTransaction.initial_payment = req.body.initial_payment;
-  newTransaction.balance = req.body.balance;
+  newTransaction.debt = req.body.debt;
   newTransaction.transaction_note = req.body.transaction_note;
-  newTransaction.witness = req.body.witness;
   newTransaction.transaction_date = req.body.transaction_date;
 
   newTransaction.save((err) => {
@@ -69,7 +69,7 @@ const updateTransaction = (req, res) => {
 router.get('/transactions/search', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const transactions = await Transaction.find({ transaction_note: ['Creditor', 'Debtor'] });
-    res.render('search_transactions', { transactions });
+    res.render('search_debt', { transactions });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }

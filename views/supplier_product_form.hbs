@@ -65,10 +65,6 @@
     margin-left: 24px;
   }
 
-  .customer {
-    display: none;
-  }
-
   .submit {
     width: 290px;
     border: none;
@@ -93,10 +89,10 @@
 <div class="flex-container">
   <!-- SUPPLIER FORM -->
   <form class="supplier" method="POST" action="/suppliers">
-    <input type="hidden" name="_id" value="{{supplier._id}}">
+    <input type="hidden" name="_id" value="{{supplier._id}}" readonly>
     <fieldset>
-      <legend>Supplier</legend><br /><label>Supplier Name:</label><br /><input id="supplier_name" type="text"
-        name="supplier_name" value="{{supplier.supplier_name}}" readonly /><br /><label>Country:</label><br /><input
+      <legend>Supplier</legend><br /><label>Supplier Name:</label><br /><input id="user_name" type="text"
+        name="user_name" value="{{supplier.user_name}}" readonly /><br /><label>Country:</label><br /><input
         id="country" type="text" name="country" value="{{supplier.country}}"
         readonly /><br /><label>City/Town:</label><br /><input id="city" type="text" name="city"
         value="{{supplier.city}}" readonly /><br /><label>Street:</label><br /><input id="street" type="text"
@@ -105,16 +101,15 @@
         id="telephone" type="text" name="telephone" value="{{supplier.telephone}}"
         readonly /><br /><label>Email:</label><br /><input id="email" type="email" name="email"
         value="{{supplier.email}}" readonly /><br /><label>Website: </label><br /><input id="website" type="url"
-        name="website" value="{{supplier.website}}" readonly/><br />
-      <span id="msg"></span>
+        name="website" value="{{supplier.website}}" readonly /><br />
     </fieldset>
   </form>
 
   <!-- PRODUCT FORM -->
-  <form class="product" method="POST" action="/products" onsubmit="productForm()">
-    <input type="hidden" name="_id">
+  <form class="product" method="POST" action="/products" onsubmit="submitProduct()">
+    <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
-      <legend>Product</legend><input id="supplied_by" type="hidden" name="supplied_by" readonly /><br /><label>Product
+      <legend>Product</legend><input id="user_id" type="hidden" name="user_id" readonly /><br /><label>Product
         Name:</label><br /><input id="product_name" type="text"
         name="product_name" /><br /><label>Category:</label><br /><input id="category" type="text"
         name="category" /><br /><label>Retail Price:</label><br /><input id="retail_price" type="text"
@@ -128,9 +123,9 @@
 
 <script type="text/javascript">
 
-  const productForm = () => {
-    // Supplied By == Supplier Name
-    document.getElementById('supplied_by').value = document.getElementById('supplier_name').value;
+  const submitProduct = () => {
+    // user_id == supplier._id
+    document.getElementById('user_id').value = "{{supplier._id}}";
     // Insert Date automatically
     document.getElementById('created_on').value = Date();
   }

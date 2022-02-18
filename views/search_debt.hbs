@@ -82,7 +82,7 @@
     <th>Product:</th>
     <th>Total Cost:</th>
     <th>Initial Payment:</th>
-    <th>Balance:</th>
+    <th>Debt:</th>
     <th></th>
   </tr>
   {{#each transactions}}
@@ -91,7 +91,7 @@
     <td>{{this.product}}</td>
     <td>{{this.total_cost}}</td>
     <td>{{this.initial_payment}}</td>
-    <td>{{this.balance}}</td>
+    <td>{{this.debt}}</td>
     <td><a href="/transactions/{{this._id}}"> Open </a></td>
   </tr>
   {{/each}}

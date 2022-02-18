@@ -18,13 +18,13 @@ const productSchema = new Schema({
   quantity_purchased: {
     type: Number,
   },
-  purchases: {
+  net_purchases: {
     type: Number,
   },
   quantity_sold: {
     type: Number,
   },
-  sales: {
+  net_sales: {
     type: Number,
   },
   quantity_instock: {

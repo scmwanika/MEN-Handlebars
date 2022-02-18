@@ -37,14 +37,14 @@ router.post('/products', oidc.ensureAuthenticated(), (req, res) => {
 const insertProduct = (req, res) => {
   const newProduct = new Product();
 
-  newProduct.supplied_by = req.body.supplied_by;
+  newProduct.user_id = req.body.user_id;
   newProduct.product_name = req.body.product_name;
   newProduct.category = req.body.category;
   newProduct.retail_price = req.body.retail_price;
   newProduct.quantity_purchased = req.body.units_purchased;
-  newProduct.purchases = req.body.purchases;
+  newProduct.net_purchases = req.body.net_purchases;
   newProduct.quantity_sold = req.body.units_sold;
-  newProduct.sales = req.body.sales;
+  newProduct.net_sales = req.body.net_sales;
   newProduct.quantity_instock = req.body.units_instock;
   newProduct.closing_stock = req.body.closing_stock;
   newProduct.cost_of_sales = req.body.cost_of_sales;

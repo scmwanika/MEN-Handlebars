@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const transactionSchema = new Schema({
-  user_id: {
+  userId: {
     type: String,
   },
   transaction_type: {
@@ -27,7 +27,7 @@ const transactionSchema = new Schema({
   initial_payment: {
     type: Number,
   },
-  balance: {
+  debt: {
     type: Number,
   },
   transaction_note: {
