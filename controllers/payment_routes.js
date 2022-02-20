@@ -1,6 +1,5 @@
 require('dotenv').config()
 const session = require('express-session');
-
 const express = require('express');
 const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 const Payment = require('../models/payment_model');

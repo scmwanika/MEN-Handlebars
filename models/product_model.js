@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const productSchema = new Schema({
   user_id: {
-    type: String,
+    type: mongoose.ObjectId,
   },
   product_name: {
     type: String,

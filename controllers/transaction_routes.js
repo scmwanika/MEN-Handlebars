@@ -1,6 +1,5 @@
 require('dotenv').config()
 const session = require('express-session');
-
 const express = require('express');
 const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 const Transaction = require('../models/transaction_model');
@@ -85,7 +84,7 @@ router.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => 
   }
 });
 
-// Summarize Transactions by transaction_type
+// GROUP TRANSACTIONS BY TYPE(Purchase, Sale, ...)
 router.get('/summarize-transactions', async (req, res) => {
   try {
     const transactions = await Transaction.aggregate(

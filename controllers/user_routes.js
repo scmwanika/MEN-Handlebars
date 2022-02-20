@@ -1,6 +1,5 @@
 require('dotenv').config()
 const session = require('express-session');
-
 const express = require('express');
 const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 const User = require('../models/user_model');
@@ -56,7 +55,7 @@ const insertUser = (req, res) => {
   const newuser = new User();
   
   newuser.user = req.body.user;
-  newuser.user_name = req.body.user_name;
+  newuser.name = req.body.name;
   newuser.country = req.body.country;
   newuser.city = req.body.city;
   newuser.street = req.body.street;
@@ -111,27 +110,6 @@ router.get('/suppliers/:id', oidc.ensureAuthenticated(), async (req, res) => {
   }
 });
 
-// JOIN THE MATCHING USER(Supplier) AND PRODUCTS
-router.get('/suppliers/products', async (req, res) => {
-  try {
-    const users = await User.aggregate
-      ([
-        {
-          $lookup:
-          {
-            from: 'products',
-            localField: 'user_name', // Supplier Name
-            foreignField: 'user_id', // Supplier ID
-            as: 'product_details'
-          }
-        }
-      ]);
-    res.json(users);
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
 // JOIN THE MATCHING USER(Supplier, Customer) AND TRANSACTIONS
 router.get('/users/transactions', async (req, res) => {
   try {
@@ -141,8 +119,8 @@ router.get('/users/transactions', async (req, res) => {
           $lookup:
           {
             from: 'transactions',
-            localField: 'user_name', // Supplier Name, Customer Name
-            foreignField: 'user_id', // Supplier ID, Customer ID
+            localField: '_id',
+            foreignField: 'userId',
             as: 'transaction_details'
           }
         }

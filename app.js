@@ -1,6 +1,5 @@
 // IMPORTING DEPENDENCIES
 require('dotenv').config();
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -50,7 +49,7 @@ app.use(productRouter);
 app.use(transactionRouter);
 app.use(paymentRouter);
 
-// INDEX
+// INDEX ROUTE
 app.get('/', (req, res) => {
   try {
     res.render('index')
@@ -59,7 +58,7 @@ app.get('/', (req, res) => {
   }
 });
 
-// LOGOUT
+// LOGOUT ROUTE
 app.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/');

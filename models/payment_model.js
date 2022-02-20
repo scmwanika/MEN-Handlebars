@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const paymentSchema = new Schema({
   user_id: {
-    type: String,
+    type: mongoose.ObjectId,
   },
   payment_date: {
     type: Date,
