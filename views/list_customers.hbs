@@ -38,10 +38,10 @@
     margin: 0 auto;
   }
 
-  th {
+  td {
     font-family: Arial, Helvetica, sans-serif;
     font-stretch: condensed;
-    width: 290px;
+    width: 160px;
   }
 
   footer {
@@ -57,11 +57,11 @@
 
 <table class="listing-table table-striped">
   <tr>
-    <td colspan="2">CUSTOMERS</td>
+    <th colspan="2">CUSTOMERS</th>
   </tr>
   {{#each customers}}
   <tr>
-    <th>{{this.name}}</th>
+    <td>{{this.name}}</td>
     <td>{{this._id}}</td>
   </tr>
   {{/each}}

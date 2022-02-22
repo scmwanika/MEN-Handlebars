@@ -110,7 +110,7 @@ router.get('/suppliers/:id', oidc.ensureAuthenticated(), async (req, res) => {
   }
 });
 
-// JOIN THE MATCHING USER(Supplier, Customer) AND TRANSACTIONS
+// MATCH USER(Supplier, Customer) AND TRANSACTIONS
 router.get('/users/transactions', async (req, res) => {
   try {
     const users = await User.aggregate

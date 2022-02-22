@@ -12,26 +12,22 @@
     background-color: #ebebed;
   }
 
+
   span {
     color: blue;
-    font-size: 24pt;
+    font-size: 22pt;
     font-weight: bolder;
     font-family: Monotype Corsiva;
-  }
-
-  a {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10pt;
   }
 
   .dropdown-menu {
     border: none;
   }
 
-  .logout {
-    color: white;
-    font-size: 12pt;
-    margin-left: 24px;
+  a,
+  label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
   }
 
   .listing-table {
@@ -39,9 +35,19 @@
   }
 
   th {
+    text-align: center;
+  }
+
+  td {
     font-family: Arial, Helvetica, sans-serif;
     font-stretch: condensed;
-    width: 140px;
+    width: 160px;
+  }
+
+  .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
   }
 
   footer {
@@ -53,28 +59,35 @@
   }
 </style>
 
-<!-- LIST PRODUCTS -->
+<!-- TRADING REPORT -->
 <table class="listing-table table-striped">
-  <tr>
-    <th>Product Name:</th>
-    <th>Category:</th>
-    <th>Net Purchases:</th>
-    <th>Net Sales:</th>
-    <th>Closing Stock:</th>
-    <th>Cost of Sales:</th>
-    <th>Gross Profit:</th>
-    <th>Discontinued:</th>
-  </tr>
   {{#each products}}
   <tr>
-    <td>{{this.product_name}}</td>
-    <td>{{this.category}}</td>
+    <th colspan="2">TRADING, PROFIT AND LOSS ACCOUNT</th>
+  </tr>
+  <tr>
+    <td>Net Purchases:</td>
     <td>{{this.net_purchases}}</td>
+  </tr>
+  <tr>
+    <td>Net Sales:</td>
     <td>{{this.net_sales}}</td>
+  </tr>
+  <tr>
+    <td>Closing Stock:</td>
     <td>{{this.closing_stock}}</td>
+  </tr>
+  <tr>
+    <td>Cost of Sales:</td>
     <td>{{this.cost_of_sales}}</td>
-    <td>{{this.gross_profit}}</td>
-    <td>{{this.discontinued}}</td>
+  </tr>
+  <tr>
+    <td>Gross Profit:</td>
+    <td>{{this.gross_profit_or_loss}}</td>
+  </tr>
+  <tr>
+    <td>Net Cash:</td>
+    <td>{{this.net_cash}}</td>
   </tr>
   {{/each}}
 </table>

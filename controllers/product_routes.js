@@ -110,4 +110,26 @@ router.get('/products/delete/:id', oidc.ensureAuthenticated(), async (req, res) 
   }
 });
 
+// TRADING, PROFIT AND LOSS ACCOUNT
+router.get('/trading-report', async (req, res) => {
+  try {
+    const products = await Product.aggregate(
+      [{
+        "$group": {
+          "_id": "",
+          net_purchases: { $sum: "$net_purchases" },
+          net_sales: { $sum: "$net_sales" },
+          closing_stock: { $sum: "$closing_stock" },
+          cost_of_sales: { $sum: "$cost_of_sales" },
+          gross_profit_or_loss: { $sum: "$gross_profit" },
+          net_cash: { $sum: { $subtract: ["$gross_profit", "$closing_stock"] } }
+        }
+      }]
+    );
+    res.render('trading-report', {products});
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
 module.exports = router;

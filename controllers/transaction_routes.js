@@ -60,12 +60,12 @@ const updateTransaction = (req, res) => {
     if (err)
       res.send('Unable to save the transaction; please try again.');
     else
-      res.redirect('transactions/search');
+      res.redirect('transactions/debt');
   });
 }
 
 // SEARCH THE TRANSACTION BY TRANSACTION_NOTE
-router.get('/transactions/search', oidc.ensureAuthenticated(), async (req, res) => {
+router.get('/transactions/debt', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const transactions = await Transaction.find({ transaction_note: ['Creditor', 'Debtor'] });
     res.render('search_debt', { transactions });
@@ -79,23 +79,6 @@ router.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => 
   try {
     const transaction = await Transaction.findOne({ _id: req.params.id });
     res.render('payment_form', { transaction });
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
-// GROUP TRANSACTIONS BY TYPE(Purchase, Sale, ...)
-router.get('/summarize-transactions', async (req, res) => {
-  try {
-    const transactions = await Transaction.aggregate(
-      [{
-        "$group": {
-          "_id": "$transaction_type",
-          value: { $sum: "$total_cost" }
-        }
-      }]
-    );
-    res.json(transactions);
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
