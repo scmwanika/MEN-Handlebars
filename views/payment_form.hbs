@@ -137,22 +137,11 @@
     // Insert Date automatically
     document.getElementById('payment_date').value = Date();
 
-    // Debt
-    document.getElementById('debt').value = Number(document.getElementById('debt').value) - Number(document.getElementById('later_payment').value);
-
-    // Transaction Note: Creditor, or Debtor
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value > 0))
-      document.getElementById('transaction_note').value = 'Creditor';
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value == 0))
-      document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value < 0))
-      document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value > 0))
-      document.getElementById('transaction_note').value = 'Debtor';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value == 0))
-      document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value < 0))
-      document.getElementById('transaction_note').value = 'No Debt';
+    // Creditor, Debtor
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('creditor').value = document.getElementById('creditor').value - document.getElementById('later_payment').value;
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('debtor').value = document.getElementById('debtor').value - document.getElementById('later_payment').value;
 
     // Hide the Payment Form
     $('.payment').css('display', 'none');

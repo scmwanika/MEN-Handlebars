@@ -44,8 +44,9 @@ const insertTransaction = (req, res) => {
   newTransaction.total_cost = req.body.total_cost;
   newTransaction.payment = req.body.payment;
   newTransaction.initial_payment = req.body.initial_payment;
-  newTransaction.debt = req.body.debt;
-  newTransaction.transaction_note = req.body.transaction_note;
+  newTransaction.creditor = req.body.creditor;
+  newTransaction.debtor = req.body.debtor;
+  newTransaction.drawings = req.body.drawings;
   newTransaction.transaction_date = req.body.transaction_date;
 
   newTransaction.save((err) => {
@@ -64,21 +65,30 @@ const updateTransaction = (req, res) => {
   });
 }
 
-// SEARCH THE TRANSACTION BY TRANSACTION_NOTE
-router.get('/transactions/debt', oidc.ensureAuthenticated(), async (req, res) => {
-  try {
-    const transactions = await Transaction.find({ transaction_note: ['Creditor', 'Debtor'] });
-    res.render('search_debt', { transactions });
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
 // GET THE TRANSACTION BY ID
 router.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const transaction = await Transaction.findOne({ _id: req.params.id });
     res.render('payment_form', { transaction });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// CREDITOR, DEBTOR, DRAWINGS
+router.get('/creditor-debtor-drawings', async (req, res) => {
+  try {
+    const transactions = await Transaction.aggregate(
+      [{
+        "$group": {
+          "_id": "",
+          creditor: { $sum: "$creditor" },
+          debtor: { $sum: "$debtor" },
+          drawings: { $sum: "$drawings" }
+        }
+      }]
+    );
+    res.render('creditor-debtor-drawings', {transactions});
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }

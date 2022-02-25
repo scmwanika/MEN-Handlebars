@@ -36,7 +36,7 @@ const productSchema = new Schema({
   cost_of_sales: {
     type: Number,
   },
-  gross_profit: {
+  gross_profit_or_loss: {
     type: Number,
   },
   discontinued: {

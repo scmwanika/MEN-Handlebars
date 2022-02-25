@@ -27,11 +27,14 @@ const transactionSchema = new Schema({
   initial_payment: {
     type: Number,
   },
-  debt: {
+  creditor: {
     type: Number,
   },
-  transaction_note: {
-    type: String,
+  debtor: {
+    type: Number,
+  },
+  drawings: {
+    type: Number,
   },
   transaction_date: {
     type: Date,

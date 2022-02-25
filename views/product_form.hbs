@@ -91,12 +91,12 @@
 </style>
 
 <div class="flex-container">
-  <!-- TRANSACTION FORM -->
+  <!-- TRADING FORM -->
   <form class="transaction" method="POST" action="/transactions" oninput="inputTransaction()"
     onsubmit="submitTransaction()">
     <input type="hidden" name="_id">
     <fieldset>
-      <legend>Transaction</legend><br /><label>Transaction Type:</label><br /><select id="transaction_type"
+      <legend>Trading Form</legend><br /><label>Transaction Type:</label><br /><select id="transaction_type"
         name="transaction_type">
         <option value="">Select...</option>
         <option value="Purchases">Purchases</option>
@@ -111,11 +111,12 @@
         Cost:</label><br /><input id="total_cost" type="text" name="total_cost"
         required /><br /><label>Payment:</label><br /><input id="payment" type="text" name="payment"
         readonly /><br /><label>Initial Payment:</label><br /><input id="initial_payment" type="text"
-        name="initial_payment" required /><br /><label>Debt:</label><br /><input id="debt" type="text" name="debt"
-        readonly /><input id="transaction_note" type="hidden"
-        name="transaction_note" /><br /><label>User:</label><br /><input id="userId" type="text"
-        name="userId" /><br /><input id="transaction_date" type="hidden" name="transaction_date" readonly /><button
-        class="btn btn-success submit" type="submit">Save</button><br />
+        name="initial_payment" required /><br /><label>Creditor:</label><br /><input id="creditor" type="text"
+        name="creditor" readonly /><br /><label>Debtor:</label><br /><input id="debtor" type="text" name="debtor"
+        readonly /><br /><label>Drawings:</label><br /><input id="drawings" type="text" name="drawings"
+        readonly /><br /><label>User:</label><br /><input id="userId" type="text" name="userId" /><br /><input
+        id="transaction_date" type="hidden" name="transaction_date" readonly /><button class="btn btn-success submit"
+        type="submit">Save</button><br />
     </fieldset>
   </form>
 
@@ -134,8 +135,8 @@
           readonly /><br /><input id="quantity_instock" type="hidden" name="quantity_instock"
           value="{{product.quantity_instock}}" readonly /><input id="closing_stock" type="hidden" name="closing_stock"
           value="{{product.closing_stock}}" readonly /><input id="cost_of_sales" type="hidden" name="cost_of_sales"
-          value="{{product.cost_of_sales}}" readonly /><input id="gross_profit" type="hidden" name="gross_profit"
-          value="{{product.gross_profit}}" readonly /><input id="discontinued" type="hidden" name="discontinued"
+          value="{{product.cost_of_sales}}" readonly /><input id="gross_profit_or_loss" type="hidden" name="gross_profit_or_loss"
+          value="{{product.gross_profit_or_loss}}" readonly /><input id="discontinued" type="hidden" name="discontinued"
           value="{{product.discontinued}}" readonly /><br /><input id="created_on" type="hidden" name="created_on"
           value="{{product.created_on}}" readonly /><input id="updated_on" type="hidden" name="updated_on"
           value="{{product.updated_on}}" readonly /><br /><button class="btn btn-success submit" type="submit">Conclude
@@ -149,7 +150,7 @@
   const inputTransaction = () => {
 
     // Insert Product automatically
-    document.getElementById('product').value = document.getElementById('product_name').value;
+    document.getElementById('product').value = "{{product.product_name}}";
 
     // Insert Dates automatically
     document.getElementById('transaction_date').value = Date();
@@ -157,15 +158,15 @@
 
     // Transactions by User ID
     if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('userId').value = document.getElementById('user_id').value;
+      document.getElementById('userId').value = "{{product.user_id}}";
 
     // Unit Cost
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('unit_cost').value = document.getElementById('total_cost').value / document.getElementById('quantity').value;
     if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('unit_cost').value = document.getElementById('retail_price').value;
+      document.getElementById('unit_cost').value = "{{product.retail_price}}";
     if (document.getElementById('transaction_type').value == "Drawings")
-      document.getElementById('unit_cost').value = document.getElementById('closing_stock').value / document.getElementById('quantity_instock').value;
+      document.getElementById('unit_cost').value = "{{product.closing_stock}}" / "{{product.quantity_instock}}";
 
     // Total Cost
     if (document.getElementById('transaction_type').value != "Purchases")
@@ -179,25 +180,13 @@
     if (document.getElementById('transaction_type').value == "Drawings")
       document.getElementById('payment').value = "None"
 
-    // Debt
-    if ((document.getElementById('payment').value == "Issued") || (document.getElementById('payment').value == "Received"))
-      document.getElementById('debt').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
-    else
-      document.getElementById('debt').value = 0;
-
-    // Transaction Note: Creditor, or Debtor
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value > 0))
-      document.getElementById('transaction_note').value = 'Creditor';
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value == 0))
-      document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Purchases") && (document.getElementById('debt').value < 0))
-      document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value > 0))
-      document.getElementById('transaction_note').value = 'Debtor';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value == 0))
-      document.getElementById('transaction_note').value = 'No Debt';
-    if ((document.getElementById('transaction_type').value == "Sales") && (document.getElementById('debt').value < 0))
-      document.getElementById('transaction_note').value = 'No Debt';
+    // Creditor, Debtor, Drawings
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('creditor').value = document.getElementById('total_cost').value - document.getElementById('initial_payment').value;
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('debtor').value = document.getElementById('total_cost').value - document.getElementById('initial_payment').value;
+    if (document.getElementById('transaction_type').value == "Drawings")
+      document.getElementById('drawings').value = document.getElementById('total_cost').value;
   }
 
   const submitTransaction = () => {
@@ -257,7 +246,7 @@
     document.getElementById('cost_of_sales').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('closing_stock').value);
 
     // Gross Profit
-    document.getElementById('gross_profit').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('cost_of_sales').value);
+    document.getElementById('gross_profit_or_loss').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('cost_of_sales').value);
   }
 
 </script>

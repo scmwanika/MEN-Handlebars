@@ -35,11 +35,13 @@
   }
 
   th {
+    text-align: center;
+  }
+
+  td {
     font-family: Arial, Helvetica, sans-serif;
     font-stretch: condensed;
-    width: 140px;
-    color: white;
-    background-color: grey;
+    width: 160px;
   }
 
   .logout {
@@ -57,24 +59,23 @@
   }
 </style>
 
-<!-- LIST DEBTORS AND CREDITOR -->
+<!-- CREDITOR, DEBTOR, DRAWINGS -->
 <table class="listing-table table-striped">
-  <tr>
-    <th>Transaction Note:</th>
-    <th>Product:</th>
-    <th>Total Cost:</th>
-    <th>Initial Payment:</th>
-    <th>Debt:</th>
-    <th></th>
-  </tr>
   {{#each transactions}}
   <tr>
-    <th>{{this.transaction_note}}</th>
-    <td>{{this.product}}</td>
-    <td>{{this.total_cost}}</td>
-    <td>{{this.initial_payment}}</td>
-    <td>{{this.debt}}</td>
-    <td><a href="/transactions/{{this._id}}"> Open </a></td>
+    <th colspan="2">CREDITOR, DEBTORS AND DRAWINGS</th>
+  </tr>
+  <tr>
+    <td>Creditor:</td>
+    <td>{{this.creditor}}</td>
+  </tr>
+  <tr>
+    <td>Debtors:</td>
+    <td>{{this.debtor}}</td>
+  </tr>
+  <tr>
+    <td>Drawings:</td>
+    <td>{{this.drawings}}</td>
   </tr>
   {{/each}}
 </table>
