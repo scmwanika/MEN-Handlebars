@@ -65,6 +65,16 @@ const updateTransaction = (req, res) => {
   });
 }
 
+// LIST DEBTORS
+router.get('/transactions/debtors', oidc.ensureAuthenticated(), async (req, res) => {
+  try {
+    const debtors = await Transaction.find({ debtor: { $gt: 0 } }); // find where debtor > 0
+    res.render('list_debtors', { debtors });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
 // GET THE TRANSACTION BY ID
 router.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
@@ -75,8 +85,8 @@ router.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => 
   }
 });
 
-// CREDITOR, DEBTOR, DRAWINGS
-router.get('/creditor-debtor-drawings', async (req, res) => {
+// CREDITOR, DEBTORS, DRAWINGS
+router.get('/creditor-debtors-drawings', async (req, res) => {
   try {
     const transactions = await Transaction.aggregate(
       [{
@@ -88,7 +98,7 @@ router.get('/creditor-debtor-drawings', async (req, res) => {
         }
       }]
     );
-    res.render('creditor-debtor-drawings', {transactions});
+    res.render('creditor_debtors_drawings', {transactions});
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }

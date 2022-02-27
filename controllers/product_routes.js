@@ -111,7 +111,7 @@ router.get('/products/delete/:id', oidc.ensureAuthenticated(), async (req, res) 
 });
 
 // TRADING AND PROFIT AND LOSS ACCOUNT
-router.get('/trading-report', async (req, res) => {
+router.get('/trading-profit-loss', async (req, res) => {
   try {
     const products = await Product.aggregate(
       [{
@@ -125,7 +125,7 @@ router.get('/trading-report', async (req, res) => {
         }
       }]
     );
-    res.render('trading-report', {products});
+    res.render('trading_profit_loss', {products});
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }

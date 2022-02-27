@@ -59,23 +59,23 @@
   }
 </style>
 
-<!-- CREDITOR, DEBTOR, DRAWINGS -->
+<!-- FINANCES, INVESTMENTS, BUSINESS COSTS -->
 <table class="listing-table table-striped">
-  {{#each transactions}}
+  {{#each operations}}
   <tr>
-    <th colspan="2">CREDITOR, DEBTORS AND DRAWINGS</th>
+    <th colspan="2">FINANCES, INVESTMENTS, EXPENSES</th>
   </tr>
   <tr>
-    <td>Creditor:</td>
-    <td>{{this.creditor}}</td>
+    <td>Equity:</td>
+    <td>{{this.equity}}</td>
   </tr>
   <tr>
-    <td>Debtors:</td>
-    <td>{{this.debtor}}</td>
+    <td>Fixed Assets:</td>
+    <td>{{this.fixed_asset}}</td>
   </tr>
   <tr>
-    <td>Drawings:</td>
-    <td>{{this.drawings}}</td>
+    <td>Business Expenses:</td>
+    <td>{{this.business_expense}}</td>
   </tr>
   {{/each}}
 </table>

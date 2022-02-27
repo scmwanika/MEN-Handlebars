@@ -1,0 +1,142 @@
+<style>
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+  }
+
+  body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #ebebed;
+  }
+
+  span {
+    color: blue;
+    font-size: 22pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+  }
+
+  .dropdown-menu {
+    border: none;
+  }
+
+  a,
+  label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  form {
+    margin: 0 auto;
+  }
+
+  legend {
+    text-align: center;
+    color: grey;
+  }
+
+  label {
+    color: grey;
+    margin-bottom: 0;
+  }
+
+  input[type="text"],
+  select {
+    width: 290px;
+    padding: 0.75%;
+    margin-bottom: 5px;
+    font-size: 14pt;
+    border: none;
+  }
+
+  #equity,
+  #fixed_asset,
+  #business_expense {
+    display: none;
+  }
+
+  .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+  }
+
+  .submit {
+    width: 290px;
+    border: none;
+  }
+
+  /* Responsive layout */
+  @media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
+
+  footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    font-size: 10pt;
+    text-align: center;
+  }
+</style>
+
+<div class="flex-container">
+  <!-- FORM FOR INSERTING EQUITY, FIXED ASSETS AND BUSINESS COSTS -->
+  <form method="POST" action="/operations" oninput="inputOperation()">
+    <input type="hidden" name="_id" value="{{operations._id}}">
+    <fieldset>
+      <legend>Miscellaneous Entries</legend><br /><label>Transaction Type:</label><br /><select id="transaction_type"
+        name="transaction_type">
+        <option value="">Select...</option>
+        <option value="Equity">Equity</option>
+        <option value="Fixed Asset">Fixed Asset</option>
+        <option value="Business Expenses">Business Expenses</option>
+      </select><br /><label>Note:</label><br /><input id="note" type="text" name="note"
+        value="{{operations.note}}" /><br /><label>Value:</label><br /><input id="equity" type="text" name="equity"
+        value="{{operations.equity}}" /><input id="fixed_asset" type="text" name="fixed_asset"
+        value="{{operations.fixed_asset}}" /><input id="business_expense" type="text" name="business_expense"
+        value="{{operations.business_expense}}" /><input id="updated_on" type="hidden" name="updated_on"
+        value="{{operations.updated_on}}" /><br /><button class="btn btn-success submit"
+        type="submit">Save</button><br />
+    </fieldset>
+  </form>
+</div>
+
+<script type="text/javascript">
+
+  const inputOperation = () => {
+
+    // Insert Date automatically
+    document.getElementById('updated_on').value = Date();
+
+    if (document.getElementById('transaction_type').value == "Equity")
+      // Display the field "equity"
+      $('#equity').css('display', 'inline');
+    else
+      $('#equity').css('display', 'none');
+
+    if (document.getElementById('transaction_type').value == "Fixed Asset")
+      // Display the field "fixed_asset"
+      $('#fixed_asset').css('display', 'inline');
+    else
+      $('#fixed_asset').css('display', 'none');
+
+    if (document.getElementById('transaction_type').value == "Business Cost")
+      // Display the field "business_expense"
+      $('#business_expense').css('display', 'inline');
+    else
+      $('#business_expense').css('display', 'none');
+
+  }
+
+</script>

@@ -40,10 +40,12 @@ mongoose.connection
   });
 
 // APP ROUTES
+const operationRouter = require('./controllers/operation_routes');
 const userRouter = require('./controllers/user_routes');
 const productRouter = require('./controllers/product_routes');
 const transactionRouter = require('./controllers/transaction_routes');
 const paymentRouter = require('./controllers/payment_routes');
+app.use(operationRouter);
 app.use(userRouter);
 app.use(productRouter);
 app.use(transactionRouter);
