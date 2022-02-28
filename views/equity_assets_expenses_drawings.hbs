@@ -59,11 +59,11 @@
   }
 </style>
 
-<!-- FINANCES, INVESTMENTS, BUSINESS COSTS -->
+<!-- EQUITY, ASSETS, EXPENSES, DRAWINGS -->
 <table class="listing-table table-striped">
   {{#each operations}}
   <tr>
-    <th colspan="2">FINANCES, INVESTMENTS, EXPENSES</th>
+    <th colspan="2">EQUITY, ASSETS, EXPENSES, DRAWINGS</th>
   </tr>
   <tr>
     <td>Equity:</td>
@@ -76,6 +76,10 @@
   <tr>
     <td>Business Expenses:</td>
     <td>{{this.business_expense}}</td>
+  </tr>
+  <tr>
+    <td>Drawings:</td>
+    <td>{{this.drawings}}</td>
   </tr>
   {{/each}}
 </table>

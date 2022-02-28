@@ -41,12 +41,13 @@
   th {
     font-family: Arial, Helvetica, sans-serif;
     font-stretch: condensed;
-    width: 160px;
+    width: 106px;
+    text-align: center;
   }
 
   td {
-    width: 160px;
-    text-align: right;
+    width: 106px;
+    text-align: center;
   }
 
   footer {
@@ -59,14 +60,46 @@
 </style>
 
 <!-- LIST DEBTORS -->
-
 <table class="listing-table table-striped">
   <tr>
-    <th colspan="2">DEBTORS</th>
+    <th colspan="3">DEBTORS</th>
   </tr>
   {{#each debtors}}
   <tr>
-    <th>{{this.userId}}</th>
+    <td><br></td>
+    <td><br></td>
+    <td><br></td>
+  </tr>
+  <tr>
+    <th>INVOICE TO:</th>
+    <th colspan="2">{{this.userId}}</th>
+  </tr>
+  <tr>
+    <td colspan="3">{{this.product}}</td>
+  </tr>
+  <tr>
+    <th>Quantity:</th>
+    <th>Unit Cost:</th>
+    <th>Total Cost:</th>
+  </tr>
+  <tr>
+    <td>{{this.quantity}}</td>
+    <td>{{this.unit_cost}}</td>
+    <td>{{this.total_cost}}</td>
+  </tr>
+  <tr>
+    <th></th>
+    <th>{{this.payment}}:</th>
+    <td>{{this.initial_payment}}</td>
+  </tr>
+  <tr>
+    <th></th>
+    <th>Balance:</th>
+    <td>{{this.debtor}}</td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
     <td><a href="/transactions/{{this._id}}"> Open </a></td>
   </tr>
   {{/each}}

@@ -46,6 +46,7 @@ const insertOperation = (req, res) => {
   newOperation.equity = req.body.equity;
   newOperation.fixed_asset = req.body.fixed_asset;
   newOperation.business_expense = req.body.business_expense;
+  newOperation.drawings = req.body.drawings;
   newOperation.updated_on = req.body.updated_on;
 
   newOperation.save((err) => {
@@ -74,8 +75,8 @@ router.get('/operations/:id', oidc.ensureAuthenticated(), async (req, res) => {
   }
 });
 
-// FINANCES, INVESTMENTS, BUSINESS EXPENSES
-router.get('/finances-investments-business-costs', async (req, res) => {
+// EQUITY, ASSETS, EXPENSES, DRAWINGS
+router.get('/equity-assets-expenses-drawings', async (req, res) => {
   try {
     const operations = await Operation.aggregate(
       [{
@@ -83,11 +84,12 @@ router.get('/finances-investments-business-costs', async (req, res) => {
           "_id": "",
           equity: { $sum: "$equity" },
           fixed_asset: { $sum: "$fixed_asset" },
-          business_expense: { $sum: "$business_expense" }
+          business_expense: { $sum: "$business_expense" },
+          drawings: { $sum: "$drawings" }
         }
       }]
     );
-    res.render('finances_investments_business_expenses', {operations});
+    res.render('equity_assets_expenses_drawings', {operations});
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }

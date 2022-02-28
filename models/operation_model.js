@@ -18,6 +18,9 @@ const operationSchema = new Schema({
   business_expense: {
     type: Number,
   },
+  drawings: {
+    type: Number,
+  },
   updated_on: {
     type: Date,
   },
