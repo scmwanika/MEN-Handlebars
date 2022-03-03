@@ -8,7 +8,7 @@
   body {
     /* Padding to prevent the content to go underneath the header */
     padding-top: 75px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color: #ebebed;
   }
 
@@ -26,8 +26,7 @@
 
   a,
   label {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10pt;
+    font-size: 11pt;
   }
 
   .listing-table {
@@ -35,9 +34,7 @@
   }
 
   th {
-    font-family: Arial, Helvetica, sans-serif;
-    font-stretch: condensed;
-    width: 140px;
+    width: 160px;
   }
 
   form {
@@ -45,7 +42,7 @@
   }
 
   input[name='product_name'] {
-    width: 290px;
+    width: 247px;
     border: none;
     padding-top: 2px;
     padding-bottom: 4px;
@@ -61,7 +58,7 @@
     width: 100%;
     position: fixed;
     bottom: 0;
-    font-size: 10pt;
+    font-size: 12pt;
     text-align: center;
   }
 </style>
@@ -76,7 +73,7 @@
   </tr>
   {{#each products}}
   <tr>
-    <td><br></td>
+    <th><br></th>
     <td><br></td>
   </tr>
   <tr>
@@ -128,7 +125,7 @@
     <td>{{this.discontinued}}</td>
   </tr>
   <tr>
-    <td></td>
+    <th></th>
     <td>
       <a href="/products/{{this._id}}"> Transact </a>
       {{!-- <a href="/products/delete/{{this._id}}" onclick="return confirm('Sure you want to delete this record?');">

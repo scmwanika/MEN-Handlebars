@@ -8,7 +8,7 @@
   body {
     /* Padding to prevent the content to go underneath the header */
     padding-top: 75px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color: #ebebed;
   }
 
@@ -25,8 +25,7 @@
 
   a,
   label {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10pt;
+    font-size: 11pt;
   }
 
   .flex-container {
@@ -86,7 +85,7 @@
     width: 100%;
     position: fixed;
     bottom: 0;
-    font-size: 10pt;
+    font-size: 12pt;
     text-align: center;
   }
 </style>
@@ -101,7 +100,8 @@
         <option value="">Select...</option>
         <option value="Equity">Equity</option>
         <option value="Fixed Asset">Fixed Asset</option>
-        <option value="Business Expenses">Business Expenses</option>
+        <option value="Business Expense">Business Expense</option>
+        <option value="Drawings">Drawings</option>
       </select><br /><label>Note:</label><br /><input id="note" type="text" name="note"
         value="{{operations.note}}" /><br /><label>Value:</label><br /><input id="equity" type="text" name="equity"
         value="{{operations.equity}}" /><input id="fixed_asset" type="text" name="fixed_asset"
@@ -133,11 +133,17 @@
     else
       $('#fixed_asset').css('display', 'none');
 
-    if (document.getElementById('transaction_type').value == "Business Cost")
+    if (document.getElementById('transaction_type').value == "Business Expense")
       // Display the field "business_expense"
       $('#business_expense').css('display', 'inline');
     else
       $('#business_expense').css('display', 'none');
+
+    if (document.getElementById('transaction_type').value == "Drawings")
+      // Display the field "drawings"
+      $('#drawings').css('display', 'inline');
+    else
+      $('#drawings').css('display', 'none');
 
   }
 

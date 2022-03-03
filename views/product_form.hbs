@@ -8,7 +8,7 @@
   body {
     /* Padding to prevent the content to go underneath the header */
     padding-top: 75px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color: #ebebed;
   }
 
@@ -25,8 +25,7 @@
 
   a,
   label {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10pt;
+    font-size: 11pt;
   }
 
   .flex-container {
@@ -57,6 +56,10 @@
     margin-bottom: 5px;
     font-size: 14pt;
     border: none;
+  }
+
+  input[name='payment'] {
+    background-color: #ebebed;
   }
 
   #creditor,
@@ -91,7 +94,7 @@
     width: 100%;
     position: fixed;
     bottom: 0;
-    font-size: 10pt;
+    font-size: 12pt;
     text-align: center;
   }
 </style>
@@ -102,7 +105,7 @@
     onsubmit="submitTransaction()">
     <input type="hidden" name="_id">
     <fieldset>
-      <legend>Trading Form</legend><br /><label>Transaction Type:</label><br /><select id="transaction_type"
+      <legend>Trading Activities</legend><br /><label>Transaction Type:</label><br /><select id="transaction_type"
         name="transaction_type">
         <option value="">Select...</option>
         <option value="Purchases">Purchases</option>
@@ -114,10 +117,9 @@
         readonly /><br /><label>Quantity:</label><br /><input id="quantity" type="text"
         name="quantity" /><br /><label>Unit
         Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" /><br /><label>Total
-        Cost:</label><br /><input id="total_cost" type="text" name="total_cost"
-        required /><br /><label>Payment:</label><br /><input id="payment" type="text" name="payment"
-        readonly /><br /><label>Initial Payment:</label><br /><input id="initial_payment" type="text"
-        name="initial_payment" required /><br /><label>Debt:</label><br /><input id="creditor" type="text"
+        Cost:</label><br /><input id="total_cost" type="text" name="total_cost" required /><br /><input id="payment"
+        type="text" name="payment" readonly /><br /><label>Initial Payment:</label><br /><input id="initial_payment"
+        type="text" name="initial_payment" required /><br /><label>Debt:</label><br /><input id="creditor" type="text"
         name="creditor" readonly /><input id="debtor" type="text" name="debtor" readonly /><input id="drawings"
         type="text" name="drawings" readonly /><br /><input id="userId" type="text" name="userId"
         placeholder="Customer Id" required /><br /><input id="transaction_date" type="hidden" name="transaction_date"
@@ -154,7 +156,6 @@
 <script type="text/javascript">
 
   const inputTransaction = () => {
-
     // Insert Product automatically
     document.getElementById('product').value = "{{product.product_name}}";
 
@@ -170,17 +171,21 @@
 
     // Unit Cost
     if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('unit_cost').value = document.getElementById('total_cost').value / document.getElementById('quantity').value;
+      document.getElementById('unit_cost').value = Number(document.getElementById('total_cost').value) / Number(document.getElementById('quantity').value);
     if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('unit_cost').value = "{{product.retail_price}}";
     if (document.getElementById('transaction_type').value == "Drawings")
       document.getElementById('unit_cost').value = "{{product.closing_stock}}" / "{{product.quantity_instock}}";
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('unit_cost').value = "";
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('unit_cost').value = "";
 
     // Total Cost
     if (document.getElementById('transaction_type').value != "Purchases")
       document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
 
-    // Payment: Issued, Received, or None
+    // Payment: Issued, Received, or Goods for own use
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('payment').value = "Issued"
     if (document.getElementById('transaction_type').value == "Sales")
@@ -190,11 +195,11 @@
 
     // Creditor, Debtor, Drawings
     if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('creditor').value = document.getElementById('total_cost').value - document.getElementById('initial_payment').value;
+      document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
     if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('debtor').value = document.getElementById('total_cost').value - document.getElementById('initial_payment').value;
+      document.getElementById('debtor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
     if (document.getElementById('transaction_type').value == "Drawings")
-      document.getElementById('drawings').value = document.getElementById('total_cost').value;
+      document.getElementById('drawings').value = Number(document.getElementById('total_cost').value);
 
     //
     if (document.getElementById('transaction_type').value == "Purchases")
@@ -208,6 +213,12 @@
       $('#debtor').css('display', 'inline');
     else
       $('#debtor').css('display', 'none');
+
+    if (document.getElementById('transaction_type').value == "Drawings")
+      // Hide the field "payment"
+      $('#payment').css('display', 'none');
+      // Hide the field "initial_payment"
+      $('#initial_payment').css('display', 'none');
   }
 
   const submitTransaction = () => {

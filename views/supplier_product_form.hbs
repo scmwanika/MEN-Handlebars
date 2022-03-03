@@ -8,7 +8,7 @@
   body {
     /* Padding to prevent the content to go underneath the header */
     padding-top: 75px;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color: #ebebed;
   }
 
@@ -25,8 +25,7 @@
 
   a,
   label {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 10pt;
+    font-size: 11pt;
   }
 
   .flex-container {
@@ -81,7 +80,7 @@
     width: 100%;
     position: fixed;
     bottom: 0;
-    font-size: 10pt;
+    font-size: 12pt;
     text-align: center;
   }
 </style>
@@ -108,10 +107,10 @@
   <form class="product" method="POST" action="/products" onsubmit="submitProduct()">
     <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
-      <legend>Product</legend><input id="user_id" type="hidden" name="user_id" readonly /><br /><label>Product
+      <legend>Product Details</legend><input id="user_id" type="hidden" name="user_id" readonly /><br /><label>Product
         Name:</label><br /><input id="product_name" type="text"
         name="product_name" /><br /><label>Category:</label><br /><input id="category" type="text"
-        name="category" /><br /><label>Retail Price:</label><br /><input id="retail_price" type="text"
+        name="category" /><br /><label>Proposed Retail Price:</label><br /><input id="retail_price" type="text"
         name="retail_price" /><br /><label>Discontinued:</label><br /><input id="discontinued" type="text"
         name="discontinued" value="No" readonly /><input id="created_on" type="hidden" name="created_on"
         readonly /><br /><button class="btn btn-success submit" type="submit">

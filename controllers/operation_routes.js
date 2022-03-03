@@ -52,6 +52,8 @@ const insertOperation = (req, res) => {
   newOperation.save((err) => {
     if (err)
       res.send('Unable to save the operation; please try again.');
+    else
+      res.redirect('equity-assets-expenses-drawings');
   });
 }
 
@@ -59,9 +61,9 @@ const insertOperation = (req, res) => {
 const updateOperation = (req, res) => {
   Operation.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
     if (err)
-      res.send('Unable to save the operation; please try again.');
-    else
-      res.redirect('transactions/debt');
+    res.send('Unable to save the operation; please try again.');
+  else
+    res.redirect('equity-assets-expenses-drawings');
   });
 }
 
@@ -89,7 +91,7 @@ router.get('/equity-assets-expenses-drawings', async (req, res) => {
         }
       }]
     );
-    res.render('equity_assets_expenses_drawings', {operations});
+    res.render('equity_assets_expenses_drawings', { operations });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
