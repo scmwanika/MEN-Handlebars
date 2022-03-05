@@ -1,0 +1,502 @@
+extends layout
+
+block content
+  style.
+    .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    }
+    body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #ebebed;
+    }
+    span {
+    color: blue;
+    font-size: 22pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+    }
+    .dropdown-menu {
+    border: none;
+    }
+    a,
+    label {
+    font-size: 11pt;
+    }
+    .flex-container {
+    display: flex;
+    flex-direction: row;
+    }
+    form {
+    margin: 0 auto;
+    }
+    legend {
+    text-align: center;
+    color: grey;
+    }
+    label {
+    color: grey;
+    margin-bottom: 0;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    select {
+    width: 290px;
+    padding: 0.75%;
+    margin-bottom: 5px;
+    font-size: 14pt;
+    border: none;
+    }
+    input[name='payment'] {
+    background-color: #ebebed;
+    }
+    select[name='itemName'] {
+    width: 266px;
+    }
+    #creditor,
+    #debtor,
+    #drawings {
+    display: none;
+    }
+    .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+    }
+    .product {
+    display: none;
+    }
+    .submit,
+    .select-item {
+    width: 290px;
+    border: none;
+    }
+    /* Responsive layout */
+    @media (max-width: 800px) {
+    .flex-container {
+    flex-direction: column;
+    }
+    }
+    footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    font-size: 12pt;
+    text-align: center;
+    }
+  .flex-container
+    // TRADING FORM
+    form.transaction(method='POST', action='/transactions', oninput='inputTransaction()', onsubmit='submitTransaction()')
+      input(type='hidden', name='_id')
+      fieldset
+        legend Trading Activities
+        br
+        label Transaction Type:
+        br
+        select#transaction_type(name='transaction_type')
+          option(value='') Select...
+          option(value='Purchases') Purchases
+          option(value='Sales') Sales
+          option(value='Drawings') Drawings
+          option(value='Purchases Returns') Purchases Returns
+          option(value='Sales Returns') Sales Returns
+        br
+        label Product:
+        br
+        input#product(type='text', name='product', readonly='')
+        br
+        label Quantity:
+        br
+        input#quantity(type='text', name='quantity')
+        br
+        label
+          | Unit
+          | Cost:
+        br
+        input#unit_cost(type='text', name='unit_cost')
+        br
+        label
+          | Total
+          | Cost:
+        br
+        input#total_cost(type='text', name='total_cost', readonly='')
+        br
+        input#payment(type='text', name='payment', readonly='')
+        br
+        label Initial Payment:
+        br
+        input#initial_payment(type='text', name='initial_payment', required='')
+        br
+        label Debt:
+        br
+        input#creditor(type='text', name='creditor', readonly='')
+        input#debtor(type='text', name='debtor', readonly='')
+        input#drawings(type='text', name='drawings', readonly='')
+        br
+        input#userId(type='text', name='userId', placeholder='Customer Id', required='')
+        br
+        input#transaction_date(type='hidden', name='transaction_date', readonly='')
+        label Select Customer:
+        br
+        button.btn.select-item(style='background-color: #ebebed')
+        select#itemName(name='itemName')
+          option(value='')
+        br
+        label Selected Customer:
+        br
+        input#itemSelected(type='text', name='itemSelected')
+        br
+        button.btn.btn-success.submit(type='submit') Save
+        br
+    // PRODUCT FORM
+    form.product(method='POST', action='/products', onsubmit='submitProduct()')
+      input(type='hidden', name='_id', value='{{product._id}}')
+      fieldset
+        legend
+        br
+        label
+          input#user_id(type='hidden', name='user_id', value='{{product.user_id}}', readonly='')
+          input#product_name(type='hidden', name='product_name', value='{{product.product_name}}', readonly='')
+          input#category(type='hidden', name='category', value='{{product.category}}', readonly='')
+          input#retail_price(type='hidden', name='retail_price', value='{{product.retail_price}}', readonly='')
+          input#quantity_purchased(type='hidden', name='quantity_purchased', value='{{product.quantity_purchased}}', readonly='')
+          input#net_purchases(type='hidden', name='net_purchases', value='{{product.net_purchases}}', readonly='')
+          input#quantity_sold(type='hidden', name='quantity_sold', value='{{product.quantity_sold}}', readonly='')
+          input#net_sales(type='hidden', name='net_sales', value='{{product.net_sales}}', readonly='')
+          br
+          input#quantity_instock(type='hidden', name='quantity_instock', value='{{product.quantity_instock}}', readonly='')
+          input#closing_stock(type='hidden', name='closing_stock', value='{{product.closing_stock}}', readonly='')
+          input#cost_of_sales(type='hidden', name='cost_of_sales', value='{{product.cost_of_sales}}', readonly='')
+          input#gross_profit_or_loss(type='hidden', name='gross_profit_or_loss', value='{{product.gross_profit_or_loss}}', readonly='')
+          input#discontinued(type='hidden', name='discontinued', value='{{product.discontinued}}', readonly='')
+          br
+          input#created_on(type='hidden', name='created_on', value='{{product.created_on}}', readonly='')
+          input#updated_on(type='hidden', name='updated_on', value='{{product.updated_on}}', readonly='')
+          br
+          button.btn.btn-success.submit(type='submit')
+            | Conclude
+            | Transaction
+          br
+  script(type='text/javascript').
+    const inputTransaction = () => {
+    // Insert Product automatically
+    document.getElementById('product').value = "{{product.product_name}}";
+    // Insert Dates automatically
+    document.getElementById('transaction_date').value = Date();
+    document.getElementById('updated_on').value = document.getElementById('transaction_date').value;
+    // Transactions by User ID
+    if (document.getElementById('transaction_type').value == "Purchases")
+    document.getElementById('userId').value = "{{product.user_id}}";
+    // Unit Cost
+    if (document.getElementById('transaction_type').value == "Sales")
+    document.getElementById('unit_cost').value = "{{product.retail_price}}";
+    if (document.getElementById('transaction_type').value == "Drawings")
+    document.getElementById('unit_cost').value = "{{product.closing_stock}}" / "{{product.quantity_instock}}";
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+    document.getElementById('unit_cost').value = "";
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+    document.getElementById('unit_cost').value = "";
+    // Total Cost
+    document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
+    // Payment: Issued, Received, or Goods for own use
+    if (document.getElementById('transaction_type').value == "Purchases")
+    document.getElementById('payment').value = "Issued"
+    if (document.getElementById('transaction_type').value == "Sales")
+    document.getElementById('payment').value = "Received"
+    if (document.getElementById('transaction_type').value == "Drawings")
+    document.getElementById('payment').value = "None"
+    // Creditor, Debtor, Drawings
+    if (document.getElementById('transaction_type').value == "Purchases")
+    document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+    if (document.getElementById('transaction_type').value == "Sales")
+    document.getElementById('debtor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+    if (document.getElementById('transaction_type').value == "Drawings")
+    document.getElementById('drawings').value = Number(document.getElementById('total_cost').value);
+    //
+    if (document.getElementById('transaction_type').value == "Purchases")
+    // Display the field "equity"
+    $('#creditor').css('display', 'inline');
+    else
+    $('#creditor').css('display', 'none');
+    if (document.getElementById('transaction_type').value == "Sales")
+    // Display the field "fixed_asset"
+    $('#debtor').css('display', 'inline');
+    else
+    $('#debtor').css('display', 'none');
+    if (document.getElementById('transaction_type').value == "Drawings")
+    // Hide the field "payment"
+    $('#payment').css('display', 'none');
+    if (document.getElementById('transaction_type').value == "Drawings")
+    // Hide the field "initial_payment"
+    $('#initial_payment').css('display', 'none');
+    // Dynamically Bind or Populate SELECT Dropdown List with JSON Data using jQuery Ajax
+    $(function () {
+    $('.select-item').click(function () {
+    var url = [
+    {
+    "price": 30000,
+    "itemName": "4GB USB Memory Stick",
+    "serialNumber": "123"
+    },
+    {
+    "price": 350000,
+    "itemName": "1TB External HDD",
+    "serialNumber": "456"
+    },
+    {
+    "price": 1450000,
+    "itemName": "17\\" Dell Laptop",
+    "serialNumber": "7890"
+    },
+    {
+    "price": 450000,
+    "itemName": "Epson Color Printer"
+    },
+    {
+    "price": 150000,
+    "itemName": "HP Flexible Keyboard"
+    },
+    {
+    "price": 2450000,
+    "itemName": "Canon Copier"
+    },
+    {
+    "price": 850000,
+    "itemName": "JVC Radio System"
+    },
+    {
+    "price": 850000,
+    "itemName": "32\\" Hisense TV"
+    },
+    {
+    "price": 250000,
+    "itemName": "Wall Fan"
+    },
+    {
+    "price": 150000,
+    "itemName": "Polo Shirts"
+    },
+    {
+    "price": 450000,
+    "itemName": "Suit"
+    },
+    {
+    "price": 450000,
+    "itemName": "Kitenge"
+    },
+    {
+    "price": 50000,
+    "itemName": "Belt"
+    },
+    {
+    "price": 150000,
+    "itemName": "Office Shoe"
+    },
+    {
+    "price": 250000,
+    "itemName": "Bride's Shoe"
+    },
+    {
+    "price": 350000,
+    "itemName": "Boot"
+    },
+    {
+    "price": 450000,
+    "itemName": "Wrist Watch"
+    },
+    {
+    "price": 80000,
+    "itemName": "Ring"
+    },
+    {
+    "price": 1450000,
+    "itemName": "Irrigation Pump "
+    },
+    {
+    "price": 1999000,
+    "itemName": "Honda Generator"
+    },
+    {
+    "price": 950000,
+    "itemName": "Vacuum Cleaner"
+    },
+    {
+    "price": 500000,
+    "itemName": "Honda Generator"
+    },
+    {
+    "price": 650000,
+    "itemName": "Mower"
+    },
+    {
+    "price": 3350000,
+    "itemName": "Grain Processor"
+    },
+    {
+    "price": 2000000,
+    "itemName": "Yamaha Generator"
+    },
+    {
+    "price": 450000,
+    "itemName": "Nokia"
+    },
+    {
+    "price": 450000,
+    "itemName": "Timer"
+    },
+    {
+    "price": 1530000,
+    "itemName": "PS4"
+    },
+    {
+    "price": 450000,
+    "itemName": "Game Controller"
+    },
+    {
+    "price": 250000,
+    "itemName": "Headset"
+    },
+    {
+    "price": 3350000,
+    "itemName": "Canopy Bed"
+    },
+    {
+    "price": 20000,
+    "itemName": "Pillow"
+    },
+    {
+    "price": 50000,
+    "itemName": "Towel"
+    },
+    {
+    "price": 35000,
+    "itemName": "Mat"
+    },
+    {
+    "price": 200000,
+    "itemName": "Electric Comb"
+    },
+    {
+    "price": 95000,
+    "itemName": "Hair Blower"
+    },
+    {
+    "price": 120000,
+    "itemName": "Temperature Gauge"
+    },
+    {
+    "price": 15000,
+    "itemName": "Surgical Mask"
+    },
+    {
+    "price": 5000,
+    "itemName": "Face Mask"
+    },
+    {
+    "price": 130000,
+    "itemName": "Wall Clock"
+    },
+    {
+    "price": 75000,
+    "itemName": "Electric Jar"
+    },
+    {
+    "price": 30000,
+    "itemName": "Set of Dishes"
+    },
+    {
+    "price": 150000,
+    "itemName": "Smart Stove"
+    },
+    {
+    "price": 150000,
+    "itemName": "Gas Cook Top"
+    },
+    {
+    "price": 250000,
+    "itemName": "4L Gas Cylinder"
+    },
+    {
+    "price": 550000,
+    "itemName": "Gas Cooker"
+    },
+    {
+    "price": 950000,
+    "itemName": "Refrigerator"
+    },
+    {
+    "price": 65000,
+    "itemName": "Iron"
+    }
+    ]
+    $.getJSON(url, function (data) {
+    $.each(data, function (index, value) {
+    // APPEND OR INSERT DATA TO SELECT ELEMENT.
+    $('#itemName').append('<option value="' + value.price + '">' + value.itemName + ' ' + value.serialNumber + '</option>');
+    });
+    });
+    });
+    // SHOW SELECTED VALUE.
+    $('#itemName').change(function () {
+    //var itemSelected = document.getElementById('itemSelected').value;
+    document.getElementById('itemSelected').value = (this.options[this.selectedIndex].text);
+    //var price = document.getElementById('price').value;
+    document.getElementById('price').value = (this.value);
+    });
+    });
+    }
+    const submitTransaction = () => {
+    // Hide the Transaction Form
+    $('.transaction').css('display', 'none');
+    // Display the Product Form
+    $('.product').css('display', 'inline');
+    }
+    const submitProduct = () => {
+    // Quantity Purchased
+    if (document.getElementById('transaction_type').value == "Purchases")
+    document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) + Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+    document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Drawings")
+    document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
+    // Quantity Sold
+    if (document.getElementById('transaction_type').value == "Sales")
+    document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) + Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+    document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) - Number(document.getElementById('quantity').value);
+    // Purchases
+    if (document.getElementById('transaction_type').value == "Purchases")
+    document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) + Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+    document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Drawings")
+    document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('total_cost').value);
+    // Sales
+    if (document.getElementById('transaction_type').value == "Sales")
+    document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) + Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+    document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('total_cost').value);
+    // Quantity Instock
+    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
+    document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+    document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value) - Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+    document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value);
+    // Closing Stock
+    if (document.getElementById('transaction_type').value == "Purchases")
+    document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) + Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Sales")
+    document.getElementById('closing_stock').value = Number(document.getElementById('quantity_instock').value) * Number(document.getElementById('closing_stock').value)
+    / (Number(document.getElementById('quantity_instock').value) + Number(document.getElementById('quantity').value));
+    if (document.getElementById('transaction_type').value == "Drawings")
+    document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) - Number(document.getElementById('total_cost').value);
+    // Cost of Sales
+    document.getElementById('cost_of_sales').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('closing_stock').value);
+    // Gross Profit
+    document.getElementById('gross_profit_or_loss').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('cost_of_sales').value);
+    }

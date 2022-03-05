@@ -1,0 +1,150 @@
+extends layout
+
+block content
+  style.
+    .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    }
+    body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #ebebed;
+    }
+    span {
+    color: blue;
+    font-size: 22pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+    }
+    .dropdown-menu {
+    border: none;
+    }
+    a,
+    label {
+    font-size: 11pt;
+    }
+    .flex-container {
+    display: flex;
+    flex-direction: row;
+    }
+    form {
+    margin: 0 auto;
+    }
+    legend {
+    text-align: center;
+    color: grey;
+    }
+    label {
+    color: grey;
+    margin-bottom: 0;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    select {
+    width: 290px;
+    padding: 0.75%;
+    margin-bottom: 5px;
+    font-size: 14pt;
+    border: none;
+    }
+    .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+    }
+    .submit {
+    width: 290px;
+    border: none;
+    }
+    /* Responsive layout */
+    @media (max-width: 800px) {
+    .flex-container {
+    flex-direction: column;
+    }
+    }
+    footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    font-size: 12pt;
+    text-align: center;
+    }
+  .flex-container
+    // SUPPLIER FORM
+    form.supplier(method='POST', action='/suppliers')
+      input(type='hidden', name='_id', value=supplier._id, readonly='')
+      fieldset
+        legend Supplier
+        br
+        label Name:
+        br
+        input#name(type='text', name='name', value=supplier.name, readonly='')
+        br
+        label Country:
+        br
+        input#country(type='text', name='country', value=supplier.country, readonly='')
+        br
+        label City/Town:
+        br
+        input#city(type='text', name='city', value=supplier.city, readonly='')
+        br
+        label Street:
+        br
+        input#street(type='text', name='street', value=supplier.street, readonly='')
+        br
+        label Address:
+        br
+        input#address(type='text', name='address', value=supplier.address, readonly='')
+        br
+        label Telephone:
+        br
+        input#telephone(type='text', name='telephone', value=supplier.telephone, readonly='')
+        br
+        label Email:
+        br
+        input#email(type='email', name='email', value=supplier.email, readonly='')
+        br
+        label Website: 
+        br
+        input#website(type='url', name='website', value=supplier.website, readonly='')
+        br
+    // PRODUCT FORM
+    form.product(method='POST', action='/products', onsubmit='submitProduct()')
+      input(type='hidden', name='_id')
+      fieldset
+        legend Product Details
+        input#user_id(type='hidden', name='user_id', readonly='')
+        br
+        label
+          | Product
+          | Name:
+        br
+        input#product_name(type='text', name='product_name')
+        br
+        label Category:
+        br
+        input#category(type='text', name='category')
+        br
+        label Proposed Retail Price:
+        br
+        input#retail_price(type='text', name='retail_price')
+        br
+        label Discontinued:
+        br
+        input#discontinued(type='text', name='discontinued', value='No', readonly='')
+        input#created_on(type='hidden', name='created_on', readonly='')
+        br
+        button.btn.btn-success.submit(type='submit')
+          | Save
+        br
+  script(type='text/javascript').
+    const submitProduct = () => {
+    // user_id == supplier._id
+    document.getElementById('user_id').value = "{{supplier._id}}";
+    // Insert Date automatically
+    document.getElementById('created_on').value = Date();
+    }

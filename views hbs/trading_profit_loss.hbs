@@ -33,12 +33,7 @@
     margin: 0 auto;
   }
 
-  th {
-    text-align: center;
-    width: 160px;
-    font-weight: lighter;
-  }
-
+  th,
   td {
     width: 160px;
   }
@@ -58,23 +53,31 @@
   }
 </style>
 
-<!-- CREDITOR, DEBTORS, DRAWINGS -->
+<!-- TRADING AND PROFIT AND LOSS ACCOUNT -->
 <table class="listing-table table-striped">
-  {{#each transactions}}
+  {{#each products}}
   <tr>
-    <th colspan="2">CREDITOR, DEBTORS, DRAWINGS</th>
+    <th colspan="2">TRADING, PROFIT / LOSS ACCOUNT</th>
   </tr>
   <tr>
-    <td>Creditor:</td>
-    <td>{{this.creditor}}</td>
+    <td>Net Purchases:</td>
+    <td>{{this.net_purchases}}</td>
   </tr>
   <tr>
-    <td>Debtors:</td>
-    <td>{{this.debtor}}</td>
+    <td>Net Sales:</td>
+    <td>{{this.net_sales}}</td>
   </tr>
   <tr>
-    <td>Drawings:</td>
-    <td>{{this.drawings}}</td>
+    <td>Closing Stock:</td>
+    <td>{{this.closing_stock}}</td>
+  </tr>
+  <tr>
+    <td>Cost of Sales:</td>
+    <td>{{this.cost_of_sales}}</td>
+  </tr>
+  <tr>
+    <td>Gross Profit or Loss:</td>
+    <td>{{this.gross_profit_or_loss}}</td>
   </tr>
   {{/each}}
 </table>

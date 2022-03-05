@@ -62,6 +62,11 @@
     background-color: #ebebed;
   }
 
+  select[name='itemName'] {
+    width: 266px;
+  }
+
+
   #creditor,
   #debtor,
   #drawings {
@@ -78,7 +83,8 @@
     display: none;
   }
 
-  .submit {
+  .submit,
+  .select-item {
     width: 290px;
     border: none;
   }
@@ -117,13 +123,17 @@
         readonly /><br /><label>Quantity:</label><br /><input id="quantity" type="text"
         name="quantity" /><br /><label>Unit
         Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" /><br /><label>Total
-        Cost:</label><br /><input id="total_cost" type="text" name="total_cost" required /><br /><input id="payment"
+        Cost:</label><br /><input id="total_cost" type="text" name="total_cost" readonly /><br /><input id="payment"
         type="text" name="payment" readonly /><br /><label>Initial Payment:</label><br /><input id="initial_payment"
         type="text" name="initial_payment" required /><br /><label>Debt:</label><br /><input id="creditor" type="text"
         name="creditor" readonly /><input id="debtor" type="text" name="debtor" readonly /><input id="drawings"
         type="text" name="drawings" readonly /><br /><input id="userId" type="text" name="userId"
         placeholder="Customer Id" required /><br /><input id="transaction_date" type="hidden" name="transaction_date"
-        readonly /><button class="btn btn-success submit" type="submit">Save</button><br />
+        readonly /><label>Select Customer:</label><br /><button class="btn select-item"
+        style="background-color: #ebebed"><select id="itemName" name="itemName">
+          <option value=""></option>
+        </select></button><br /><label>Selected Customer:</label><br /><input id="itemSelected" type="text"
+        name="itemSelected" /></label><br /><button class="btn btn-success submit" type="submit">Save</button><br />
     </fieldset>
   </form>
 
@@ -166,12 +176,8 @@
     // Transactions by User ID
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('userId').value = "{{product.user_id}}";
-    else
-      document.getElementById('userId').value = "";
 
     // Unit Cost
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('unit_cost').value = Number(document.getElementById('total_cost').value) / Number(document.getElementById('quantity').value);
     if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('unit_cost').value = "{{product.retail_price}}";
     if (document.getElementById('transaction_type').value == "Drawings")
@@ -182,8 +188,7 @@
       document.getElementById('unit_cost').value = "";
 
     // Total Cost
-    if (document.getElementById('transaction_type').value != "Purchases")
-      document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
+    document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
 
     // Payment: Issued, Received, or Goods for own use
     if (document.getElementById('transaction_type').value == "Purchases")
@@ -217,8 +222,230 @@
     if (document.getElementById('transaction_type').value == "Drawings")
       // Hide the field "payment"
       $('#payment').css('display', 'none');
+
+    if (document.getElementById('transaction_type').value == "Drawings")
       // Hide the field "initial_payment"
       $('#initial_payment').css('display', 'none');
+
+    // Dynamically Bind or Populate SELECT Dropdown List with JSON Data using jQuery Ajax
+    $(function () {
+      $('.select-item').click(function () {
+
+        var url = [
+          {
+            "price": 30000,
+            "itemName": "4GB USB Memory Stick",
+            "serialNumber": "123"
+          },
+          {
+            "price": 350000,
+            "itemName": "1TB External HDD",
+            "serialNumber": "456"
+          },
+          {
+            "price": 1450000,
+            "itemName": "17\" Dell Laptop",
+            "serialNumber": "7890"
+          },
+          {
+            "price": 450000,
+            "itemName": "Epson Color Printer"
+          },
+          {
+            "price": 150000,
+            "itemName": "HP Flexible Keyboard"
+          },
+          {
+            "price": 2450000,
+            "itemName": "Canon Copier"
+          },
+          {
+            "price": 850000,
+            "itemName": "JVC Radio System"
+          },
+          {
+            "price": 850000,
+            "itemName": "32\" Hisense TV"
+          },
+          {
+            "price": 250000,
+            "itemName": "Wall Fan"
+          },
+          {
+            "price": 150000,
+            "itemName": "Polo Shirts"
+          },
+          {
+            "price": 450000,
+            "itemName": "Suit"
+          },
+          {
+            "price": 450000,
+            "itemName": "Kitenge"
+          },
+          {
+            "price": 50000,
+            "itemName": "Belt"
+          },
+          {
+            "price": 150000,
+            "itemName": "Office Shoe"
+          },
+          {
+            "price": 250000,
+            "itemName": "Bride's Shoe"
+          },
+          {
+            "price": 350000,
+            "itemName": "Boot"
+          },
+          {
+            "price": 450000,
+            "itemName": "Wrist Watch"
+          },
+          {
+            "price": 80000,
+            "itemName": "Ring"
+          },
+          {
+            "price": 1450000,
+            "itemName": "Irrigation Pump "
+          },
+          {
+            "price": 1999000,
+            "itemName": "Honda Generator"
+          },
+          {
+            "price": 950000,
+            "itemName": "Vacuum Cleaner"
+          },
+          {
+            "price": 500000,
+            "itemName": "Honda Generator"
+          },
+          {
+            "price": 650000,
+            "itemName": "Mower"
+          },
+          {
+            "price": 3350000,
+            "itemName": "Grain Processor"
+          },
+          {
+            "price": 2000000,
+            "itemName": "Yamaha Generator"
+          },
+          {
+            "price": 450000,
+            "itemName": "Nokia"
+          },
+          {
+            "price": 450000,
+            "itemName": "Timer"
+          },
+          {
+            "price": 1530000,
+            "itemName": "PS4"
+          },
+          {
+            "price": 450000,
+            "itemName": "Game Controller"
+          },
+          {
+            "price": 250000,
+            "itemName": "Headset"
+          },
+          {
+            "price": 3350000,
+            "itemName": "Canopy Bed"
+          },
+          {
+            "price": 20000,
+            "itemName": "Pillow"
+          },
+          {
+            "price": 50000,
+            "itemName": "Towel"
+          },
+          {
+            "price": 35000,
+            "itemName": "Mat"
+          },
+          {
+            "price": 200000,
+            "itemName": "Electric Comb"
+          },
+          {
+            "price": 95000,
+            "itemName": "Hair Blower"
+          },
+          {
+            "price": 120000,
+            "itemName": "Temperature Gauge"
+          },
+          {
+            "price": 15000,
+            "itemName": "Surgical Mask"
+          },
+          {
+            "price": 5000,
+            "itemName": "Face Mask"
+          },
+          {
+            "price": 130000,
+            "itemName": "Wall Clock"
+          },
+          {
+            "price": 75000,
+            "itemName": "Electric Jar"
+          },
+          {
+            "price": 30000,
+            "itemName": "Set of Dishes"
+          },
+          {
+            "price": 150000,
+            "itemName": "Smart Stove"
+          },
+          {
+            "price": 150000,
+            "itemName": "Gas Cook Top"
+          },
+          {
+            "price": 250000,
+            "itemName": "4L Gas Cylinder"
+          },
+          {
+            "price": 550000,
+            "itemName": "Gas Cooker"
+          },
+          {
+            "price": 950000,
+            "itemName": "Refrigerator"
+          },
+          {
+            "price": 65000,
+            "itemName": "Iron"
+          }
+        ]
+
+        $.getJSON(url, function (data) {
+          $.each(data, function (index, value) {
+            // APPEND OR INSERT DATA TO SELECT ELEMENT.
+            $('#itemName').append('<option value="' + value.price + '">' + value.itemName + ' ' + value.serialNumber + '</option>');
+          });
+        });
+      });
+
+      // SHOW SELECTED VALUE.
+      $('#itemName').change(function () {
+        //var itemSelected = document.getElementById('itemSelected').value;
+        document.getElementById('itemSelected').value = (this.options[this.selectedIndex].text);
+        //var price = document.getElementById('price').value;
+        document.getElementById('price').value = (this.value);
+      });
+
+    });
   }
 
   const submitTransaction = () => {

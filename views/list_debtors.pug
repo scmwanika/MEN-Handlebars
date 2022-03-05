@@ -1,0 +1,90 @@
+extends layout
+
+block content
+  style.
+    .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    }
+    body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #ebebed;
+    }
+    span {
+    color: blue;
+    font-size: 24pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+    }
+    a {
+    font-size: 11pt;
+    }
+    .dropdown-menu {
+    border: none;
+    }
+    .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+    }
+    .listing-table {
+    margin: 0 auto;
+    }
+    th {
+    width: 106.5px;
+    padding-left: 4.5%;
+    }
+    td {
+    width: 106.5px;
+    text-align: right;
+    padding-right: 7.5%;
+    }
+    footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    font-size: 12pt;
+    text-align: center;
+    }
+  // LIST DEBTORS
+  table.listing-table.table-striped
+    tr
+      th(colspan='3') INVOICE
+    each debtor in debtors
+      tr
+        td
+          br
+        td
+          br
+        td
+          br
+      tr
+        th TO:
+        th(colspan='2') #{debtor.userId}
+      tr
+        th(colspan='3', style='font-weight: lighter') #{debtor.product}
+      tr
+        th Quantity:
+        th Unit Cost:
+        th Total Cost:
+      tr
+        td #{debtor.quantity}
+        td #{debtor.unit_cost}
+        td #{debtor.total_cost}
+      tr
+        th #{debtor.payment}:
+        td(colspan='2') #{debtor.initial_payment}
+      tr
+        th Discount:
+        td(colspan='2') 0
+      tr
+        th Balance:
+        td(colspan='2', style='color: red') #{debtor.debtor}
+      tr
+        td
+        td
+        td
+          a(href=`/transactions/${debtor._id}`)  Open 

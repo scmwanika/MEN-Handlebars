@@ -1,0 +1,158 @@
+extends layout
+
+block content
+  style.
+    .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    }
+    body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #ebebed;
+    }
+    span {
+    color: blue;
+    font-size: 22pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+    }
+    .dropdown-menu {
+    border: none;
+    }
+    a,
+    label {
+    font-size: 11pt;
+    }
+    .flex-container {
+    display: flex;
+    flex-direction: row;
+    }
+    form {
+    margin: 0 auto;
+    }
+    legend {
+    text-align: center;
+    color: grey;
+    }
+    label {
+    color: grey;
+    margin-bottom: 0;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    select {
+    width: 290px;
+    padding: 0.75%;
+    margin-bottom: 5px;
+    font-size: 14pt;
+    border: none;
+    }
+    .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+    }
+    .transaction {
+    display: none;
+    }
+    .submit {
+    width: 290px;
+    border: none;
+    }
+    /* Responsive layout */
+    @media (max-width: 800px) {
+    .flex-container {
+    flex-direction: column;
+    }
+    }
+    footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    font-size: 12pt;
+    text-align: center;
+    }
+  .flex-container
+    // PAY OFF DEBT FORM
+    form.payment(method='POST', action='/payments', onsubmit='submitPayment()')
+      fieldset
+        legend Pay off debt
+        input#user_id(type='hidden', name='user_id', readonly='')
+        br
+        input#payment_date(type='hidden', name='payment_date', readonly='')
+        label Later Payment:
+        br
+        input#later_payment(type='text', name='later_payment', required='')
+        br
+        button.btn.btn-success.submit(type='submit') Save
+        br
+        span#msg
+    // TRANSACTION FORM
+    form.transaction(method='POST', action='/transactions')
+      input(type='hidden', name='_id', value='{{transaction._id}}')
+      fieldset
+        legend Transaction
+        br
+        label Transaction Type:
+        br
+        input#transaction_type(type='text', name='transaction_type', value='{{transaction.transaction_type}}', readonly='')
+        br
+        label Product:
+        br
+        input#product(type='text', name='product', value='{{transaction.product}}', readonly='')
+        br
+        label Quantity:
+        br
+        input#quantity(type='text', name='quantity', value='{{transaction.quantity}}', readonly='')
+        br
+        label
+          | Unit
+          | Cost:
+        br
+        input#unit_cost(type='text', name='unit_cost', value='{{transaction.unit_cost}}', readonly='')
+        br
+        label
+          | Total
+          | Cost:
+        br
+        input#total_cost(type='text', name='total_cost', value='{{transaction.total_cost}}', readonly='')
+        br
+        label Payment:
+        br
+        input#payment(type='text', name='payment', value='{{transaction.payment}}', readonly='')
+        br
+        label Initial Payment:
+        br
+        input#initial_payment(type='text', name='initial_payment', value='{{transaction.initial_payment}}', readonly='')
+        br
+        label Debt:
+        br
+        input#debt(type='text', name='debt', value='{{transaction.debt}}', readonly='')
+        input#transaction_note(type='hidden', name='transaction_note', value='{{transaction.transaction_note}}', readonly='')
+        br
+        input#userId(type='hidden', name='userId', value='{{transaction.userId}}', readonly='')
+        input#transaction_date(type='hidden', name='transaction_date', value='{{transaction.transaction_date}}', readonly='')
+        button.btn.btn-success.submit(type='submit')
+          | Conclude
+          | Payment
+        br
+  script(type='text/javascript').
+    const submitPayment = () => {
+    // user_id == transaction.userId
+    document.getElementById('user_id').value = "{{transaction.userId}}";
+    // Insert Date automatically
+    document.getElementById('payment_date').value = Date();
+    // Creditor, Debtor
+    if (document.getElementById('transaction_type').value == "Purchases")
+    document.getElementById('creditor').value = document.getElementById('creditor').value - document.getElementById('later_payment').value;
+    if (document.getElementById('transaction_type').value == "Sales")
+    document.getElementById('debtor').value = document.getElementById('debtor').value - document.getElementById('later_payment').value;
+    // Hide the Payment Form
+    $('.payment').css('display', 'none');
+    // Display the Transaction Form
+    $('.transaction').css('display', 'inline');
+    }

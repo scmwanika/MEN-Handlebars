@@ -1,0 +1,110 @@
+extends layout
+
+block content
+  style.
+    .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    }
+    body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #ebebed;
+    }
+    span {
+    color: blue;
+    font-size: 22pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+    }
+    .dropdown-menu {
+    border: none;
+    }
+    a,
+    label {
+    font-size: 11pt;
+    }
+    .listing-table {
+    margin: 0 auto;
+    }
+    th {
+    width: 160px;
+    }
+    form {
+    margin: 0 auto;
+    }
+    input[name='product_name'] {
+    width: 247px;
+    border: none;
+    padding-top: 2px;
+    padding-bottom: 4px;
+    }
+    .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+    }
+    footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    font-size: 12pt;
+    text-align: center;
+    }
+  // SEARCH PRODUCT
+  table.listing-table.table-striped
+    tr
+      td(colspan='2')
+        form.search(action='/products/search')
+          input(name='product_name', placeholder='product name')
+          button.btn.btn-white(type='submit') Search
+    each product in products
+      tr
+        th
+          br
+        td
+          br
+      tr
+        th Product Name:
+        td #{product.product_name}
+      tr
+        th Category:
+        td #{product.category}
+      tr
+        th Retail Price:
+        td #{product.retail_price}
+      tr
+        th Quantity Purchased:
+        td #{product.quantity_purchased}
+      tr
+        th Net Purchases:
+        td #{product.net_purchases}
+      tr
+        th Quantity Sold:
+        td #{product.quantity_sold}
+      tr
+        th Net Sales:
+        td #{product.net_sales}
+      tr
+        th Quantity Instock:
+        td #{product.quantity_instock}
+      tr
+        th Closing Stock:
+        td #{product.closing_stock}
+      tr
+        th Cost of Sales:
+        td #{product.cost_of_sales}
+      tr
+        th Gross Profit:
+        td #{product.gross_profit_or_loss}
+      tr
+        th Discontinued:
+        td #{product.discontinued}
+      tr
+        th
+        td
+          a(href=`/products/${product._id}`)  Transact 
+          
+          // a(href=`/products/delete/${product._id}`, onclick="return confirm('Sure you want to delete this record?');")  Delete

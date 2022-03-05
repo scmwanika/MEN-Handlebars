@@ -1,0 +1,65 @@
+extends layout
+
+block content
+  style.
+    #equity,
+    #fixed_asset,
+    #business_expense,
+    #drawings {
+    display: none;
+    }
+  .flex-container
+    // FORM FOR INSERTING EQUITY, FIXED ASSETS AND BUSINESS COSTS
+    form(method='POST', action='/operations', oninput='inputOperation()')
+      input(type='hidden', name='_id', value=operations._id)
+      fieldset
+        legend Other Accounts
+        br
+        label Transaction Type:
+        br
+        select#transaction_type(name='transaction_type')
+          option(value='') Select...
+          option(value='Equity') Equity
+          option(value='Fixed Asset') Fixed Asset
+          option(value='Business Expense') Business Expense
+          option(value='Drawings') Drawings
+        br
+        label Note:
+        br
+        input#note(type='text', name='note')
+        br
+        label Value:
+        br
+        input#equity(type='text', name='equity')
+        input#fixed_asset(type='text', name='fixed_asset')
+        input#business_expense(type='text', name='business_expense')
+        input#drawings(type='text', name='drawings')
+        input#updated_on(type='hidden', name='updated_on')
+        br
+        button.btn.btn-success.submit(type='submit') Save
+        br
+  script(type='text/javascript').
+    const inputOperation = () => {
+    // Insert Date automatically
+    document.getElementById('updated_on').value = Date();
+    if (document.getElementById('transaction_type').value == "Equity")
+    // Display the field "equity"
+    $('#equity').css('display', 'inline');
+    else
+    $('#equity').css('display', 'none');
+    if (document.getElementById('transaction_type').value == "Fixed Asset")
+    // Display the field "fixed_asset"
+    $('#fixed_asset').css('display', 'inline');
+    else
+    $('#fixed_asset').css('display', 'none');
+    if (document.getElementById('transaction_type').value == "Business Expense")
+    // Display the field "business_expense"
+    $('#business_expense').css('display', 'inline');
+    else
+    $('#business_expense').css('display', 'none');
+    if (document.getElementById('transaction_type').value == "Drawings")
+    // Display the field "drawings"
+    $('#drawings').css('display', 'inline');
+    else
+    $('#drawings').css('display', 'none');
+    }

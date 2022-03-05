@@ -1,0 +1,64 @@
+extends layout
+
+block content
+  style.
+    .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    }
+    body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #ebebed;
+    }
+    span {
+    color: blue;
+    font-size: 22pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+    }
+    .dropdown-menu {
+    border: none;
+    }
+    a,
+    label {
+    font-size: 11pt;
+    }
+    .listing-table {
+    margin: 0 auto;
+    }
+    th,
+    td {
+    width: 160px;
+    }
+    .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+    }
+    footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    font-size: 12pt;
+    text-align: center;
+    }
+  // EQUITY, ASSETS, EXPENSES, DRAWINGS
+  table.listing-table.table-striped
+    each operation in operations
+      tr
+        th(colspan='2') OTHER ACCOUNTS
+      tr
+        td Equity:
+        td #{operation.equity}
+      tr
+        td Fixed Assets:
+        td #{operation.fixed_asset}
+      tr
+        td Business Expenses:
+        td #{operation.business_expense}
+      tr
+        td Drawings:
+        td #{operation.drawings}

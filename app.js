@@ -10,7 +10,7 @@ const port = 3000;
 const app = express();
 
 // SET HANDLEBARS AS VIEW TEMPLATE ENGINE
-app.set('view engine', 'hbs');
+app.set('view engine', 'pug');
 app.set('views', './views');
 
 /*
