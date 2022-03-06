@@ -10,7 +10,7 @@ const port = 3000;
 const app = express();
 
 // SET HANDLEBARS AS VIEW TEMPLATE ENGINE
-app.set('view engine', 'pug');
+app.set('view engine', 'hbs');
 app.set('views', './views');
 
 /*
@@ -18,7 +18,6 @@ MULTIPLE STATIC DIRECTORIES
 SERVING STATIC FILES WITH MIDDLEWARE FUNCTION express.static
 */
 app.use(express.static('static/css'));
-app.use(express.static('static/js'));
 
 // MANIPULATE DATABASE USING JSON
 app.use(express.json());

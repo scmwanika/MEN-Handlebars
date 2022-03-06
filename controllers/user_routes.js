@@ -62,7 +62,7 @@ const insertUser = (req, res) => {
   newuser.address = req.body.address;
   newuser.telephone = req.body.telephone;
   newuser.email = req.body.email;
-  newuser.url = req.body.url;
+  newuser.website = req.body.website;
 
   newuser.save((err) => {
     if (err)

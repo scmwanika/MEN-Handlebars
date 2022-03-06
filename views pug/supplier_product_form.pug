@@ -76,7 +76,7 @@ block content
   .flex-container
     // SUPPLIER FORM
     form.supplier(method='POST', action='/suppliers')
-      input(type='hidden', name='_id', value=supplier._id, readonly='')
+      input(type='text', name='_id', value=supplier._id, readonly='')
       fieldset
         legend Supplier
         br
@@ -117,7 +117,7 @@ block content
       input(type='hidden', name='_id')
       fieldset
         legend Product Details
-        input#user_id(type='hidden', name='user_id', readonly='')
+        input#user_id(type='text', name='user_id', readonly='')
         br
         label
           | Product
@@ -144,7 +144,7 @@ block content
   script(type='text/javascript').
     const submitProduct = () => {
     // user_id == supplier._id
-    document.getElementById('user_id').value = "{{supplier._id}}";
+    document.getElementById('user_id').value = document.getElementById('supplier._id').value;
     // Insert Date automatically
     document.getElementById('created_on').value = Date();
     }
