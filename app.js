@@ -11,13 +11,13 @@ const app = express();
 
 // SET HANDLEBARS AS VIEW TEMPLATE ENGINE
 app.set('view engine', 'hbs');
-app.set('views', './views');
 
 /*
 MULTIPLE STATIC DIRECTORIES
 SERVING STATIC FILES WITH MIDDLEWARE FUNCTION express.static
 */
 app.use(express.static('static/css'));
+app.use(express.static('uploads'))
 
 // MANIPULATE DATABASE USING JSON
 app.use(express.json());
@@ -44,24 +44,18 @@ const userRouter = require('./controllers/user_routes');
 const productRouter = require('./controllers/product_routes');
 const transactionRouter = require('./controllers/transaction_routes');
 const paymentRouter = require('./controllers/payment_routes');
+const orderRouter = require('./controllers/order_routes');
 app.use(operationRouter);
 app.use(userRouter);
 app.use(productRouter);
 app.use(transactionRouter);
 app.use(paymentRouter);
-
-// INDEX ROUTE
-app.get('/', (req, res) => {
-  try {
-    res.render('index')
-  } catch (error) {
-    res.status(400).send('index page closed; please try again.');
-  }
-});
+app.use(orderRouter);
 
 // LOGOUT ROUTE
 app.get('/logout', (req, res) => {
   req.logout();
+  req.session.destroy();
   res.redirect('/');
 });
 

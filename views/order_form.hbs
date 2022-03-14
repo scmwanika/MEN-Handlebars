@@ -1,0 +1,165 @@
+<style>
+  .navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    display: none;
+  }
+
+  body {
+    /* Padding to prevent the content to go underneath the header */
+    padding-top: 75px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    background-color: #ebebed;
+  }
+
+  span {
+    color: blue;
+    font-size: 22pt;
+    font-weight: bolder;
+    font-family: Monotype Corsiva;
+  }
+
+  .dropdown-menu {
+    border: none;
+  }
+
+  a,
+  label {
+    font-size: 11pt;
+  }
+
+  .flex-container,
+  fieldset {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .customer-details,
+  .order-details {
+    width: 50%;
+    margin: 10px;
+  }
+
+  form {
+    margin: 0 auto;
+  }
+
+  legend {
+    text-align: center;
+    color: grey;
+  }
+
+  label {
+    color: grey;
+    margin-bottom: 0;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="url"],
+  select {
+    width: 290px;
+    padding: 0.75%;
+    margin-bottom: 5px;
+    font-size: 14pt;
+    border: none;
+  }
+
+  .logout {
+    color: white;
+    font-size: 12pt;
+    margin-left: 24px;
+  }
+
+  .product {
+    display: none;
+  }
+
+  .submit {
+    width: 290px;
+    border: none;
+  }
+
+  /* Responsive layout */
+  @media (max-width: 800px) {
+
+    .flex-container,
+    fieldset {
+      flex-direction: column;
+    }
+  }
+
+  footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    font-size: 12pt;
+    text-align: center;
+  }
+</style>
+
+<div class="flex-container">
+  <!-- ORDER FORM -->
+  <form class="order" method="POST" action="/orders" oninput="inputOrder()" onsubmit="submitOrder()">
+    <fieldset>
+      <div class="customer-details">
+        <legend>Customer</legend><br /><input id="user" type="hidden" name="user" value="CUSTOMER"
+          required /><label>Name:</label><br /><input id="name" type="text" name="name"
+          required /><br /><label>Country:</label><br /><input id="country" type="text" name="country"
+          required /><br /><label>City/Town:</label><br /><input id="city" type="text" name="city"
+          required /><br /><label>Street:</label><br /><input id="street" type="text" name="street"
+          required /><br /><label>Address:</label><br /><input id="address" type="text" name="address"
+          required /><br /><label>Telephone:</label><br /><input id="telephone" type="text" name="telephone"
+          required /><br /><label>Email:</label><br /><input id="email" type="email" name="email"
+          required /><br /><label>Website: </label><br /><input id="website" type="url" name="website" /><br />
+      </div>
+      <div class="order-details">
+        <legend>Order</legend><br /><label>Product:</label><br /><input id="product" type="text" name="product"
+          readonly /><br /><label>Quantity:</label><br /><input id="quantity" type="text"
+          name="quantity" /><br /><label>Unit
+          Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" readonly /><br /><label>Total
+          Cost:</label><br /><input id="total_cost" type="text" name="total_cost" readonly /><br /><input
+          id="order_date" type="hidden" name="order_date" readonly /><br /><button class="btn btn-success submit"
+          type="submit">Submit</button><br />
+      </div>
+    </fieldset>
+  </form>
+
+  <!-- PRODUCT FORM -->
+  <form class="product" method="POST" action="/items">
+    <input name="_id" value="{{product._id}}">
+    <fieldset>
+      <legend></legend><br /><input id="product_name" name="product_name" value="{{product.product_name}}"
+        readonly /><input id="category" name="category" value="{{product.category}}" readonly /><input id="retail_price"
+        name="retail_price" value="{{product.retail_price}}" readonly /><br />
+    </fieldset>
+  </form>
+</div>
+
+<script type="text/javascript">
+  const inputOrder = () => {
+    // Insert Product automatically
+    document.getElementById('product').value = "{{product.product_name}}";
+
+    // Unit Cost
+    document.getElementById('unit_cost').value = "{{product.retail_price}}";
+
+    // Total Cost
+    document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
+
+    // Insert Date automatically
+    document.getElementById('order_date').value = Date();
+
+    // Transactions by User ID
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('userId').value = "{{product.user_id}}";
+  }
+
+  const submitOrder = () => {
+    // Hide the Transaction Form
+    $('.order').css('display', 'none');
+    // Display the Product Form
+    $('.product').css('display', 'inline');
+  }
+</script>

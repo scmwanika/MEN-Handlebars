@@ -24,6 +24,16 @@ const oidc = new ExpressOIDC({
 
 router.use(oidc.router);
 
+// GET INDEX PAGE
+router.get('/', async (req, res) => {
+  try {
+    const products = await Product.find({ category: req.query.category, discontinued: 'No' });
+    res.render('index', { products });
+  } catch (error) {
+    res.status(400).send('index page closed; please try again.');
+  }
+});
+
 // INSERT OR UPDATE THE PRODUCT BY ID
 router.post('/products', oidc.ensureAuthenticated(), (req, res) => {
   if (req.body._id == '')
@@ -81,10 +91,10 @@ router.get('/products/search', oidc.ensureAuthenticated(), async (req, res) => {
 });
 
 // LIST PRODUCTS
-router.get('/products/list', oidc.ensureAuthenticated(), async (req, res) => {
+router.get('/products/list', async (req, res) => {
   try {
     const products = await Product.find();
-    res.render('list_products', { products });
+    res.json(products);
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -95,6 +105,16 @@ router.get('/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
     res.render('product_form', { product });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// GET THE PRODUCT BY ID -- changed route for orders placed Online.
+router.get('/items/:id', async (req, res) => {
+  try {
+    const product = await Product.findOne({ _id: req.params.id });
+    res.render('order_form', { product });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -125,7 +145,7 @@ router.get('/trading-profit-loss', async (req, res) => {
         }
       }]
     );
-    res.render('trading_profit_loss', {products});
+    res.render('trading_profit_loss', { products });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }

@@ -3,20 +3,49 @@
     display: none;
   }
 
-  p {
-    margin-top: 13%;
-    font-size: 32pt;
+  a {
+    font-size: 12pt;
+    font-weight: lighter;
+  }
+
+  form {
     text-align: center;
   }
 
-  a {
+  select {
+    width: 215px;
     font-size: 14pt;
-    font-weight: bolder;
+    background-color: #ebebed;
+  }
+
+  .card-data {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    column-gap: 20px;
+    text-align: center;
+    border: none;
+  }
+
+  img {
+    width: 100%;
+    height: 50%;
   }
 </style>
 
-<p>
-  SMART<br />
-  Stock Management<br />
-  <a href="/suppliers">login</a>
-</p>
+<form class="search" action="/"><select name="category">
+    <option value="">Products by Category</option>
+    <option value="Horticulture">Horticulture</option>
+    <option value="Poultry">Poultry</option>
+  </select><button class="btn btn-white" type="submit">Search</button></form>
+<br />
+<div class="card-data">
+  {{#each products}}
+  <div>
+    <img src={{this.product_name}}.jpg />
+    <div class="card-title"><b>{{this.product_name}}</b></div>
+    <div class="card-text">{{this.retail_price}} Ugx. /Kg</div>
+    <div class="card-text">Available: {{this.quantity_instock}} Kg</div>
+    <a href="/items/{{this._id}}"> order </a>
+  </div>
+  {{/each}}
+</div>
