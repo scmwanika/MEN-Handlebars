@@ -56,9 +56,13 @@
   }
 
   .logout {
-    color: white;
+    border: none;
     font-size: 12pt;
     margin-left: 24px;
+  }
+
+  .search {
+    border: none;
   }
 
   footer {
@@ -73,10 +77,10 @@
 <!-- SEARCH PRODUCT -->
 <table class="listing-table table-striped">
   <tr>
-    <form class="search" action="/products/search">
+    <form action="/products/search">
       <td colspan="2"><input name="product_name" placeholder="product name" /></td>
       <td>
-        <button class="btn btn-white" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+        <button class="search" type="submit">search <i class="fa fa-search" aria-hidden="true"></i></button>
       </td>
     </form>
   </tr>

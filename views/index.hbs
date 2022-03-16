@@ -21,24 +21,24 @@
   }
 
   select {
-    width: 170px;
+    width: 212px;
     font-size: 14pt;
     color: #FFFFFF;
     background-color: #000000;
   }
 
-  .btn-white {
-    width: 40px;
-    font-size: 14pt;
-    color: #ebebed;
+  .search {
+    border: none;
+    color: #FFFFFF;
+    background-color: #000000;
   }
 
   .cards {
+    border: none;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     column-gap: 20px;
     text-align: center;
-    border: none;
   }
 
   img {
@@ -51,12 +51,12 @@
   }
 </style>
 
-<form class="search" action="/">
+<form action="/">
   <select name="category">
-    <option value="">Search Products</option>
+    <option value="">Products by Category</option>
     <option value="Horticulture">Horticulture</option>
     <option value="Poultry">Poultry</option>
-  </select><button class="btn btn-white" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+  </select><button class="search" type="submit">search <i class="fa fa-search" aria-hidden="true"></i></button>
 </form>
 <br />
 <div class="cards">

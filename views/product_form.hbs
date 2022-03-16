@@ -242,6 +242,20 @@
     if (document.getElementById('transaction_type').value == "Sales Returns")
       document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) - Number(document.getElementById('quantity').value);
 
+    // Quantity Instock
+    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value) - Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value);
+    
+    // Discontinued
+    if (document.getElementById('quantity_instock').value == 0)
+      document.getElementById('discontinued').value = 'Yes'
+    else
+      document.getElementById('discontinued').value = 'No'
+
     // Purchases
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) + Number(document.getElementById('total_cost').value);
@@ -255,14 +269,6 @@
       document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) + Number(document.getElementById('total_cost').value);
     if (document.getElementById('transaction_type').value == "Sales Returns")
       document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('total_cost').value);
-
-    // Quantity Instock
-    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
-      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
-    if (document.getElementById('transaction_type').value == "Purchases Returns")
-      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value) - Number(document.getElementById('quantity').value);
-    if (document.getElementById('transaction_type').value == "Sales Returns")
-      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value);
 
     // Closing Stock
     if (document.getElementById('transaction_type').value == "Purchases")
