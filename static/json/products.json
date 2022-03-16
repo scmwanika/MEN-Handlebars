@@ -1,0 +1,365 @@
+[{
+  "_id": {
+    "$oid": "6221d43a59b3648532eeea97"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Turkey",
+  "category": "Poultry",
+  "retail_price": 1000,
+  "discontinued": "Yes",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "6227113780dc0c36f05fdadd"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Watermelon",
+  "category": "Horticulture",
+  "retail_price": 2000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "6227269080dc0c36f05fdadf"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Green-Bell-Pepper",
+  "category": "Horticulture",
+  "retail_price": 3000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "6227279480dc0c36f05fdae0"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Guinea-fowl",
+  "category": "Poultry",
+  "retail_price": 4000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "6227282980dc0c36f05fdae1"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Broccoli-and-Cauliflower",
+  "category": "Horticulture",
+  "retail_price": 5000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "622734c180dc0c36f05fdae2"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Cabbage",
+  "category": "Horticulture",
+  "retail_price": 6000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "622734da80dc0c36f05fdae3"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Zucchini",
+  "category": "Horticulture",
+  "retail_price": 7000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "6228a65178318947c0569552"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Tomatoes",
+  "category": "Horticulture",
+  "retail_price": 8000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "6228a67578318947c0569553"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Pumpkin",
+  "category": "Horticulture",
+  "retail_price": 9000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "6228a69078318947c0569554"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Passion-fruits",
+  "category": "Horticulture",
+  "retail_price": 10000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "6228a69378318947c0569555"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Onions",
+  "category": "Horticulture",
+  "retail_price": 11000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "622b85248cbb9223a4d9731a"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Red-Yellow-Apples",
+  "category": "Horticulture",
+  "retail_price": 12000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "622b852a8cbb9223a4d9731b"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Yellow-Corn",
+  "category": "Horticulture",
+  "retail_price": 13000,
+  "discontinued": "Yes",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+},{
+  "_id": {
+    "$oid": "622b852e8cbb9223a4d9731c"
+  },
+  "user_id": {
+    "$oid": "6221d3ef59b3648532eeea93"
+  },
+  "product_name": "Brinjal",
+  "category": "Horticulture",
+  "retail_price": 14000,
+  "discontinued": "No",
+  "created_on": {
+    "$date": "2022-03-04T08:56:26Z"
+  },
+  "__v": 0,
+  "closing_stock": 4375000,
+  "cost_of_sales": 1875000,
+  "gross_profit_or_loss": 187500,
+  "net_purchases": 6250000,
+  "net_sales": 2062500,
+  "quantity_instock": 175,
+  "quantity_purchased": 250,
+  "quantity_sold": 75,
+  "updated_on": {
+    "$date": "2022-03-04T09:25:32Z"
+  }
+}]

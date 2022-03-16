@@ -1,4 +1,5 @@
-require('dotenv').config()
+require('dotenv').config();
+const { default: axios } = require('axios');
 const express = require('express');
 const Order = require('../models/order_model');
 
@@ -12,18 +13,8 @@ router.post('/orders', async (req, res) => {
     if (err)
       res.send('Dear customer, we have not received your order; please try again.');
     else
-      res.redirect('orders/search');
+      res.redirect('/');
   });
-});
-
-// SEARCH YOUR INVOICE BY NAME
-router.get('/orders/search', async (req, res) => {
-  try {
-    const orders = await Order.find({ name: req.query.name });
-    res.render('search_order', { orders });
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
 });
 
 module.exports = router;

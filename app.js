@@ -17,7 +17,9 @@ MULTIPLE STATIC DIRECTORIES
 SERVING STATIC FILES WITH MIDDLEWARE FUNCTION express.static
 */
 app.use(express.static('static/css'));
-app.use(express.static('uploads'))
+app.use(express.static('static/img'));
+app.use(express.static('static/json'));
+app.use(express.static('uploads'));
 
 // MANIPULATE DATABASE USING JSON
 app.use(express.json());

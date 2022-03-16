@@ -3,6 +3,14 @@
     display: none;
   }
 
+  body {
+    background-image: url('WallpaperDog-860686.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    color: #FFFFFF;
+  }
+
   a {
     font-size: 12pt;
     font-weight: lighter;
@@ -13,12 +21,19 @@
   }
 
   select {
-    width: 215px;
+    width: 170px;
     font-size: 14pt;
-    background-color: #ebebed;
+    color: #FFFFFF;
+    background-color: #000000;
   }
 
-  .card-data {
+  .btn-white {
+    width: 40px;
+    font-size: 14pt;
+    color: #ebebed;
+  }
+
+  .cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     column-gap: 20px;
@@ -30,15 +45,21 @@
     width: 100%;
     height: 50%;
   }
+
+  footer {
+    color: #000000;
+  }
 </style>
 
-<form class="search" action="/"><select name="category">
-    <option value="">Products by Category</option>
+<form class="search" action="/">
+  <select name="category">
+    <option value="">Search Products</option>
     <option value="Horticulture">Horticulture</option>
     <option value="Poultry">Poultry</option>
-  </select><button class="btn btn-white" type="submit">Search</button></form>
+  </select><button class="btn btn-white" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+</form>
 <br />
-<div class="card-data">
+<div class="cards">
   {{#each products}}
   <div>
     <img src={{this.product_name}}.jpg />

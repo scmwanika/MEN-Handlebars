@@ -13,9 +13,9 @@
   }
 
   span {
-    color: blue;
+    color: #0000FF;
     font-size: 22pt;
-    font-weight: bolder;
+    font-weight: lighter;
     font-family: Monotype Corsiva;
   }
 
@@ -59,14 +59,13 @@
   }
 
   .logout {
-    color: white;
+    border: none;
     font-size: 12pt;
     margin-left: 24px;
   }
 
   .submit {
-    width: 290px;
-    border: none;
+    width: 25%;
   }
 
   /* Responsive layout */
@@ -112,9 +111,9 @@
         name="product_name" /><br /><label>Category:</label><br /><input id="category" type="text"
         name="category" /><br /><label>Proposed Retail Price:</label><br /><input id="retail_price" type="text"
         name="retail_price" /><br /><label>Discontinued:</label><br /><input id="discontinued" type="text"
-        name="discontinued" value="No" readonly /><input id="created_on" type="hidden" name="created_on"
+        name="discontinued" value="Yes" readonly /><input id="created_on" type="hidden" name="created_on"
         readonly /><br /><button class="btn btn-success submit" type="submit">
-        Save</button><br />
+        Save <i class="fa fa-save"></i></button><br />
     </fieldset>
   </form>
 </div>

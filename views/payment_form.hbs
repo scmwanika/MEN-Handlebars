@@ -13,9 +13,9 @@
   }
 
   span {
-    color: blue;
+    color: #0000FF;
     font-size: 22pt;
-    font-weight: bolder;
+    font-weight: lighter;
     font-family: Monotype Corsiva;
   }
 
@@ -59,18 +59,17 @@
   }
 
   .logout {
-    color: white;
+    border: none;
     font-size: 12pt;
     margin-left: 24px;
   }
 
-  .transaction {
-    display: none;
+  .submit {
+    width: 25%;
   }
 
-  .submit {
-    width: 290px;
-    border: none;
+  .transaction {
+    display: none;
   }
 
   /* Responsive layout */
@@ -96,7 +95,7 @@
       <legend>Pay off debt</legend><input id="user_id" type="hidden" name="user_id" readonly /><br /><input
         id="payment_date" type="hidden" name="payment_date" readonly /><label>Later Payment:</label><br /><input
         id="later_payment" type="text" name="later_payment" required /><br /><button class="btn btn-success submit"
-        type="submit">Save</button><br />
+        type="submit">Save <i class="fa fa-save"></i></button><br />
       <span id="msg"></span>
     </fieldset>
   </form>

@@ -14,9 +14,9 @@
   }
 
   span {
-    color: blue;
+    color: #0000FF;
     font-size: 22pt;
-    font-weight: bolder;
+    font-weight: lighter;
     font-family: Monotype Corsiva;
   }
 
@@ -67,18 +67,17 @@
   }
 
   .logout {
-    color: white;
+    border: none;
     font-size: 12pt;
     margin-left: 24px;
   }
 
-  .product {
-    display: none;
+  .submit {
+    width: 25%;
   }
 
-  .submit {
-    width: 290px;
-    border: none;
+  .product {
+    display: none;
   }
 
   /* Responsive layout */
@@ -128,11 +127,11 @@
 
   <!-- PRODUCT FORM -->
   <form class="product" method="POST" action="/items">
-    <input name="_id" value="{{product._id}}">
+    <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
-      <legend></legend><br /><input id="product_name" name="product_name" value="{{product.product_name}}"
-        readonly /><input id="category" name="category" value="{{product.category}}" readonly /><input id="retail_price"
-        name="retail_price" value="{{product.retail_price}}" readonly /><br />
+      <legend></legend><br /><input id="product_name" type="hidden" name="product_name" value="{{product.product_name}}"
+        readonly /><input id="category" type="hidden" name="category" value="{{product.category}}" readonly /><input
+        id="retail_price" type="hidden" name="retail_price" value="{{product.retail_price}}" readonly /><br />
     </fieldset>
   </form>
 </div>

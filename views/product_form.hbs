@@ -13,9 +13,9 @@
   }
 
   span {
-    color: blue;
+    color: #0000FF;
     font-size: 22pt;
-    font-weight: bolder;
+    font-weight: lighter;
     font-family: Monotype Corsiva;
   }
 
@@ -64,21 +64,21 @@
 
   #creditor,
   #debtor,
-  #drawings {
-    display: none;
-  }
-
-  .logout {
-    color: white;
-    font-size: 12pt;
-    margin-left: 24px;
-  }
-
+  #drawings,
   .product {
     display: none;
   }
 
-  .submit,
+  .logout {
+    border: none;
+    font-size: 12pt;
+    margin-left: 24px;
+  }
+
+  .submit {
+    width: 25%;
+  }
+
   .select-item {
     width: 290px;
     border: none;
@@ -124,7 +124,8 @@
         name="creditor" readonly /><input id="debtor" type="text" name="debtor" readonly /><input id="drawings"
         type="text" name="drawings" readonly /><br /><input id="userId" type="text" name="userId"
         placeholder="Customer Id" required /><input id="transaction_date" type="hidden" name="transaction_date"
-        readonly /><br /><button class="btn btn-success submit" type="submit">Save</button><br />
+        readonly /><br /><button class="btn btn-success submit" type="submit">Save <i
+          class="fa fa-save"></i></button><br />
     </fieldset>
   </form>
 

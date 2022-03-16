@@ -12,9 +12,9 @@ body {
 }
 
 span {
-  color: blue;
+  color: #0000FF;
   font-size: 22pt;
-  font-weight: bolder;
+  font-weight: lighter;
   font-family: Monotype Corsiva;
 }
 
@@ -58,14 +58,13 @@ select {
 }
 
 .logout {
-  color: white;
+  border: none;
   font-size: 12pt;
   margin-left: 24px;
 }
 
 .submit {
-  width: 290px;
-  border: none;
+  width: 25%;
 }
 
 /* Responsive layout */
