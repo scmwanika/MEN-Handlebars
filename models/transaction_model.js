@@ -33,7 +33,7 @@ const transactionSchema = new Schema({
   debtor: {
     type: Number,
   },
-  drawings: {
+  goods_withdrawn: {
     type: Number,
   },
   transaction_date: {

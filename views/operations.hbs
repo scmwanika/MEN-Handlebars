@@ -2,28 +2,33 @@
   #equity,
   #fixed_asset,
   #business_expense,
-  #drawings {
+  #cash_withdrawn {
     display: none;
   }
 </style>
 
 <div class="flex-container">
-  <!-- FORM FOR INSERTING EQUITY, FIXED ASSETS AND BUSINESS COSTS -->
+  <!-- BOOKKEEPING -->
   <form method="POST" action="/operations" oninput="inputOperation()">
     <input type="hidden" name="_id" value="{{operations._id}}">
     <fieldset>
-      <legend>Other Accounts</legend><br /><label>Transaction Type:</label><br /><select id="transaction_type"
-        name="transaction_type">
+      <legend>Bookkeeping</legend><br />
+      <label>Transaction Type:</label><br />
+      <select id="transaction_type" name="transaction_type" required>
         <option value="">Select...</option>
         <option value="Equity">Equity</option>
         <option value="Fixed Asset">Fixed Asset</option>
         <option value="Business Expense">Business Expense</option>
-        <option value="Drawings">Drawings</option>
-      </select><br /><label>Note:</label><br /><input id="note" type="text"
-        name="note" /><br /><label>Value:</label><br /><input id="equity" type="text" name="equity" /><input
-        id="fixed_asset" type="text" name="fixed_asset" /><input id="business_expense" type="text"
-        name="business_expense" /><input id="drawings" type="text" name="drawings" /><input id="updated_on"
-        type="hidden" name="updated_on" /><br /><button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
+        <option value="Cash Withdrawn">Cash Withdrawn</option>
+      </select>
+      <br />
+      <input id="note" type="text" name="note" placeholder="note" /><br />
+      <input id="equity" type="text" name="equity" placeholder="insert the amount injected into the ..." />
+      <input id="fixed_asset" type="text" name="fixed_asset" placeholder="insert the cost of asset" />
+      <input id="business_expense" type="text" name="business_expense" placeholder="insert the expense" />
+      <input id="cash_withdrawn" type="text" name="cash_withdrawn" placeholder="insert the amount withdrawn" />
+      <input id="updated_on" type="hidden" name="updated_on" /><br />
+      <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
     </fieldset>
   </form>
 </div>
@@ -53,11 +58,11 @@
     else
       $('#business_expense').css('display', 'none');
 
-    if (document.getElementById('transaction_type').value == "Drawings")
-      // Display the field "drawings"
-      $('#drawings').css('display', 'inline');
+    if (document.getElementById('transaction_type').value == "Cash Withdrawn")
+      // Display the field "Goods Withdrawn"
+      $('#cash_withdrawn').css('display', 'inline');
     else
-      $('#drawings').css('display', 'none');
+      $('#cash_withdrawn').css('display', 'none');
 
   }
 

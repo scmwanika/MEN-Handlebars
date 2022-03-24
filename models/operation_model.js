@@ -10,16 +10,16 @@ const operationSchema = new Schema({
     type: String,
   },
   equity: {
-    type: Number,
+    type: String,
   },
   fixed_asset: {
-    type: Number,
+    type: String,
   },
   business_expense: {
-    type: Number,
+    type: String,
   },
-  drawings: {
-    type: Number,
+  cash_withdrawn: {
+    type: String,
   },
   updated_on: {
     type: Date,

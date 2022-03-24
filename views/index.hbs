@@ -21,8 +21,8 @@
   }
 
   select {
-    width: 212px;
-    font-size: 14pt;
+    width: 140px;
+    font-size: 12pt;
     color: #FFFFFF;
     background-color: #000000;
   }
@@ -52,10 +52,12 @@
 </style>
 
 <form action="/">
+  PRODUCTS
+  <br />
   <select name="category">
-    <option value="">Products by Category</option>
-    <option value="Horticulture">Horticulture</option>
-    <option value="Poultry">Poultry</option>
+    {{#each items.category}}
+    <option value={{this}}>{{this}}</option>
+    {{/each}}
   </select><button class="search" type="submit">search <i class="fa fa-search" aria-hidden="true"></i></button>
 </form>
 <br />
