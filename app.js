@@ -61,11 +61,11 @@ app.use(oidc.router);
 // IMPORT MODELS
 const User = require('./models/user_model');
 const Product = require('./models/product_model');
-const items = require('./models/product_catalogue_model');
+const items = require('./models/product_catalogue');
 const Transaction = require('./models/transaction_model');
 const Order = require('./models/order_model');
 const Payment = require('./models/payment_model');
-const Operation = require('./models/operation_model');
+const financeAndInvestment = require('./models/financeAndInvestment_model');
 
 /* --- USER CONTROLLERS --- */
 
@@ -113,13 +113,13 @@ const insertUser = (req, res) => {
     if (err)
       res.send('Unable to save the user; please try again.');
     else
-      res.redirect('suppliers/list');
+      res.redirect('products/search');
   });
 }
 
 // FUNCTION TO UPDATE THE USER
 const updateUser = (req, res) => {
-  user.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
+  User.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
     if (err)
       res.send('Unable to save the user; please try again.');
   });
@@ -135,16 +135,6 @@ app.get('/suppliers/list', oidc.ensureAuthenticated(), async (req, res) => {
   }
 });
 
-// LIST CUSTOMERS
-app.get('/customers/list', async (req, res) => {
-  try {
-    const customers = await User.find({ user: 'CUSTOMER' });
-    res.json(customers);
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
 // GET THE SUPPLIER BY ID
 app.get('/suppliers/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
@@ -155,7 +145,7 @@ app.get('/suppliers/:id', oidc.ensureAuthenticated(), async (req, res) => {
   }
 });
 
-// MATCH USER(Supplier, Customer) TO TRANSACTIONS
+// MATCH USER(Proprietor, Supplier, Customer) TO TRANSACTIONS
 app.get('/users/transactions', async (req, res) => {
   try {
     const users = await User.aggregate
@@ -258,8 +248,8 @@ app.get('/products/list', oidc.ensureAuthenticated(), async (req, res) => {
 app.get('/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
-    const customers = await axios.get('http://localhost:3000/customers/list');
-    res.render('product_form', { product, customers: customers.data });
+    const users = await axios.get('http://localhost:3000/users/transactions');
+    res.render('product_form', { product, users: users.data });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -285,7 +275,7 @@ app.get('/products/delete/:id', oidc.ensureAuthenticated(), async (req, res) => 
   }
 });
 
-// TRADING AND PROFIT AND LOSS ACCOUNT
+// financeAndInvestmentS
 app.get('/trading-profit-loss', async (req, res) => {
   try {
     const products = await Product.aggregate(
@@ -345,7 +335,7 @@ const updateTransaction = (req, res) => {
     if (err)
       res.send('Unable to save the transaction; please try again.');
     else
-      res.redirect('transactions/debt');
+      res.redirect('transactions/debtors');
   });
 }
 
@@ -369,8 +359,8 @@ app.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => {
   }
 });
 
-// CREDITOR, DEBTORS, cash_withdrawn
-app.get('/creditor-debtors-cash_withdrawn', async (req, res) => {
+// CREDITOR, DEBTORS, GOODS WITHDRAWN
+app.get('/creditor-debtors-goodswithdrawn', async (req, res) => {
   try {
     const transactions = await Transaction.aggregate(
       [{
@@ -378,11 +368,11 @@ app.get('/creditor-debtors-cash_withdrawn', async (req, res) => {
           "_id": "",
           creditor: { $sum: "$creditor" },
           debtor: { $sum: "$debtor" },
-          cash_withdrawn: { $sum: "$cash_withdrawn" }
+          goods_withdrawn: { $sum: "$goods_withdrawn" }
         }
       }]
     );
-    res.render('creditor_debtors_cash_withdrawn', { transactions });
+    res.render('creditor_debtors_goodsWithdrawn', { transactions });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -416,76 +406,71 @@ app.post('/payments', oidc.ensureAuthenticated(), async (req, res) => {
   }
 })
 
-/* --- BOOKKEEPING CONTROLLERS --- */
+/* --- FINANCE AND INVESTMENTS CONTROLLERS --- */
 
-// GET THE OPERATIONS FORM
-app.get('/operations', oidc.ensureAuthenticated(), (req, res) => {
-  res.render('operations');
+// GET THE financeAndInvestmentS FORM
+app.get('/finance-and-investments', oidc.ensureAuthenticated(), (req, res) => {
+  res.render('finance_and_investments');
 });
 
-// INSERT OR UPDATE OPERATIONS BY ID
-app.post('/operations', oidc.ensureAuthenticated(), (req, res) => {
+// INSERT OR UPDATE financeAndInvestmentS BY ID
+app.post('/finance-and-investments', oidc.ensureAuthenticated(), (req, res) => {
   if (req.body._id == '')
-    insertOperation(req, res);
+    insertfinanceAndInvestment(req, res);
   else
-    updateOperation(req, res);
+    updatefinanceAndInvestment(req, res);
 });
 
-// FUNCTION TO INSERT THE OPERATION
-const insertOperation = (req, res) => {
-  const newOperation = new Operation();
+// FUNCTION TO INSERT FINANCE AND INVESTMENTS
+const insertfinanceAndInvestment = (req, res) => {
+  const newfinanceInvestment = new financeAndInvestment();
 
-  newOperation.transaction_type = req.body.transaction_type;
-  newOperation.note = req.body.note;
-  newOperation.equity = req.body.equity;
-  newOperation.fixed_asset = req.body.fixed_asset;
-  newOperation.business_expense = req.body.business_expense;
-  newOperation.cash_withdrawn = req.body.cash_withdrawn;
-  newOperation.updated_on = req.body.updated_on;
+  newfinanceInvestment.transaction_type = req.body.transaction_type;
+  newfinanceInvestment.note = req.body.note;
+  newfinanceInvestment.equity = req.body.equity;
+  newfinanceInvestment.loan = req.body.loan;
+  newfinanceInvestment.fixed_asset = req.body.fixed_asset;
+  newfinanceInvestment.business_expense = req.body.business_expense;
+  newfinanceInvestment.cash_withdrawn = req.body.cash_withdrawn;
+  newfinanceInvestment.updated_on = req.body.updated_on;
 
-  newOperation.save((err) => {
+  newfinanceInvestment.save((err) => {
     if (err)
-      res.send('Unable to save the operation; please try again.');
+      res.send('Unable to save the record; please try again.');
     else
-      res.redirect('equity-assets-expenses-cash_withdrawn');
+      res.redirect('finance-investments');
   });
 }
 
-// FUNCTION TO UPDATE THE OPERATION
-const updateOperation = (req, res) => {
-  Operation.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
+// FUNCTION TO UPDATE FINANCE AND INVESTMENTS
+const updatefinanceAndInvestment = (req, res) => {
+  financeAndInvestment.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
     if (err)
-      res.send('Unable to save the operation; please try again.');
+      res.send('Unable to save the record; please try again.');
     else
-      res.redirect('equity-assets-expenses-cash_withdrawn');
+      res.redirect('finance-investments');
   });
 }
 
-// GET THE OPERATION BY ID
-app.get('/operations/:id', oidc.ensureAuthenticated(), async (req, res) => {
-  try {
-    const operation = await Operation.findOne({ _id: req.params.id });
-    //res.render('payment_form', { operation });
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
+// GET THE FINANCE AND INVESTMENTS BY ID
 
-// EQUITY, ASSETS, EXPENSES, cash_withdrawn
-app.get('/equity-assets-expenses-cash_withdrawn', async (req, res) => {
+
+// FINANCE AND INVESTMENTS SUMMARIZED
+app.get('/finance-investments', async (req, res) => {
   try {
-    const operations = await Operation.aggregate(
+    const financeInvestments = await financeAndInvestment.aggregate(
       [{
         "$group": {
           "_id": "",
           equity: { $sum: "$equity" },
+          loan: { $sum: "$loan" },
           fixed_asset: { $sum: "$fixed_asset" },
           business_expense: { $sum: "$business_expense" },
           cash_withdrawn: { $sum: "$cash_withdrawn" }
         }
       }]
     );
-    res.render('equity_assets_expenses_cash_withdrawn', { operations });
+    res.render('finance_investments', { financeInvestments });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }

@@ -65,7 +65,8 @@
   #creditor,
   #debtor,
   #goods_withdrawn,
-  .product {
+  .product,
+  .select-option {
     display: none;
   }
 
@@ -109,7 +110,7 @@
       <legend>Trading Activities</legend><br />
       <label>Transaction Type:</label><br />
       <select id="transaction_type" name="transaction_type" required>
-        <option value="">Select...</option>
+        <option value="">Select ...</option>
         <option value="Purchases">Purchases</option>
         <option value="Sales">Sales</option>
         <option value="Goods Withdrawn">Goods Withdrawn</option>
@@ -127,8 +128,9 @@
       <input id="creditor" type="text" name="creditor" readonly />
       <input id="debtor" type="text" name="debtor" readonly />
       <input id="goods_withdrawn" type="text" name="goods_withdrawn" readonly /><br />
-      <select name="userId" required>
-        {{#each customers}}
+      <select id="userId" name="userId" required>
+        {{#each users}}
+        <option class="select-option" value="">Select ...</option>
         <option value={{this._id}}>{{this.name}}</option>
         {{/each}}
       </select>
@@ -160,7 +162,7 @@
       <input id="discontinued" type="hidden" name="discontinued" value="{{product.discontinued}}" readonly /><br />
       <input id="created_on" type="hidden" name="created_on" value="{{product.created_on}}" readonly />
       <input id="updated_on" type="hidden" name="updated_on" value="{{product.updated_on}}" readonly /><br />
-      <button class="btn btn-success submit" type="submit">Conclude Transaction</button><br />
+      <button class="btn btn-success conclude" type="submit">Conclude Transaction</button><br />
     </fieldset>
   </form>
 </div>
@@ -168,6 +170,9 @@
 <script type="text/javascript">
 
   const inputTransaction = () => {
+
+    // Total Cost
+    document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
 
     // Insert Product automatically
     document.getElementById('product').value = "{{product.product_name}}";
@@ -189,9 +194,6 @@
       document.getElementById('unit_cost').value = "";
     if (document.getElementById('transaction_type').value == "Sales Returns")
       document.getElementById('unit_cost').value = "";
-
-    // Total Cost
-    document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
 
     // Payment: Issued, Received, or Goods Withdrawn
     if (document.getElementById('transaction_type').value == "Purchases")

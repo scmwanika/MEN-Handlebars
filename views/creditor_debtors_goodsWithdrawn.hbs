@@ -32,9 +32,15 @@
     margin: 0 auto;
   }
 
-  th,
+  th {
+    width: 160px;
+    text-align: left;
+    font-weight: lighter;
+  }
+
   td {
     width: 160px;
+    text-align: right;
   }
 
   .logout {
@@ -52,22 +58,22 @@
   }
 </style>
 
-<!-- CREDITOR, DEBTORS, DRAWINGS -->
+<!-- DEBT AND GOODS WITHDRAWN -->
 <table class="listing-table table-striped">
   {{#each transactions}}
   <tr>
-    <th colspan="2">DEBT AND DRAWINGS</th>
+    <th colspan="2">CREDITOR, DEBTORS AND GOODS WITHDRAWN</th>
   </tr>
   <tr>
-    <td>Creditor:</td>
+    <th>Creditor:</th>
     <td>{{this.creditor}}</td>
   </tr>
   <tr>
-    <td>Debtors:</td>
+    <th>Debtors:</th>
     <td>{{this.debtor}}</td>
   </tr>
   <tr>
-    <td>Goods Withdrawn:</td>
+    <th>Goods Withdrawn:</th>
     <td>{{this.goods_withdrawn}}</td>
   </tr>
   {{/each}}

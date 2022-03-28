@@ -32,9 +32,15 @@
     margin: 0 auto;
   }
 
-  th,
+  th {
+    width: 160px;
+    text-align: left;
+    font-weight: lighter;
+  }
+
   td {
     width: 160px;
+    text-align: right;
   }
 
   .logout {
@@ -52,26 +58,30 @@
   }
 </style>
 
-<!-- EQUITY, ASSETS, EXPENSES, DRAWINGS -->
+<!-- FINANCE AND INVESTMENTS -->
 <table class="listing-table table-striped">
-  {{#each operations}}
+  {{#each financeInvestments}}
   <tr>
-    <th colspan="2">OTHER ACCOUNTS</th>
+    <th colspan="2">FINANCE AND INVESTMENTS</th>
   </tr>
   <tr>
-    <td>Equity:</td>
+    <th>Equity:</th>
     <td>{{this.equity}}</td>
   </tr>
   <tr>
-    <td>Fixed Assets:</td>
+    <th>Loan:</th>
+    <td>{{this.loan}}</td>
+  </tr>
+  <tr>
+    <th>Fixed Assets:</th>
     <td>{{this.fixed_asset}}</td>
   </tr>
   <tr>
-    <td>Business Expenses:</td>
+    <th>Business Expenses:</th>
     <td>{{this.business_expense}}</td>
   </tr>
   <tr>
-    <td>Cash Withdrawn:</td>
+    <th>Cash Withdrawn:</th>
     <td>{{this.cash_withdrawn}}</td>
   </tr>
   {{/each}}

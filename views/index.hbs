@@ -33,6 +33,10 @@
     background-color: #000000;
   }
 
+  .select-option {
+    display: none;
+  }
+
   .cards {
     border: none;
     display: grid;
@@ -52,10 +56,11 @@
 </style>
 
 <form action="/">
-  PRODUCTS
+  PRODUCT CATALOGUE
   <br />
   <select name="category">
     {{#each items.category}}
+    <option class="select-option" value="">Select ...</option>
     <option value={{this}}>{{this}}</option>
     {{/each}}
   </select><button class="search" type="submit">search <i class="fa fa-search" aria-hidden="true"></i></button>

@@ -17,8 +17,6 @@
     "express-session": "^1.17.2",
     "hbs": "^4.2.0",
     "mongoose": "^6.1.6",
-    "nodemon": "^2.0.15",
-    "passport": "^0.5.2",
-    "passport-openidconnect": "^0.1.1"
+    "nodemon": "^2.0.15"
   }
 }

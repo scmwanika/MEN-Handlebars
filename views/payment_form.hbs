@@ -92,11 +92,12 @@
   <!-- PAY OFF DEBT FORM -->
   <form class="payment" method="POST" action="/payments" onsubmit="submitPayment()">
     <fieldset>
-      <legend>Pay off debt</legend><input id="user_id" type="hidden" name="user_id" readonly /><br /><input
-        id="payment_date" type="hidden" name="payment_date" readonly /><label>Later Payment:</label><br /><input
-        id="later_payment" type="text" name="later_payment" required /><br /><button class="btn btn-success submit"
-        type="submit">Save <i class="fa fa-save"></i></button><br />
-      <span id="msg"></span>
+      <legend>Pay off debt</legend>
+      <input id="user_id" type="hidden" name="user_id" readonly /><br />
+      <input id="payment_date" type="hidden" name="payment_date" readonly />
+      <label>Later Payment:</label><br />
+      <input id="later_payment" type="text" name="later_payment" required /><br />
+      <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
     </fieldset>
   </form>
 
@@ -104,24 +105,33 @@
   <form class="transaction" method="POST" action="/transactions">
     <input type="hidden" name="_id" value="{{transaction._id}}">
     <fieldset>
-      <legend>Transaction</legend><br /><label>Transaction Type:</label><br /><input id="transaction_type" type="text"
-        name="transaction_type" value="{{transaction.transaction_type}}"
-        readonly /><br /><label>Product:</label><br /><input id="product" type="text" name="product"
-        value="{{transaction.product}}" readonly /><br /><label>Quantity:</label><br /><input id="quantity" type="text"
-        name="quantity" value="{{transaction.quantity}}" readonly /><br /><label>Unit
-        Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" value="{{transaction.unit_cost}}"
-        readonly /><br /><label>Total
-        Cost:</label><br /><input id="total_cost" type="text" name="total_cost" value="{{transaction.total_cost}}"
-        readonly /><br /><label>Payment:</label><br /><input id="payment" type="text" name="payment"
-        value="{{transaction.payment}}" readonly /><br /><label>Initial Payment:</label><br /><input
-        id="initial_payment" type="text" name="initial_payment" value="{{transaction.initial_payment}}"
-        readonly /><br /><label>Debt:</label><br /><input id="debt" type="text" name="debt" value="{{transaction.debt}}"
-        readonly /><input id="transaction_note" type="hidden" name="transaction_note"
-        value="{{transaction.transaction_note}}" readonly /><br /><input id="userId" type="hidden" name="userId"
-        value="{{transaction.userId}}" readonly /><input id="transaction_date" type="hidden" name="transaction_date"
-        value="{{transaction.transaction_date}}" readonly /><button class="btn btn-success submit"
-        type="submit">Conclude
-        Payment</button><br />
+      <legend>Transaction</legend><br />
+      <label>Transaction Type:</label><br />
+      <input id="transaction_type" type="text" name="transaction_type" value="{{transaction.transaction_type}}"
+        readonly /><br />
+      <label>Product:</label><br />
+      <input id="product" type="text" name="product" value="{{transaction.product}}" readonly /><br />
+      <label>Quantity:</label><br />
+      <input id="quantity" type="text" name="quantity" value="{{transaction.quantity}}" readonly /><br />
+      <label>Unit Cost:</label><br />
+      <input id="unit_cost" type="text" name="unit_cost" value="{{transaction.unit_cost}}" readonly /><br />
+      <label>Total Cost:</label><br />
+      <input id="total_cost" type="text" name="total_cost" value="{{transaction.total_cost}}" readonly /><br />
+      <label>Payment:</label><br />
+      <input id="payment" type="text" name="payment" value="{{transaction.payment}}" readonly /><br />
+      <label>Initial Payment:</label><br />
+      <input id="initial_payment" type="text" name="initial_payment" value="{{transaction.initial_payment}}"
+        readonly /><br />
+      <label>Creditor:</label><br />
+      <input id="creditor" type="text" name="creditor" value="{{transaction.creditor}}" readonly /><br />
+      <label>Debtor:</label><br />
+      <input id="debtor" type="text" name="debtor" value="{{transaction.debtor}}" readonly />
+      <input id="transaction_note" type="hidden" name="transaction_note" value="{{transaction.transaction_note}}"
+        readonly /><br />
+      <input id="userId" type="hidden" name="userId" value="{{transaction.userId}}" readonly />
+      <input id="transaction_date" type="hidden" name="transaction_date" value="{{transaction.transaction_date}}"
+        readonly />
+      <button class="btn btn-success conclude" type="submit">Conclude Payment</button><br />
     </fieldset>
   </form>
 </div>
@@ -137,9 +147,9 @@
 
     // Creditor, Debtor
     if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('creditor').value = document.getElementById('creditor').value - document.getElementById('later_payment').value;
+      document.getElementById('creditor').value = Number(document.getElementById('creditor').value) - Number(document.getElementById('later_payment').value);
     if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('debtor').value = document.getElementById('debtor').value - document.getElementById('later_payment').value;
+      document.getElementById('debtor').value = Number(document.getElementById('debtor').value) - Number(document.getElementById('later_payment').value);
 
     // Hide the Payment Form
     $('.payment').css('display', 'none');

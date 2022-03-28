@@ -33,13 +33,19 @@
     margin: 0 auto;
   }
 
-  th,
+  th {
+    width: 160px;
+    text-align: left;
+    font-weight: lighter;
+  }
+
   td {
     width: 160px;
+    text-align: right;
   }
 
   .logout {
-    color: white;
+    border: none;
     font-size: 12pt;
     margin-left: 24px;
   }
@@ -57,26 +63,26 @@
 <table class="listing-table table-striped">
   {{#each products}}
   <tr>
-    <th colspan="2">TRADING, PROFIT / LOSS ACCOUNT</th>
+    <th colspan="2">TRADING AND PROFIT AND LOSS ACCOUNT</th>
   </tr>
   <tr>
-    <td>Net Purchases:</td>
+    <th>Net Purchases:</th>
     <td>{{this.net_purchases}}</td>
   </tr>
   <tr>
-    <td>Net Sales:</td>
+    <th>Net Sales:</th>
     <td>{{this.net_sales}}</td>
   </tr>
   <tr>
-    <td>Closing Stock:</td>
+    <th>Closing Stock:</th>
     <td>{{this.closing_stock}}</td>
   </tr>
   <tr>
-    <td>Cost of Sales:</td>
+    <th>Cost of Sales:</th>
     <td>{{this.cost_of_sales}}</td>
   </tr>
   <tr>
-    <td>Gross Profit or Loss:</td>
+    <th>Gross Profit or Loss:</th>
     <td>{{this.gross_profit_or_loss}}</td>
   </tr>
   {{/each}}

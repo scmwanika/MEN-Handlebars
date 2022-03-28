@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const operationSchema = new Schema({
+const finance_and_investmentsSchema = new Schema({
   transaction_type: {
     type: String,
   },
@@ -10,22 +10,25 @@ const operationSchema = new Schema({
     type: String,
   },
   equity: {
-    type: String,
+    type: Number,
+  },
+  loan: {
+    type: Number,
   },
   fixed_asset: {
-    type: String,
+    type: Number,
   },
   business_expense: {
-    type: String,
+    type: Number,
   },
   cash_withdrawn: {
-    type: String,
+    type: Number,
   },
   updated_on: {
     type: Date,
   },
 }, {
-  collection: 'operations',
+  collection: 'finance-and-investments',
 });
 
-module.exports = mongoose.model('Operation', operationSchema);
+module.exports = mongoose.model('financeAndInvestment', finance_and_investmentsSchema);

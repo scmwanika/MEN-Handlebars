@@ -9,14 +9,15 @@
 
 <div class="flex-container">
   <!-- BOOKKEEPING -->
-  <form method="POST" action="/operations" oninput="inputOperation()">
-    <input type="hidden" name="_id" value="{{operations._id}}">
+  <form method="POST" action="/finance-and-investments" oninput="inputOperation()">
+    <input type="hidden" name="_id" value="{{finance-and-investments._id}}">
     <fieldset>
       <legend>Bookkeeping</legend><br />
       <label>Transaction Type:</label><br />
       <select id="transaction_type" name="transaction_type" required>
-        <option value="">Select...</option>
+        <option value="">Select ...</option>
         <option value="Equity">Equity</option>
+        <option value="Loan">Loan</option>
         <option value="Fixed Asset">Fixed Asset</option>
         <option value="Business Expense">Business Expense</option>
         <option value="Cash Withdrawn">Cash Withdrawn</option>
@@ -24,6 +25,7 @@
       <br />
       <input id="note" type="text" name="note" placeholder="note" /><br />
       <input id="equity" type="text" name="equity" placeholder="insert the amount injected into the ..." />
+      <input id="loan" type="text" name="loan" placeholder="insert the amount borrowed ..." />
       <input id="fixed_asset" type="text" name="fixed_asset" placeholder="insert the cost of asset" />
       <input id="business_expense" type="text" name="business_expense" placeholder="insert the expense" />
       <input id="cash_withdrawn" type="text" name="cash_withdrawn" placeholder="insert the amount withdrawn" />
@@ -45,6 +47,12 @@
       $('#equity').css('display', 'inline');
     else
       $('#equity').css('display', 'none');
+
+    if (document.getElementById('transaction_type').value == "Loan")
+      // Display the field "loan"
+      $('#loan').css('display', 'inline');
+    else
+      $('#loan').css('display', 'none');
 
     if (document.getElementById('transaction_type').value == "Fixed Asset")
       // Display the field "fixed_asset"
