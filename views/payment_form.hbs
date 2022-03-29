@@ -90,7 +90,7 @@
 
 <div class="flex-container">
   <!-- PAY OFF DEBT FORM -->
-  <form class="payment" method="POST" action="/payments" onsubmit="submitPayment()">
+  <form class="payment" method="POST" action="/payments/new" onsubmit="submitPayment()">
     <fieldset>
       <legend>Pay off debt</legend>
       <input id="user_id" type="hidden" name="user_id" readonly /><br />
@@ -102,32 +102,23 @@
   </form>
 
   <!-- TRANSACTION FORM -->
-  <form class="transaction" method="POST" action="/transactions">
+  <form class="transaction" method="POST" action="/transactions/new">
     <input type="hidden" name="_id" value="{{transaction._id}}">
     <fieldset>
-      <legend>Transaction</legend><br />
-      <label>Transaction Type:</label><br />
-      <input id="transaction_type" type="text" name="transaction_type" value="{{transaction.transaction_type}}"
-        readonly /><br />
-      <label>Product:</label><br />
-      <input id="product" type="text" name="product" value="{{transaction.product}}" readonly /><br />
-      <label>Quantity:</label><br />
-      <input id="quantity" type="text" name="quantity" value="{{transaction.quantity}}" readonly /><br />
-      <label>Unit Cost:</label><br />
-      <input id="unit_cost" type="text" name="unit_cost" value="{{transaction.unit_cost}}" readonly /><br />
-      <label>Total Cost:</label><br />
-      <input id="total_cost" type="text" name="total_cost" value="{{transaction.total_cost}}" readonly /><br />
-      <label>Payment:</label><br />
-      <input id="payment" type="text" name="payment" value="{{transaction.payment}}" readonly /><br />
-      <label>Initial Payment:</label><br />
-      <input id="initial_payment" type="text" name="initial_payment" value="{{transaction.initial_payment}}"
-        readonly /><br />
-      <label>Creditor:</label><br />
-      <input id="creditor" type="text" name="creditor" value="{{transaction.creditor}}" readonly /><br />
-      <label>Debtor:</label><br />
-      <input id="debtor" type="text" name="debtor" value="{{transaction.debtor}}" readonly />
+      <legend></legend><br />
+      <input id="transaction_type" type="hidden" name="transaction_type" value="{{transaction.transaction_type}}"
+        readonly />
+      <input id="product" type="hidden" name="product" value="{{transaction.product}}" readonly />
+      <input id="quantity" type="hidden" name="quantity" value="{{transaction.quantity}}" readonly />
+      <input id="unit_cost" type="hidden" name="unit_cost" value="{{transaction.unit_cost}}" readonly />
+      <input id="total_cost" type="hidden" name="total_cost" value="{{transaction.total_cost}}" readonly />
+      <input id="payment" type="hidden" name="payment" value="{{transaction.payment}}" readonly />
+      <input id="initial_payment" type="hidden" name="initial_payment" value="{{transaction.initial_payment}}"
+        readonly />
+      <input id="creditor" type="hidden" name="creditor" value="{{transaction.creditor}}" readonly />
+      <input id="debtor" type="hidden" name="debtor" value="{{transaction.debtor}}" readonly />
       <input id="transaction_note" type="hidden" name="transaction_note" value="{{transaction.transaction_note}}"
-        readonly /><br />
+        readonly />
       <input id="userId" type="hidden" name="userId" value="{{transaction.userId}}" readonly />
       <input id="transaction_date" type="hidden" name="transaction_date" value="{{transaction.transaction_date}}"
         readonly />

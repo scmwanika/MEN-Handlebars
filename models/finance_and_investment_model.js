@@ -31,4 +31,4 @@ const finance_and_investmentsSchema = new Schema({
   collection: 'finance-and-investments',
 });
 
-module.exports = mongoose.model('financeAndInvestment', finance_and_investmentsSchema);
+module.exports = mongoose.model('FinanceAndInvestment', finance_and_investmentsSchema);

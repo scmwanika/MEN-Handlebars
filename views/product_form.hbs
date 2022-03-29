@@ -103,7 +103,7 @@
 
 <div class="flex-container">
   <!-- TRADING FORM -->
-  <form class="transaction" method="POST" action="/transactions" oninput="inputTransaction()"
+  <form class="transaction" method="POST" action="/transactions/new" oninput="inputTransaction()"
     onsubmit="submitTransaction()">
     <input type="hidden" name="_id">
     <fieldset>
@@ -140,7 +140,7 @@
   </form>
 
   <!-- PRODUCT FORM -->
-  <form class="product" method="POST" action="/products" onsubmit="submitProduct()">
+  <form class="product" method="POST" action="/products/new" onsubmit="submitProduct()">
     <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
       <legend></legend><br />
@@ -152,16 +152,16 @@
         readonly />
       <input id="net_purchases" type="hidden" name="net_purchases" value="{{product.net_purchases}}" readonly />
       <input id="quantity_sold" type="hidden" name="quantity_sold" value="{{product.quantity_sold}}" readonly />
-      <input id="net_sales" type="hidden" name="net_sales" value="{{product.net_sales}}" readonly /><br />
+      <input id="net_sales" type="hidden" name="net_sales" value="{{product.net_sales}}" readonly />
       <input id="quantity_instock" type="hidden" name="quantity_instock" value="{{product.quantity_instock}}"
         readonly />
       <input id="closing_stock" type="hidden" name="closing_stock" value="{{product.closing_stock}}" readonly />
       <input id="cost_of_sales" type="hidden" name="cost_of_sales" value="{{product.cost_of_sales}}" readonly />
       <input id="gross_profit_or_loss" type="hidden" name="gross_profit_or_loss"
         value="{{product.gross_profit_or_loss}}" readonly />
-      <input id="discontinued" type="hidden" name="discontinued" value="{{product.discontinued}}" readonly /><br />
+      <input id="discontinued" type="hidden" name="discontinued" value="{{product.discontinued}}" readonly />
       <input id="created_on" type="hidden" name="created_on" value="{{product.created_on}}" readonly />
-      <input id="updated_on" type="hidden" name="updated_on" value="{{product.updated_on}}" readonly /><br />
+      <input id="updated_on" type="hidden" name="updated_on" value="{{product.updated_on}}" readonly />
       <button class="btn btn-success conclude" type="submit">Conclude Transaction</button><br />
     </fieldset>
   </form>
