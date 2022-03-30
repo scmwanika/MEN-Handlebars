@@ -90,7 +90,7 @@
 
 <div class="flex-container">
   <!-- PAY OFF DEBT FORM -->
-  <form class="payment" method="POST" action="/payments/new" onsubmit="submitPayment()">
+  <form class="payment" method="POST" action="/payments/new" onsubmit="handleSubmit()">
     <fieldset>
       <legend>Pay off debt</legend>
       <input id="user_id" type="hidden" name="user_id" readonly /><br />
@@ -102,7 +102,7 @@
   </form>
 
   <!-- TRANSACTION FORM -->
-  <form class="transaction" method="POST" action="/transactions/new">
+  <form class="transaction" method="POST" action="/transactions/new" onsubmit="handleTransactionSubmit()">
     <input type="hidden" name="_id" value="{{transaction._id}}">
     <fieldset>
       <legend></legend><br />
@@ -129,7 +129,7 @@
 
 <script type="text/javascript">
 
-  const submitPayment = () => {
+  const handleSubmit = () => {
     // user_id == transaction.userId
     document.getElementById('user_id').value = "{{transaction.userId}}";
 
@@ -146,6 +146,11 @@
     $('.payment').css('display', 'none');
     // Display the Transaction Form
     $('.transaction').css('display', 'inline');
+  }
+
+  const handleTransactionSubmit = () => {
+    // Hide the Conclude Payment button
+    $('.conclude').css('display', 'none');
   }
 
 </script>

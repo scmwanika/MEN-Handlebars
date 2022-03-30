@@ -103,8 +103,7 @@
 
 <div class="flex-container">
   <!-- TRADING FORM -->
-  <form class="transaction" method="POST" action="/transactions/new" oninput="inputTransaction()"
-    onsubmit="submitTransaction()">
+  <form class="transaction" method="POST" action="/transactions/new" oninput="handleInput()" onsubmit="handleSubmit()">
     <input type="hidden" name="_id">
     <fieldset>
       <legend>Trading Activities</legend><br />
@@ -140,7 +139,7 @@
   </form>
 
   <!-- PRODUCT FORM -->
-  <form class="product" method="POST" action="/products/new" onsubmit="submitProduct()">
+  <form class="product" method="POST" action="/products/new" onsubmit="handleProductSubmit()">
     <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
       <legend></legend><br />
@@ -169,7 +168,7 @@
 
 <script type="text/javascript">
 
-  const inputTransaction = () => {
+  const handleInput = () => {
 
     // Total Cost
     document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
@@ -233,14 +232,14 @@
       $('#initial_payment').css('display', 'none');
   }
 
-  const submitTransaction = () => {
+  const handleSubmit = () => {
     // Hide the Transaction Form
     $('.transaction').css('display', 'none');
     // Display the Product Form
     $('.product').css('display', 'inline');
   }
 
-  const submitProduct = () => {
+  const handleProductSubmit = () => {
     // Quantity Purchased
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) + Number(document.getElementById('quantity').value);
@@ -297,6 +296,9 @@
 
     // Gross Profit
     document.getElementById('gross_profit_or_loss').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('cost_of_sales').value);
+
+    // Hide the Conclude Transaction button
+    $('.conclude').css('display', 'none');
   }
 
 </script>

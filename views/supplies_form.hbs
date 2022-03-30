@@ -110,7 +110,7 @@
   </form>
 
   <!-- PRODUCT FORM -->
-  <form class="product" method="POST" action="/products/new" onsubmit="submitProduct()">
+  <form class="product" method="POST" action="/products/new" onsubmit="handleSubmit()">
     <input type="hidden" name="_id">
     <fieldset>
       <legend>Product Details</legend>
@@ -130,11 +130,13 @@
 
 <script type="text/javascript">
 
-  const submitProduct = () => {
+  const handleSubmit = () => {
     // user_id == supplier._id
     document.getElementById('user_id').value = "{{supplier._id}}";
     // Insert Date automatically
     document.getElementById('created_on').value = Date();
+    // Hide the submit button
+    $('.submit').css('display', 'none');
   }
 
 </script>

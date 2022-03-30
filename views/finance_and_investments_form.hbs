@@ -86,14 +86,15 @@
   #equity,
   #fixed_asset,
   #business_expense,
-  #cash_withdrawn {
+  #cash_withdrawn,
+  .reset {
     display: none;
   }
 </style>
 
 <div class="flex-container">
-  <!-- BOOKKEEPING -->
-  <form method="POST" action="/finance-and-investments/new" oninput="inputOperation()">
+  <!-- FINANCE AND INVESTMENTS -->
+  <form id="data" method="POST" action="/finance-and-investments/new" oninput="handleInput()" onsubmit="handleSubmit()">
     <input type="hidden" name="_id" value="{{finance-and-investments._id}}">
     <fieldset>
       <legend>Bookkeeping</legend><br />
@@ -114,14 +115,16 @@
       <input id="business_expense" type="text" name="business_expense" placeholder="insert the expense" />
       <input id="cash_withdrawn" type="text" name="cash_withdrawn" placeholder="insert the amount withdrawn" />
       <input id="updated_on" type="hidden" name="updated_on" /><br />
-      <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
+      <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button>
+      <button class="btn btn-success reset" type="reset">New <i class="fa fa-refresh"></i></button><br />
     </fieldset>
   </form>
 </div>
 
 <script type="text/javascript">
 
-  const inputOperation = () => {
+  // RUN ON INPUT
+  const handleInput = () => {
 
     // Insert Date automatically
     document.getElementById('updated_on').value = Date();
@@ -156,6 +159,18 @@
     else
       $('#cash_withdrawn').css('display', 'none');
 
+    // Display the submit button
+    $('.submit').css('display', 'inline');
+    // Hide the reset button
+    $('.reset').css('display', 'none');
+  }
+
+  // RUN ON SUBMIT
+  const handleSubmit = () => {
+    // Hide the submit button
+    $('.submit').css('display', 'none');
+    // Display the reset button
+    $('.reset').css('display', 'inline');
   }
 
 </script>

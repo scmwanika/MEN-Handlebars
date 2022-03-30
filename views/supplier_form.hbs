@@ -82,11 +82,15 @@
     font-size: 12pt;
     text-align: center;
   }
+
+  .reset {
+    display: none;
+  }
 </style>
 
 <div class="flex-container">
   <!-- SUPPLIER FORM -->
-  <form method="POST" action="/suppliers/new">
+  <form method="POST" action="/suppliers/new" oninput="handleInput()" onsubmit="handleSubmit()">
     <input type="hidden" name="_id">
     <fieldset>
       <legend>Supplier</legend>
@@ -99,7 +103,28 @@
       <label>Telephone:</label><br /><input id="telephone" type="text" name="telephone" required /><br />
       <label>Email:</label><br /><input id="email" type="email" name="email" required /><br />
       <label>Website: </label><br /><input id="website" type="url" name="website" /><br />
-      <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
+      <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button>
+      <button class="btn btn-success reset" type="reset">New <i class="fa fa-refresh"></i></button><br />
     </fieldset>
   </form>
 </div>
+
+<script type="text/javascript">
+
+  // RUN ON INPUT
+  const handleInput = () => {
+    // Display the submit button
+    $('.submit').css('display', 'inline');
+    // Hide the reset button
+    $('.reset').css('display', 'none');
+  }
+
+  // RUN ON SUBMIT
+  const handleSubmit = () => {
+    // Hide the submit button
+    $('.submit').css('display', 'none');
+    // Display the reset button
+    $('.reset').css('display', 'inline');
+  }
+
+</script>

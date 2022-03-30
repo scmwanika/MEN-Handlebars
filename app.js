@@ -83,17 +83,19 @@ const createUser = (req, res) => {
   newuser.email = req.body.email;
   newuser.website = req.body.website;
 
-  newuser.save((err) => {
-    if (err)
-      res.send('Unable to save your entry; Please Try Again.');
-  });
+  newuser.save()
+    //.then(() => { res.send('Your entry is saved in the database.'); })
+    .catch((error) => {
+      console.log(error);
+      res.send('Sorry! Your entry was not saved in the database.');
+    });
 }
 
 // UPDATE THE USER BY ID (Supplier or Customer)
 const updateUser = (req, res) => {
-  User.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
-    if (err)
-      res.send('Unable to save your entry; Please Try Again.');
+  User.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+    if (error)
+      res.send('Unable to update the user; Please Try Again.');
   });
 }
 
@@ -186,16 +188,18 @@ const createProduct = (req, res) => {
   newProduct.created_on = req.body.created_on;
   newProduct.updated_on = req.body.updated_on;
 
-  newProduct.save((err) => {
-    if (err)
-      res.send('Unable to save the product; Please Try Again.');
-  });
+  newProduct.save()
+    //.then(() => { res.send('Your entry is saved in the database.'); })
+    .catch((error) => {
+      console.log(error);
+      res.send('Sorry! Your entry was not saved in the database.');
+    });
 }
 
 // UPDATE THE PRODUCT BY ID
 const updateProduct = (req, res) => {
-  Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
-    if (err)
+  Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+    if (error)
       res.send('Unable to save the product; Please Try Again.');
   });
 }
@@ -310,16 +314,18 @@ const createTransaction = (req, res) => {
   newTransaction.goods_withdrawn = req.body.goods_withdrawn;
   newTransaction.transaction_date = req.body.transaction_date;
 
-  newTransaction.save((err) => {
-    if (err)
-      res.send('Unable to save the transaction; Please Try Again.');
-  });
+  newTransaction.save()
+    //.then(() => { res.send('Your entry is saved in the database.'); })
+    .catch((error) => {
+      console.log(error);
+      res.send('Sorry! Your entry was not saved in the database.');
+    });
 }
 
 // UPDATE THE TRANSACTION
 const updateTransaction = (req, res) => {
-  Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
-    if (err)
+  Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+    if (error)
       res.send('Unable to save the transaction; Please Try Again.');
   });
 }
@@ -376,8 +382,8 @@ app.get('/operations-report', async (req, res) => {
 // PLACE YOUR ORDER
 app.post('/orders/new', async (req, res) => {
   const newOrder = new Order(req.body);
-  await newOrder.save((err) => {
-    if (err)
+  await newOrder.save((error) => {
+    if (error)
       res.send('Dear Customer; sorry, we have not received your order. Please Try Again.');
     else
       res.redirect('/');
@@ -389,10 +395,12 @@ app.post('/orders/new', async (req, res) => {
 // PAY OFF DEBT
 app.post('/payments/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newPayment = new Payment(req.body);
-  await newPayment.save((err) => {
-    if (err)
-      res.send('Dear Customer; sorry, we have not received your payment. Please Try Again.')
-  });
+  await newPayment.save()
+    //.then(() => { res.send('Your entry is saved in the database.'); })
+    .catch((error) => {
+      console.log(error);
+      res.send('Sorry! Your entry was not saved in the database.');
+    });
 });
 
 /* --- FINANCE AND INVESTMENTS CONTROLLERS --- */
@@ -410,16 +418,18 @@ const createFinanceAndInvestment = (req, res) => {
   newfinanceInvestment.cash_withdrawn = req.body.cash_withdrawn;
   newfinanceInvestment.updated_on = req.body.updated_on;
 
-  newfinanceInvestment.save((err) => {
-    if (err)
-      res.send('Unable to save your entry; Please Try Again.');
-  });
+  newfinanceInvestment.save()
+    //.then(() => { res.send('Your entry is saved in the database.'); })
+    .catch((error) => {
+      console.log(error);
+      res.send('Sorry! Your entry was not saved in the database.');
+    });
 }
 
 // UPDATE FINANCE AND INVESTMENTS
 const updateFinanceAndInvestment = (req, res) => {
-  FinanceAndInvestment.updateOne({ _id: req.body._id }, req.body, { new: true }, (err) => {
-    if (err)
+  FinanceAndInvestment.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+    if (error)
       res.send('Unable to save your entry; Please Try Again.');
   });
 }
