@@ -97,23 +97,22 @@
   <form id="data" method="POST" action="/finance-and-investments/new" oninput="handleInput()" onsubmit="handleSubmit()">
     <input type="hidden" name="_id" value="{{finance-and-investments._id}}">
     <fieldset>
-      <legend>Bookkeeping</legend><br />
-      <label>Transaction Type:</label><br />
+      <legend>Finance and Investments</legend><br />
       <select id="transaction_type" name="transaction_type" required>
         <option value="">Select ...</option>
         <option value="Equity">Equity</option>
-        <option value="Loan">Loan</option>
-        <option value="Fixed Asset">Fixed Asset</option>
-        <option value="Business Expense">Business Expense</option>
-        <option value="Cash Withdrawn">Cash Withdrawn</option>
+        <option value="Loan">Borrow loan</option>
+        <option value="Fixed Asset">Acquire fixed asset</option>
+        <option value="Business Expense">Pay expense</option>
+        <option value="Cash Withdrawn">Withdraw Cash</option>
       </select>
       <br />
       <input id="note" type="text" name="note" placeholder="note" /><br />
-      <input id="equity" type="text" name="equity" placeholder="insert the amount injected into the ..." />
-      <input id="loan" type="text" name="loan" placeholder="insert the amount borrowed ..." />
-      <input id="fixed_asset" type="text" name="fixed_asset" placeholder="insert the cost of asset" />
-      <input id="business_expense" type="text" name="business_expense" placeholder="insert the expense" />
-      <input id="cash_withdrawn" type="text" name="cash_withdrawn" placeholder="insert the amount withdrawn" />
+      <input id="equity" type="text" name="equity" placeholder="insert the amount ..." />
+      <input id="loan" type="text" name="loan" placeholder="insert the amount ..." />
+      <input id="fixed_asset" type="text" name="fixed_asset" placeholder="insert the cost ..." />
+      <input id="business_expense" type="text" name="business_expense" placeholder="insert the cost ..." />
+      <input id="cash_withdrawn" type="text" name="cash_withdrawn" placeholder="insert the amount ..." />
       <input id="updated_on" type="hidden" name="updated_on" /><br />
       <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button>
       <button class="btn btn-success reset" type="reset">New <i class="fa fa-refresh"></i></button><br />

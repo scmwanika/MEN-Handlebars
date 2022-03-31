@@ -58,13 +58,20 @@
     border: none;
   }
 
+  .btn-reset select {
+    width: 278px;
+    background-color: #ebebed;
+  }
+
+  .btn-reset {
+    border: none;
+  }
+
   input[name='payment'] {
     background-color: #ebebed;
   }
 
-  #creditor,
-  #debtor,
-  #goods_withdrawn,
+  #initial_payment,
   .product,
   .select-option {
     display: none;
@@ -102,37 +109,41 @@
 </style>
 
 <div class="flex-container">
-  <!-- TRADING FORM -->
+  <!-- TRANSACTION FORM -->
   <form class="transaction" method="POST" action="/transactions/new" oninput="handleInput()" onsubmit="handleSubmit()">
     <input type="hidden" name="_id">
     <fieldset>
-      <legend>Trading Activities</legend><br />
-      <label>Transaction Type:</label><br />
-      <select id="transaction_type" name="transaction_type" required>
-        <option value="">Select ...</option>
-        <option value="Purchases">Purchases</option>
-        <option value="Sales">Sales</option>
-        <option value="Goods Withdrawn">Goods Withdrawn</option>
-        <option value="Purchases Returns">Purchases Returns</option>
-        <option value="Sales Returns">Sales Returns</option>
-      </select><br />
-      <label>Product:</label><br /><input id="product" type="text" name="product" readonly /><br />
-      <label>Quantity:</label><br /><input id="quantity" type="text" name="quantity" /><br />
-      <label>Unit Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" /><br />
-      <label>Total Cost:</label><br /><input id="total_cost" type="text" name="total_cost" readonly /><br />
-      <input id="payment" type="text" name="payment" readonly /><br />
-      <label>Initial Payment:</label><br /><input id="initial_payment" type="text" name="initial_payment"
-        required /><br />
-      <label>Debt:</label><br />
-      <input id="creditor" type="text" name="creditor" readonly />
-      <input id="debtor" type="text" name="debtor" readonly />
-      <input id="goods_withdrawn" type="text" name="goods_withdrawn" readonly /><br />
+      <legend>Transact</legend><br />
+      <button class="btn-reset" type="reset" style="background-color: #ebebed">
+        <select id="transaction_type" name="transaction_type" required>
+          <option value="">Select ...</option>
+          <option value="Purchases">Purchase</option>
+          <option value="Sales">Sale</option>
+          <option value="Goods Withdrawn">Withdraw Goods</option>
+          <option value="Purchases Returns">Return outwards</option>
+          <option value="Sales Returns">Return inwards</option>
+        </select>
+      </button>
+      <br />
+      <input id="product" type="text" name="product" readonly /><br />
+      <label>Purchase from / Sale to / Withdraw by / Returns:</label><br />
       <select id="userId" name="userId" required>
         {{#each users}}
         <option class="select-option" value="">Select ...</option>
         <option value={{this._id}}>{{this.name}}</option>
         {{/each}}
-      </select>
+      </select><br />
+      <label>Quantity:</label><br /><input id="quantity" type="text" name="quantity" /><br />
+      <label>Unit Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" /><br />
+      <label>Total Cost:</label><br /><input id="total_cost" type="text" name="total_cost" readonly /><br />
+      <label>Initial Payment:</label><br />
+      <input id="payment" type="text" name="payment" readonly /><br />
+      <input id="initial_payment" type="text" name="initial_payment" required /><br />
+      <label>Debt:</label><br />
+      <span class="debt"></span>
+      <input id="creditor" type="hidden" name="creditor" readonly />
+      <input id="debtor" type="hidden" name="debtor" readonly />
+      <input id="goods_withdrawn" type="hidden" name="goods_withdrawn" readonly />
       <input id="transaction_date" type="hidden" name="transaction_date" readonly /><br />
       <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
     </fieldset>
@@ -189,47 +200,45 @@
       document.getElementById('unit_cost').value = "{{product.retail_price}}";
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.getElementById('unit_cost').value = "{{product.closing_stock}}" / "{{product.quantity_instock}}";
-    if (document.getElementById('transaction_type').value == "Purchases Returns")
-      document.getElementById('unit_cost').value = "";
-    if (document.getElementById('transaction_type').value == "Sales Returns")
-      document.getElementById('unit_cost').value = "";
 
-    // Payment: Issued, Received, or Goods Withdrawn
+    // Purchases, Sales, Goods Withdrawn
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('payment').value = "Issued"
+    document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+
     if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('payment').value = "Received"
+    document.getElementById('debtor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.getElementById('payment').value = "None"
-
-    // Creditor, Debtor, Goods Withdrawn
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('debtor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
-    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
-      document.getElementById('goods_withdrawn').value = Number(document.getElementById('total_cost').value);
+    document.getElementById('goods_withdrawn').value = Number(document.getElementById('total_cost').value);
 
     //
     if (document.getElementById('transaction_type').value == "Purchases")
-      // Display the field "equity"
-      $('#creditor').css('display', 'inline');
-    else
-      $('#creditor').css('display', 'none');
+      // Display the field "initial_payment"
+      $('#initial_payment').css('display', 'inline');
 
     if (document.getElementById('transaction_type').value == "Sales")
-      // Display the field "fixed_asset"
-      $('#debtor').css('display', 'inline');
-    else
-      $('#debtor').css('display', 'none');
+      // Display the field "initial_payment"
+      $('#initial_payment').css('display', 'inline');
 
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       // Hide the field "payment"
       $('#payment').css('display', 'none');
 
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var debt = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.querySelector('.debt').textContent = debt.format(document.getElementById('creditor').value);
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.querySelector('.debt').textContent = debt.format(document.getElementById('debtor').value);
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
-      // Hide the field "initial_payment"
-      $('#initial_payment').css('display', 'none');
+      document.querySelector('.debt').textContent = debt.format(document.getElementById('goods_withdrawn').value);
   }
 
   const handleSubmit = () => {
