@@ -19,6 +19,12 @@
     font-family: Monotype Corsiva;
   }
 
+  p {
+    color: #0000FF;
+    font-size: 14pt;
+    font-family: 'Courier New', Courier, monospace
+  }
+
   .dropdown-menu {
     border: none;
   }
@@ -68,6 +74,9 @@
   }
 
   input[name='payment'] {
+    color: #0000FF;
+    font-size: 14pt;
+    font-family: 'Courier New', Courier, monospace;
     background-color: #ebebed;
   }
 
@@ -135,16 +144,16 @@
       </select><br />
       <label>Quantity:</label><br /><input id="quantity" type="text" name="quantity" /><br />
       <label>Unit Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" /><br />
-      <label>Total Cost:</label><br /><input id="total_cost" type="text" name="total_cost" readonly /><br />
-      <label>Initial Payment:</label><br />
+      <label>Total Cost:</label><input id="total_cost" type="hidden" name="total_cost" readonly /><br />
+      <p class="totalCost"></p>
       <input id="payment" type="text" name="payment" readonly /><br />
       <input id="initial_payment" type="text" name="initial_payment" required /><br />
-      <label>Debt:</label><br />
-      <span class="debt"></span>
+      <label>Balance:</label>
+      <p class="debt"></p>
       <input id="creditor" type="hidden" name="creditor" readonly />
       <input id="debtor" type="hidden" name="debtor" readonly />
       <input id="goods_withdrawn" type="hidden" name="goods_withdrawn" readonly />
-      <input id="transaction_date" type="hidden" name="transaction_date" readonly /><br />
+      <input id="transaction_date" type="hidden" name="transaction_date" readonly />
       <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
     </fieldset>
   </form>
@@ -184,6 +193,14 @@
     // Total Cost
     document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
 
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var totalCost = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    document.querySelector('.totalCost').textContent = totalCost.format(document.getElementById('total_cost').value);
+
     // Insert Product automatically
     document.getElementById('product').value = "{{product.product_name}}";
 
@@ -201,18 +218,25 @@
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.getElementById('unit_cost').value = "{{product.closing_stock}}" / "{{product.quantity_instock}}";
 
-    // Purchases, Sales, Goods Withdrawn
+    // Payment
     if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('payment').value = "Issued"
-    document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
 
     if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('payment').value = "Received"
-    document.getElementById('debtor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
 
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.getElementById('payment').value = "None"
-    document.getElementById('goods_withdrawn').value = Number(document.getElementById('total_cost').value);
+
+    // Creditor, Debtors, Goods Withdrawn
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('debtor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('goods_withdrawn').value = Number(document.getElementById('total_cost').value);
 
     //
     if (document.getElementById('transaction_type').value == "Purchases")

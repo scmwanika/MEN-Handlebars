@@ -19,6 +19,12 @@
     font-family: Monotype Corsiva;
   }
 
+  p {
+    color: #0000FF;
+    font-size: 14pt;
+    font-family: 'Courier New', Courier, monospace
+  }
+
   .dropdown-menu {
     border: none;
   }
@@ -84,6 +90,7 @@
   }
 
   #equity,
+  #loan,
   #fixed_asset,
   #business_expense,
   #cash_withdrawn,
@@ -94,7 +101,8 @@
 
 <div class="flex-container">
   <!-- FINANCE AND INVESTMENTS -->
-  <form id="data" method="POST" action="/finance-and-investments/new" oninput="handleInput()" onsubmit="handleSubmit()">
+  <form id="finance-and-investments" method="POST" action="/finance-and-investments/new" oninput="handleInput()"
+    onsubmit="handleSubmit()">
     <input type="hidden" name="_id" value="{{finance-and-investments._id}}">
     <fieldset>
       <legend>Finance and Investments</legend><br />
@@ -113,9 +121,11 @@
       <input id="fixed_asset" type="text" name="fixed_asset" placeholder="insert the cost ..." />
       <input id="business_expense" type="text" name="business_expense" placeholder="insert the cost ..." />
       <input id="cash_withdrawn" type="text" name="cash_withdrawn" placeholder="insert the amount ..." />
-      <input id="updated_on" type="hidden" name="updated_on" /><br />
+      <p class="amount"></p>
+      <input id="updated_on" type="hidden" name="updated_on" />
       <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button>
-      <button class="btn btn-success reset" type="reset">New <i class="fa fa-refresh"></i></button><br />
+      <button class="btn btn-success reset" type="reset">Saved Successfully. New <i
+          class="fa fa-refresh"></i></button><br />
     </fieldset>
   </form>
 </div>
@@ -162,12 +172,37 @@
     $('.submit').css('display', 'inline');
     // Hide the reset button
     $('.reset').css('display', 'none');
+
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var amount = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    if (document.getElementById('transaction_type').value == "Equity")
+      document.querySelector('.amount').textContent = amount.format(document.getElementById('equity').value);
+    if (document.getElementById('transaction_type').value == "Loan")
+      document.querySelector('.amount').textContent = amount.format(document.getElementById('loan').value);
+    if (document.getElementById('transaction_type').value == "Fixed Asset")
+      document.querySelector('.amount').textContent = amount.format(document.getElementById('fixed_asset').value);
+    if (document.getElementById('transaction_type').value == "Business Expense")
+      document.querySelector('.amount').textContent = amount.format(document.getElementById('business_expense').value);
+    if (document.getElementById('transaction_type').value == "Cash Withdrawn")
+      document.querySelector('.amount').textContent = amount.format(document.getElementById('cash_withdrawn').value);
   }
 
   // RUN ON SUBMIT
   const handleSubmit = () => {
     // Hide the submit button
     $('.submit').css('display', 'none');
+    // Also hide these fields
+    $('#transaction_type').css('display', 'none');
+    $('#note').css('display', 'none');
+    $('#equity').css('display', 'none');
+    $('#loan').css('display', 'none');
+    $('#fixed_asset').css('display', 'none');
+    $('#business_expense').css('display', 'none');
+    $('#cash_withdrawn').css('display', 'none');
     // Display the reset button
     $('.reset').css('display', 'inline');
   }

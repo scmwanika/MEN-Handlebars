@@ -69,60 +69,56 @@ const FinanceAndInvestment = require('./models/finance_and_investment_model');
 
 /* --- USER CONTROLLERS --- */
 
-// CREATE NEW USER (Supplier or Customer)
-const createUser = (req, res) => {
-  const newuser = new User();
-
-  newuser.user = req.body.user;
-  newuser.name = req.body.name;
-  newuser.country = req.body.country;
-  newuser.city = req.body.city;
-  newuser.street = req.body.street;
-  newuser.address = req.body.address;
-  newuser.telephone = req.body.telephone;
-  newuser.email = req.body.email;
-  newuser.website = req.body.website;
-
-  newuser.save()
-    //.then(() => { res.send('Your entry is saved in the database.'); })
-    .catch((error) => {
-      console.log(error);
-      res.send('Sorry! Your entry was not saved in the database.');
-    });
-}
-
-// UPDATE THE USER BY ID (Supplier or Customer)
-const updateUser = (req, res) => {
-  User.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
-    if (error)
-      res.send('Unable to update the user; Please Try Again.');
-  });
-}
-
-// GET AND FILL IN THE FORM (Supplier)
+// GET AND FILL IN THE USER (Supplier)
 app.get('/suppliers/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('supplier_form');
 });
 
-// GET AND FILL IN THE FORM (Customer)
+// CREATE OR EDIT USER (Supplier)
+app.post('/suppliers/new', oidc.ensureAuthenticated(), async (req, res) => {
+  const newSupplier = new User(req.body);
+  // id field is blank
+  if (req.body._id == '')
+    await newSupplier.save((error) => {
+      if (error)
+        res.send('Sorry! Unsuccessful. Please Try Again.1');
+      else
+        res.redirect('/suppliers');
+    });
+  // id field is not blank
+  else
+    User.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+      if (error)
+        res.send('Sorry! Unsuccessful. Please Try Again.2');
+      else
+        res.redirect('/suppliers');
+    });
+});
+
+// GET AND FILL IN THE USER (Customer)
 app.get('/customers/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('customer_form');
 });
 
-// CREATE OR UPDATE THE USER BY ID (Supplier)
-app.post('/suppliers/new', oidc.ensureAuthenticated(), (req, res) => {
+// CREATE OR EDIT USER (Customer)
+app.post('/customers/new', oidc.ensureAuthenticated(), async (req, res) => {
+  const newCustomer = new User(req.body);
+  // id field is blank
   if (req.body._id == '')
-    createUser(req, res);
+    await newCustomer.save((error) => {
+      if (error)
+        res.send('Sorry! Unsuccessful. Please Try Again.');
+      else
+        res.redirect('/products/search');
+    });
+  // id field is not blank
   else
-    updateUser(req, res);
-});
-
-// CREATE OR UPDATE THE USER BY ID (Customer)
-app.post('/customers/new', oidc.ensureAuthenticated(), (req, res) => {
-  if (req.body._id == '')
-    createUser(req, res);
-  else
-    updateUser(req, res);
+    User.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+      if (error)
+        res.send('Sorry! Unsuccessful. Please Try Again.');
+      else
+        res.redirect('/suppliers');
+    });
 });
 
 // LIST USERS (Suppliers)
@@ -135,7 +131,7 @@ app.get('/suppliers', oidc.ensureAuthenticated(), async (req, res) => {
   }
 });
 
-// GET THE USER BY ID (Supplier)
+// GET THE USER (Supplier) BY ID
 app.get('/suppliers/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const supplier = await User.findOne({ _id: req.params.id });
@@ -168,46 +164,10 @@ app.get('/users/transactions', async (req, res) => {
 
 /* --- PRODUCT CONTROLLERS --- */
 
-// STOCK THE PRODUCT
-const createProduct = (req, res) => {
-  const newProduct = new Product();
-
-  newProduct.user_id = req.body.user_id;
-  newProduct.product_name = req.body.product_name;
-  newProduct.category = req.body.category;
-  newProduct.retail_price = req.body.retail_price;
-  newProduct.quantity_purchased = req.body.units_purchased;
-  newProduct.net_purchases = req.body.net_purchases;
-  newProduct.quantity_sold = req.body.units_sold;
-  newProduct.net_sales = req.body.net_sales;
-  newProduct.quantity_instock = req.body.units_instock;
-  newProduct.closing_stock = req.body.closing_stock;
-  newProduct.cost_of_sales = req.body.cost_of_sales;
-  newProduct.gross_profit_or_loss = req.body.gross_profit_or_loss;
-  newProduct.discontinued = req.body.discontinued;
-  newProduct.created_on = req.body.created_on;
-  newProduct.updated_on = req.body.updated_on;
-
-  newProduct.save()
-    //.then(() => { res.send('Your entry is saved in the database.'); })
-    .catch((error) => {
-      console.log(error);
-      res.send('Sorry! Your entry was not saved in the database.');
-    });
-}
-
-// UPDATE THE PRODUCT BY ID
-const updateProduct = (req, res) => {
-  Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
-    if (error)
-      res.send('Unable to save the product; Please Try Again.');
-  });
-}
-
 // DISPLAY THE PRODUCT CATALOGUE
 app.get('/', async (req, res) => {
   try {
-    // retrieve products that are not discontinued; search by category
+    // search by category and retrieve products not discontinued
     const products = await Product.find({ category: req.query.category, discontinued: 'No' });
     res.render('index', { products, items });
   } catch (error) {
@@ -215,12 +175,25 @@ app.get('/', async (req, res) => {
   }
 });
 
-// CREATE OR UPDATE THE PRODUCT BY ID
-app.post('/products/new', oidc.ensureAuthenticated(), (req, res) => {
+// CREATE OR EDIT PRODUCT
+app.post('/products/new', oidc.ensureAuthenticated(), async (req, res) => {
+  const newProduct = new Product(req.body);
+  // id field is blank
   if (req.body._id == '')
-    createProduct(req, res);
+    await newProduct.save((error) => {
+      if (error)
+        res.send('Sorry! Unsuccessful. Please Try Again.');
+      else
+        res.redirect('/products/search');
+    });
+  // id field is not blank
   else
-    updateProduct(req, res);
+    Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+      if (error)
+        res.send('Sorry! Unsuccessful. Please Try Again.');
+      else
+        res.redirect('/products/search');
+    });
 });
 
 // SEARCH THE PRODUCT BY NAME
@@ -297,45 +270,21 @@ app.get('/trading-report', async (req, res) => {
 
 /* --- TRANSACTION CONTROLLERS --- */
 
-// CREATE THE TRANSACTION
-const createTransaction = (req, res) => {
-  const newTransaction = new Transaction();
-
-  newTransaction.userId = req.body.userId;
-  newTransaction.transaction_type = req.body.transaction_type;
-  newTransaction.product = req.body.product;
-  newTransaction.quantity = req.body.quantity;
-  newTransaction.unit_cost = req.body.unit_cost;
-  newTransaction.total_cost = req.body.total_cost;
-  newTransaction.payment = req.body.payment;
-  newTransaction.initial_payment = req.body.initial_payment;
-  newTransaction.creditor = req.body.creditor;
-  newTransaction.debtor = req.body.debtor;
-  newTransaction.goods_withdrawn = req.body.goods_withdrawn;
-  newTransaction.transaction_date = req.body.transaction_date;
-
-  newTransaction.save()
-    //.then(() => { res.send('Your entry is saved in the database.'); })
-    .catch((error) => {
-      console.log(error);
-      res.send('Sorry! Your entry was not saved in the database.');
-    });
-}
-
-// UPDATE THE TRANSACTION
-const updateTransaction = (req, res) => {
-  Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
-    if (error)
-      res.send('Unable to save the transaction; Please Try Again.');
-  });
-}
-
-// CREATE OR UPDATE THE TRANSACTION BY ID
-app.post('/transactions/new', oidc.ensureAuthenticated(), (req, res) => {
+// CREATE OR EDIT TRANSACTION
+app.post('/transactions/new', oidc.ensureAuthenticated(), async (req, res) => {
+  const newTransaction = new Transaction(req.body);
+  // id field is blank
   if (req.body._id == '')
-    createTransaction(req, res);
+    await newTransaction.save((error) => {
+      if (error)
+        res.send('Sorry! Unsuccessful. Please Try Again.');
+    });
+  // id field is not blank
   else
-    updateTransaction(req, res);
+    Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+      if (error)
+        res.send('Sorry! Unsuccessful. Please Try Again.');
+    });
 });
 
 // GET THE TRANSACTION BY ID
@@ -384,7 +333,7 @@ app.post('/orders/new', async (req, res) => {
   const newOrder = new Order(req.body);
   await newOrder.save((error) => {
     if (error)
-      res.send('Dear Customer; sorry, we have not received your order. Please Try Again.');
+      res.send('Sorry! Unsuccessful. Please Try Again.');
     else
       res.redirect('/');
   });
@@ -395,60 +344,37 @@ app.post('/orders/new', async (req, res) => {
 // PAY OFF DEBT
 app.post('/payments/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newPayment = new Payment(req.body);
-  await newPayment.save()
-    //.then(() => { res.send('Your entry is saved in the database.'); })
-    .catch((error) => {
-      console.log(error);
-      res.send('Sorry! Your entry was not saved in the database.');
-    });
+  await newPayment.save(() => {
+    if (error)
+      res.send('Sorry! Unsuccessful. Please Try Again.');
+    else
+      res.redirect('/');
+  });
 });
 
 /* --- FINANCE AND INVESTMENTS CONTROLLERS --- */
-
-// CREATE FINANCE AND INVESTMENTS
-const createFinanceAndInvestment = (req, res) => {
-  const newfinanceInvestment = new FinanceAndInvestment();
-
-  newfinanceInvestment.transaction_type = req.body.transaction_type;
-  newfinanceInvestment.note = req.body.note;
-  newfinanceInvestment.equity = req.body.equity;
-  newfinanceInvestment.loan = req.body.loan;
-  newfinanceInvestment.fixed_asset = req.body.fixed_asset;
-  newfinanceInvestment.business_expense = req.body.business_expense;
-  newfinanceInvestment.cash_withdrawn = req.body.cash_withdrawn;
-  newfinanceInvestment.updated_on = req.body.updated_on;
-
-  newfinanceInvestment.save()
-    //.then(() => { res.send('Your entry is saved in the database.'); })
-    .catch((error) => {
-      console.log(error);
-      res.send('Sorry! Your entry was not saved in the database.');
-    });
-}
-
-// UPDATE FINANCE AND INVESTMENTS
-const updateFinanceAndInvestment = (req, res) => {
-  FinanceAndInvestment.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
-    if (error)
-      res.send('Unable to save your entry; Please Try Again.');
-  });
-}
 
 // GET THE FINANCE AND INVESTMENTS FORM
 app.get('/finance-and-investments/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('finance_and_investments_form');
 });
 
-// CREATE OR UPDATE FINANCE AND INVESTMENTS BY ID
-app.post('/finance-and-investments/new', oidc.ensureAuthenticated(), (req, res) => {
+// CREATE OR EDIT FINANCE AND INVESTMENTS
+app.post('/finance-and-investments/new', oidc.ensureAuthenticated(), async (req, res) => {
+  const newfinance_and_investments = new FinanceAndInvestment(req.body);
+  // id field is blank
   if (req.body._id == '')
-    createFinanceAndInvestment(req, res);
+    await newfinance_and_investments.save((error) => {
+      if (error)
+        res.send('Sorry! Unsuccessful. Please Try Again.');
+    });
+  // id field is not blank
   else
-    updateFinanceAndInvestment(req, res);
+    FinanceAndInvestment.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+      if (error)
+        res.send('Sorry! Unsuccessful. Please Try Again.');
+    });
 });
-
-// GET THE FINANCE AND INVESTMENTS BY ID
-/* code here */
 
 // FINANCE AND INVESTMENTS SUMMARIZED
 app.get('/finance-and-investments-report', async (req, res) => {
