@@ -74,61 +74,25 @@ app.get('/suppliers/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('supplier_form');
 });
 
-// CREATE OR EDIT USER (Supplier)
+// CREATE USER (Supplier)
 app.post('/suppliers/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newSupplier = new User(req.body);
-  // id field is blank
-  if (req.body._id == '')
-    await newSupplier.save((error) => {
-      if (error)
-        res.send('Sorry! Unsuccessful. Please Try Again.1');
-      else
-        res.redirect('/suppliers');
-    });
-  // id field is not blank
-  else
-    User.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
-      if (error)
-        res.send('Sorry! Unsuccessful. Please Try Again.2');
-      else
-        res.redirect('/suppliers');
-    });
+  await newSupplier.save((error) => {
+    if (error)
+      res.send('Sorry! Unsuccessful. Please Try Again.');
+    else
+      res.redirect('/suppliers');
+  });
 });
 
-// GET AND FILL IN THE USER (Customer)
-app.get('/customers/new', oidc.ensureAuthenticated(), (req, res) => {
-  res.render('customer_form');
-});
-
-// CREATE OR EDIT USER (Customer)
-app.post('/customers/new', oidc.ensureAuthenticated(), async (req, res) => {
-  const newCustomer = new User(req.body);
-  // id field is blank
-  if (req.body._id == '')
-    await newCustomer.save((error) => {
-      if (error)
-        res.send('Sorry! Unsuccessful. Please Try Again.');
-      else
-        res.redirect('/products/search');
-    });
-  // id field is not blank
-  else
-    User.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
-      if (error)
-        res.send('Sorry! Unsuccessful. Please Try Again.');
-      else
-        res.redirect('/suppliers');
-    });
-});
-
-// LIST USERS (Suppliers)
-app.get('/suppliers', oidc.ensureAuthenticated(), async (req, res) => {
-  try {
-    const suppliers = await User.find({ user: 'SUPPLIER' });
-    res.render('suppliers', { suppliers });
-  } catch (error) {
-    res.status(400).send('Unable to find the list');
-  }
+// EDIT USER (Supplier)
+app.post('/suppliers/edit', oidc.ensureAuthenticated(), (req, res) => {
+  Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+    if (error)
+      res.send('Sorry! Unsuccessful. Please Try Again.');
+    else
+      res.redirect('/suppliers');
+  });
 });
 
 // GET THE USER (Supplier) BY ID
@@ -141,30 +105,25 @@ app.get('/suppliers/:id', oidc.ensureAuthenticated(), async (req, res) => {
   }
 });
 
-// MATCH USER (Proprietor, Supplier, Customer) TO TRANSACTIONS
-app.get('/users/transactions', async (req, res) => {
-  try {
-    const users = await User.aggregate
-      ([
-        {
-          $lookup:
-          {
-            from: 'transactions',
-            localField: '_id',
-            foreignField: 'userId',
-            as: 'transaction_details'
-          }
-        }
-      ]);
-    res.json(users);
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
+// GET AND FILL IN THE USER (Customer)
+app.get('/customers/new', oidc.ensureAuthenticated(), (req, res) => {
+  res.render('customer_form');
+});
+
+// CREATE USER (Customer)
+app.post('/customers/new', oidc.ensureAuthenticated(), async (req, res) => {
+  const newCustomer = new User(req.body);
+  await newCustomer.save((error) => {
+    if (error)
+      res.send('Sorry! Unsuccessful. Please Try Again.');
+    else
+      res.redirect('/products/search');
+  });
 });
 
 /* --- PRODUCT CONTROLLERS --- */
 
-// DISPLAY THE PRODUCT CATALOGUE
+// INDEX PAGE: THE PRODUCT CATALOGUE
 app.get('/', async (req, res) => {
   try {
     // search by category and retrieve products not discontinued
@@ -175,25 +134,25 @@ app.get('/', async (req, res) => {
   }
 });
 
-// CREATE OR EDIT PRODUCT
+// CREATE PRODUCT
 app.post('/products/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newProduct = new Product(req.body);
-  // id field is blank
-  if (req.body._id == '')
-    await newProduct.save((error) => {
-      if (error)
-        res.send('Sorry! Unsuccessful. Please Try Again.');
-      else
-        res.redirect('/products/search');
-    });
-  // id field is not blank
-  else
-    Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
-      if (error)
-        res.send('Sorry! Unsuccessful. Please Try Again.');
-      else
-        res.redirect('/products/search');
-    });
+  await newProduct.save((error) => {
+    if (error)
+      res.send('Sorry! Unsuccessful. Please Try Again.');
+    else
+      res.redirect('/products/search');
+  });
+});
+
+// EDIT PRODUCT
+app.post('/products/edit', oidc.ensureAuthenticated(), (req, res) => {
+  Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+    if (error)
+      res.send('Sorry! Unsuccessful. Please Try Again.');
+    else
+      res.redirect('/products/search');
+  });
 });
 
 // SEARCH THE PRODUCT BY NAME
@@ -201,37 +160,6 @@ app.get('/products/search', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const products = await Product.find({ product_name: req.query.product_name });
     res.render('search_product', { products });
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
-// LIST PRODUCTS
-app.get('/products', oidc.ensureAuthenticated(), async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
-// GET THE PRODUCT BY ID (Transactions)
-app.get('/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
-  try {
-    const product = await Product.findOne({ _id: req.params.id });
-    const users = await axios.get('http://localhost:3000/users/transactions');
-    res.render('product_form', { product, users: users.data });
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
-// GET THE PRODUCT BY ID (Orders online)
-app.get('/items/:id', async (req, res) => {
-  try {
-    const product = await Product.findOne({ _id: req.params.id });
-    res.render('order_form', { product });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -247,22 +175,22 @@ app.get('/products/delete/:id', oidc.ensureAuthenticated(), async (req, res) => 
   }
 });
 
-// TRADING REPORT
-app.get('/trading-report', async (req, res) => {
+// GET THE PRODUCT BY ID (Transactions)
+app.get('/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
-    const products = await Product.aggregate(
-      [{
-        "$group": {
-          "_id": "",
-          net_purchases: { $sum: "$net_purchases" },
-          net_sales: { $sum: "$net_sales" },
-          closing_stock: { $sum: "$closing_stock" },
-          cost_of_sales: { $sum: "$cost_of_sales" },
-          gross_profit_or_loss: { $sum: "$gross_profit_or_loss" }
-        }
-      }]
-    );
-    res.render('trading_report', { products });
+    const product = await Product.findOne({ _id: req.params.id });
+    const users = await axios.get('http://localhost:3000/report/transactions');
+    res.render('product_form', { product, users: users.data });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// GET THE PRODUCT BY ID (Product Catalogue)
+app.get('/items/:id', async (req, res) => {
+  try {
+    const product = await Product.findOne({ _id: req.params.id });
+    res.render('order_form', { product });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -270,21 +198,13 @@ app.get('/trading-report', async (req, res) => {
 
 /* --- TRANSACTION CONTROLLERS --- */
 
-// CREATE OR EDIT TRANSACTION
+// CREATE TRANSACTION
 app.post('/transactions/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newTransaction = new Transaction(req.body);
-  // id field is blank
-  if (req.body._id == '')
-    await newTransaction.save((error) => {
-      if (error)
-        res.send('Sorry! Unsuccessful. Please Try Again.');
-    });
-  // id field is not blank
-  else
-    Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
-      if (error)
-        res.send('Sorry! Unsuccessful. Please Try Again.');
-    });
+  await newTransaction.save((error) => {
+    if (error)
+      res.send('Sorry! Unsuccessful. Please Try Again.');
+  });
 });
 
 // GET THE TRANSACTION BY ID
@@ -292,35 +212,6 @@ app.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const transaction = await Transaction.findOne({ _id: req.params.id });
     res.render('payment_form', { transaction });
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
-// LIST DEBTORS
-app.get('/debtors', oidc.ensureAuthenticated(), async (req, res) => {
-  try {
-    const debtors = await Transaction.find({ debtor: { $gt: 0 } }); // find where debtor > 0
-    res.render('debtors', { debtors });
-  } catch (error) {
-    res.status(400).send('Unable to find the record in the list');
-  }
-});
-
-// CREDITOR, DEBTORS, GOODS WITHDRAWN
-app.get('/operations-report', async (req, res) => {
-  try {
-    const transactions = await Transaction.aggregate(
-      [{
-        "$group": {
-          "_id": "",
-          creditor: { $sum: "$creditor" },
-          debtor: { $sum: "$debtor" },
-          goods_withdrawn: { $sum: "$goods_withdrawn" }
-        }
-      }]
-    );
-    res.render('operations_report', { transactions });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -359,25 +250,80 @@ app.get('/finance-and-investments/new', oidc.ensureAuthenticated(), (req, res) =
   res.render('finance_and_investments_form');
 });
 
-// CREATE OR EDIT FINANCE AND INVESTMENTS
+// CREATE FINANCE AND INVESTMENTS
 app.post('/finance-and-investments/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newfinance_and_investments = new FinanceAndInvestment(req.body);
-  // id field is blank
-  if (req.body._id == '')
-    await newfinance_and_investments.save((error) => {
-      if (error)
-        res.send('Sorry! Unsuccessful. Please Try Again.');
-    });
-  // id field is not blank
-  else
-    FinanceAndInvestment.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
-      if (error)
-        res.send('Sorry! Unsuccessful. Please Try Again.');
-    });
+  await newfinance_and_investments.save((error) => {
+    if (error)
+      res.send('Sorry! Unsuccessful. Please Try Again.');
+    else
+      res.redirect('/finance-and-investments/new');
+  });
+});
+
+// EDIT FINANCE AND INVESTMENTS
+app.post('/finance-and-investments/edit', oidc.ensureAuthenticated(), (req, res) => {
+  Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+    if (error)
+      res.send('Sorry! Unsuccessful. Please Try Again.');
+  });
+});
+
+/* --- EXTRACT REPORTS --- */
+
+// LIST USERS (Suppliers)
+app.get('/suppliers', oidc.ensureAuthenticated(), async (req, res) => {
+  try {
+    const suppliers = await User.find({ user: 'SUPPLIER' });
+    res.render('suppliers', { suppliers });
+  } catch (error) {
+    res.status(400).send('Unable to find the list');
+  }
+});
+
+// LIST PRODUCTS
+app.get('/products', oidc.ensureAuthenticated(), async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// LIST DEBTORS
+app.get('/debtors', oidc.ensureAuthenticated(), async (req, res) => {
+  try {
+    const debtors = await Transaction.find({ debtor: { $gt: 0 } }); // find where debtor > 0
+    res.render('debtors', { debtors });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// MATCH USER (Proprietor, Supplier, Customer) TO TRANSACTIONS
+app.get('/report/transactions', async (req, res) => {
+  try {
+    const users = await User.aggregate
+      ([
+        {
+          $lookup:
+          {
+            from: 'transactions',
+            localField: '_id',
+            foreignField: 'userId',
+            as: 'transaction_details'
+          }
+        }
+      ]);
+    res.json(users);
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
 });
 
 // FINANCE AND INVESTMENTS SUMMARIZED
-app.get('/finance-and-investments-report', async (req, res) => {
+app.get('/report/finance-and-investments', async (req, res) => {
   try {
     const finance_and_investments = await FinanceAndInvestment.aggregate(
       [{
@@ -397,6 +343,46 @@ app.get('/finance-and-investments-report', async (req, res) => {
   }
 });
 
+// CREDITOR, DEBTORS, GOODS WITHDRAWN SUMMARIZED
+app.get('/report/operations', async (req, res) => {
+  try {
+    const transactions = await Transaction.aggregate(
+      [{
+        "$group": {
+          "_id": "",
+          creditor: { $sum: "$creditor" },
+          debtor: { $sum: "$debtor" },
+          goods_withdrawn: { $sum: "$goods_withdrawn" }
+        }
+      }]
+    );
+    res.render('operations_report', { transactions });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// TRADING ACTIVITIES SUMMARIZED
+app.get('/report/trading', async (req, res) => {
+  try {
+    const products = await Product.aggregate(
+      [{
+        "$group": {
+          "_id": "",
+          net_purchases: { $sum: "$net_purchases" },
+          net_sales: { $sum: "$net_sales" },
+          closing_stock: { $sum: "$closing_stock" },
+          cost_of_sales: { $sum: "$cost_of_sales" },
+          gross_profit_or_loss: { $sum: "$gross_profit_or_loss" }
+        }
+      }]
+    );
+    res.render('trading_report', { products });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
 /* --- LOGOUT CONTROLLER --- */
 
 // LOGOUT ROUTE
@@ -406,7 +392,8 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-// APP LISTEN TO REQUESTS
+/* --- APP LISTEN TO REQUESTS --- */
+
 oidc.on('ready', () => {
   app.listen(port, hostname, () => {
     console.log(`Server running at http://${hostname}:${port}/`);

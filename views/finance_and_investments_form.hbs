@@ -94,7 +94,7 @@
   #fixed_asset,
   #business_expense,
   #cash_withdrawn,
-  .reset {
+  .message {
     display: none;
   }
 </style>
@@ -103,7 +103,7 @@
   <!-- FINANCE AND INVESTMENTS -->
   <form id="finance-and-investments" method="POST" action="/finance-and-investments/new" oninput="handleInput()"
     onsubmit="handleSubmit()">
-    <input type="hidden" name="_id" value="{{finance-and-investments._id}}">
+    {{!-- <input type="hidden" name="_id" value="{{finance-and-investments._id}}"> --}}
     <fieldset>
       <legend>Finance and Investments</legend><br />
       <select id="transaction_type" name="transaction_type" required>
@@ -124,8 +124,7 @@
       <p class="amount"></p>
       <input id="updated_on" type="hidden" name="updated_on" />
       <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button>
-      <button class="btn btn-success reset" type="reset">Saved Successfully. New <i
-          class="fa fa-refresh"></i></button><br />
+      <button class="btn btn-success message">Saved Successfully.</button><br />
     </fieldset>
   </form>
 </div>
@@ -168,11 +167,6 @@
     else
       $('#cash_withdrawn').css('display', 'none');
 
-    // Display the submit button
-    $('.submit').css('display', 'inline');
-    // Hide the reset button
-    $('.reset').css('display', 'none');
-
     // FORMAT NUMBER AND DISPLAY AS CURRENCY
     var amount = new Intl.NumberFormat('en-UG', {
       style: 'currency',
@@ -195,7 +189,7 @@
   const handleSubmit = () => {
     // Hide the submit button
     $('.submit').css('display', 'none');
-    // Also hide these fields
+    // Also hide these fields:
     $('#transaction_type').css('display', 'none');
     $('#note').css('display', 'none');
     $('#equity').css('display', 'none');
@@ -203,8 +197,8 @@
     $('#fixed_asset').css('display', 'none');
     $('#business_expense').css('display', 'none');
     $('#cash_withdrawn').css('display', 'none');
-    // Display the reset button
-    $('.reset').css('display', 'inline');
+    // Display the message button
+    $('.message').css('display', 'inline');
   }
 
 </script>

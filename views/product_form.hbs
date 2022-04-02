@@ -120,7 +120,7 @@
 <div class="flex-container">
   <!-- TRANSACTION FORM -->
   <form class="transaction" method="POST" action="/transactions/new" oninput="handleInput()" onsubmit="handleSubmit()">
-    <input type="hidden" name="_id">
+    {{!-- <input type="hidden" name="_id"> --}}
     <fieldset>
       <legend>Transact</legend><br />
       <button class="btn-reset" type="reset" style="background-color: #ebebed">
@@ -159,7 +159,7 @@
   </form>
 
   <!-- PRODUCT FORM -->
-  <form class="product" method="POST" action="/products/new" onsubmit="handleProductSubmit()">
+  <form class="product" method="POST" action="/products/edit" onsubmit="handleProductSubmit()">
     <input type="hidden" name="_id" value="{{product._id}}">
     <fieldset>
       <legend></legend><br />
