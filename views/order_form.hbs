@@ -1,32 +1,6 @@
 <style>
   .navbar {
-    width: 100%;
-    position: fixed;
-    top: 0;
     display: none;
-  }
-
-  body {
-    /* Padding to prevent the content to go underneath the header */
-    padding-top: 75px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: #ebebed;
-  }
-
-  span {
-    color: #0000FF;
-    font-size: 22pt;
-    font-weight: lighter;
-    font-family: Monotype Corsiva;
-  }
-
-  .dropdown-menu {
-    border: none;
-  }
-
-  a,
-  label {
-    font-size: 11pt;
   }
 
   .flex-container,
@@ -41,86 +15,62 @@
     margin: 10px;
   }
 
-  form {
-    margin: 0 auto;
-  }
-
-  legend {
-    text-align: center;
-    color: grey;
-  }
-
-  label {
-    color: grey;
-    margin-bottom: 0;
-  }
-
   input[type="text"],
   input[type="email"],
-  input[type="url"],
-  select {
-    width: 290px;
-    padding: 0.75%;
-    margin-bottom: 5px;
+  input[type="url"] {
+    background-color: #ebebed;
+    border: 1px solid #0000FF;
+  }
+
+  input[name='product'] {
+    border: none;
+  }
+
+  input[name='product'],
+  input[name='quantity'] {
+    color: #0000FF;
     font-size: 14pt;
-    border: none;
-  }
-
-  .logout {
-    border: none;
-    font-size: 12pt;
-    margin-left: 24px;
-  }
-
-  .submit {
-    width: 25%;
-  }
-
-  .product {
-    display: none;
-  }
-
-  /* Responsive layout */
-  @media (max-width: 800px) {
-
-    .flex-container,
-    fieldset {
-      flex-direction: column;
-    }
-  }
-
-  footer {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    font-size: 12pt;
-    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #ebebed;
   }
 </style>
 
 <div class="flex-container">
   <!-- ORDER FORM -->
-  <form class="order" method="POST" action="/orders/new" oninput="inputOrder()" onsubmit="submitOrder()">
+  <form class="order" method="POST" action="/orders/new" oninput="handleInput()">
     <fieldset>
       <div class="customer-details">
-        <legend>Customer</legend><br /><input id="user" type="hidden" name="user" value="CUSTOMER"
-          required /><label>Name:</label><br /><input id="name" type="text" name="name"
-          required /><br /><label>Country:</label><br /><input id="country" type="text" name="country"
-          required /><br /><label>City/Town:</label><br /><input id="city" type="text" name="city"
-          required /><br /><label>Street:</label><br /><input id="street" type="text" name="street"
-          required /><br /><label>Address:</label><br /><input id="address" type="text" name="address"
-          required /><br /><label>Telephone:</label><br /><input id="telephone" type="text" name="telephone"
-          required /><br /><label>Email:</label><br /><input id="email" type="email" name="email"
-          required /><br /><label>Website: </label><br /><input id="website" type="url" name="website" /><br />
+        <legend>Customer</legend><br />
+        <input id="user" type="hidden" name="user" value="CUSTOMER" required />
+        <label>Name:</label><br />
+        <input id="name" type="text" name="name" required /><br />
+        <label>Country:</label><br />
+        <input id="country" type="text" name="country" required /><br />
+        <label>City/Town:</label><br />
+        <input id="city" type="text" name="city" required /><br />
+        <label>Street:</label><br />
+        <input id="street" type="text" name="street" required /><br />
+        <label>Address:</label><br />
+        <input id="address" type="text" name="address" required /><br />
+        <label>Telephone:</label><br />
+        <input id="telephone" type="text" name="telephone" required /><br />
+        <label>Email:</label><br />
+        <input id="email" type="email" name="email" required /><br />
+        <label>Website: </label><br />
+        <input id="website" type="url" name="website" /><br />
       </div>
       <div class="order-details">
-        <legend>Order</legend><br /><label>Product:</label><br /><input id="product" type="text" name="product"
-          readonly /><br /><label>Quantity:</label><br /><input id="quantity" type="text"
-          name="quantity" /><br /><label>Unit
-          Cost:</label><br /><input id="unit_cost" type="text" name="unit_cost" readonly /><br /><label>Total
-          Cost:</label><br /><input id="total_cost" type="text" name="total_cost" readonly /><br /><input
-          id="order_date" type="hidden" name="order_date" readonly /><br /><button class="btn btn-success submit"
-          type="submit">Submit</button><br />
+        <legend>Order</legend><br /><br />
+        <input id="product" type="text" name="product" readonly />
+        <p class="unitCost"></p>
+        <label>Quantity:</label>
+        <input id="quantity" type="text" name="quantity" /><br />
+        <input id="unit_cost" type="hidden" name="unit_cost" readonly />
+        <label>Total Cost:</label>
+        <p class="totalCost"></p>
+        <input id="total_cost" type="hidden" name="total_cost" readonly />
+        <input id="order_date" type="hidden" name="order_date" readonly />
+        <button class="btn btn-success submit" type="submit">Submit</button><br />
       </div>
     </fieldset>
   </form>
@@ -137,15 +87,31 @@
 </div>
 
 <script type="text/javascript">
-  const inputOrder = () => {
+
+  const handleInput = () => {
+
     // Insert Product automatically
     document.getElementById('product').value = "{{product.product_name}}";
 
     // Unit Cost
     document.getElementById('unit_cost').value = "{{product.retail_price}}";
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var unitCost = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    document.querySelector('.unitCost').textContent = unitCost.format(document.getElementById('unit_cost').value);
 
     // Total Cost
     document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var totalCost = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    document.querySelector('.totalCost').textContent = totalCost.format(document.getElementById('total_cost').value);
 
     // Insert Date automatically
     document.getElementById('order_date').value = Date();
@@ -155,10 +121,4 @@
       document.getElementById('userId').value = "{{product.user_id}}";
   }
 
-  const submitOrder = () => {
-    // Hide the Transaction Form
-    $('.order').css('display', 'none');
-    // Display the Product Form
-    $('.product').css('display', 'inline');
-  }
 </script>

@@ -207,6 +207,16 @@ app.post('/transactions/new', oidc.ensureAuthenticated(), async (req, res) => {
   });
 });
 
+// EDIT TRANSACTION
+app.post('/transactions/edit', oidc.ensureAuthenticated(), (req, res) => {
+  Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
+    if (error)
+      res.send('Sorry! Unsuccessful. Please Try Again.');
+    else
+      res.redirect('/products/search');
+  });
+});
+
 // GET THE TRANSACTION BY ID
 app.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
@@ -235,11 +245,9 @@ app.post('/orders/new', async (req, res) => {
 // PAY OFF DEBT
 app.post('/payments/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newPayment = new Payment(req.body);
-  await newPayment.save(() => {
+  await newPayment.save((error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
-    else
-    res.redirect('/debtors');
   });
 });
 

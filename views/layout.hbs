@@ -197,6 +197,153 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
 
+<script type="text/javascript">
+
+  const handleInput = () => {
+
+    // Total Cost
+    document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
+
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var totalCost = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    document.querySelector('.totalCost').textContent = totalCost.format(document.getElementById('total_cost').value);
+
+    // Insert Product automatically
+    document.getElementById('product').value = "{{product.product_name}}";
+
+    // Insert Dates automatically
+    document.getElementById('transaction_date').value = Date();
+    document.getElementById('updated_on').value = document.getElementById('transaction_date').value;
+
+    // Transactions by User ID
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('userId').value = "{{product.user_id}}";
+
+    // Unit Cost
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('unit_cost').value = "{{product.retail_price}}";
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('unit_cost').value = "{{product.closing_stock}}" / "{{product.quantity_instock}}";
+
+    // Payment
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('payment').value = "Issued"
+
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('payment').value = "Received"
+
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('payment').value = "None"
+
+    // Creditor, Debtors, Goods Withdrawn
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('debtor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('goods_withdrawn').value = Number(document.getElementById('total_cost').value);
+
+    //
+    if (document.getElementById('transaction_type').value == "Purchases")
+      // Display the field "initial_payment"
+      $('#initial_payment').css('display', 'inline');
+
+    if (document.getElementById('transaction_type').value == "Sales")
+      // Display the field "initial_payment"
+      $('#initial_payment').css('display', 'inline');
+
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      // Hide the field "payment"
+      $('#payment').css('display', 'none');
+
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var debt = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.querySelector('.debt').textContent = debt.format(document.getElementById('creditor').value);
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.querySelector('.debt').textContent = debt.format(document.getElementById('debtor').value);
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.querySelector('.debt').textContent = debt.format(document.getElementById('goods_withdrawn').value);
+  }
+
+  const handleSubmit = () => {
+    // Hide the Transaction Form
+    $('.transaction').css('display', 'none');
+    // Display the Product Form
+    $('.product').css('display', 'inline');
+  }
+
+  const handleProductSubmit = () => {
+    // Quantity Purchased
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) + Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
+
+    // Quantity Sold
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) + Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) - Number(document.getElementById('quantity').value);
+
+    // Quantity Instock
+    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value) - Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value);
+
+    // Discontinued
+    if (document.getElementById('quantity_instock').value == 0)
+      document.getElementById('discontinued').value = 'Yes'
+    else
+      document.getElementById('discontinued').value = 'No'
+
+    // Purchases
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) + Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('total_cost').value);
+
+    // Sales
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) + Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('total_cost').value);
+
+    // Closing Stock
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) + Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('closing_stock').value = Number(document.getElementById('quantity_instock').value) * Number(document.getElementById('closing_stock').value)
+        / (Number(document.getElementById('quantity_instock').value) + Number(document.getElementById('quantity').value));
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) - Number(document.getElementById('total_cost').value);
+
+    // Cost of Sales
+    document.getElementById('cost_of_sales').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('closing_stock').value);
+
+    // Gross Profit
+    document.getElementById('gross_profit_or_loss').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('cost_of_sales').value);
+  }
+
+</script>
+
 <footer class="bg-light">
   Copyright &copy; 2022 Mwanika Stephen Crispin
 </footer>

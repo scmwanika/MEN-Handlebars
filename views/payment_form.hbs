@@ -6,19 +6,20 @@
 
 <div class="flex-container">
   <!-- PAY OFF DEBT FORM -->
-  <form class="payment" method="POST" action="/payments/new" onsubmit="handleSubmit()">
+  <form class="payment" method="POST" action="/payments/new" oninput="handleInput()" onsubmit="handleSubmit()">
     <fieldset>
       <legend>Pay off debt</legend>
       <input id="user_id" type="hidden" name="user_id" readonly /><br />
       <input id="payment_date" type="hidden" name="payment_date" readonly />
       <label>Later Payment:</label><br />
       <input id="later_payment" type="text" name="later_payment" required /><br />
+      <p class="laterPayment"></p>
       <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
     </fieldset>
   </form>
 
   <!-- TRANSACTION FORM -->
-  <form class="transaction" method="POST" action="/transactions/new" onsubmit="handleTransactionSubmit()">
+  <form class="transaction" method="POST" action="/transactions/edit">
     <input type="hidden" name="_id" value="{{transaction._id}}">
     <fieldset>
       <legend></legend><br />
@@ -45,6 +46,16 @@
 
 <script type="text/javascript">
 
+  const handleInput = () => {
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var laterPayment = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    document.querySelector('.laterPayment').textContent = laterPayment.format(document.getElementById('later_payment').value);
+  }
+
   const handleSubmit = () => {
     // user_id == transaction.userId
     document.getElementById('user_id').value = "{{transaction.userId}}";
@@ -62,11 +73,6 @@
     $('.payment').css('display', 'none');
     // Display the Transaction Form
     $('.transaction').css('display', 'inline');
-  }
-
-  const handleTransactionSubmit = () => {
-    // Hide the Conclude Payment button
-    $('.conclude').css('display', 'none');
   }
 
 </script>

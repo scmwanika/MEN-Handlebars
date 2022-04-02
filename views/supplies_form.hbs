@@ -34,8 +34,7 @@
   </form>
 
   <!-- PRODUCT FORM -->
-  <form class="product" method="POST" action="/products/new" onsubmit="handleSubmit()">
-    {{!-- <input type="hidden" name="_id"> --}}
+  <form class="product" method="POST" action="/products/new" oninput="handleInput()" onsubmit="handleSubmit()">
     <fieldset>
       <legend>Product Details</legend>
       <input id="user_id" type="hidden" name="user_id" readonly /><br />
@@ -43,7 +42,8 @@
       <input id="product_name" type="text" name="product_name" /><br />
       <label>Category:</label><br /><input id="category" type="text" name="category" /><br />
       <label>Proposed Retail Price:</label><br />
-      <input id="retail_price" type="text" name="retail_price" /><br />
+      <input id="retail_price" type="text" name="retail_price" />
+      <p class="retailPrice"></p>
       <label>Discontinued:</label><br />
       <input id="discontinued" type="text" name="discontinued" value="Yes" readonly />
       <input id="created_on" type="hidden" name="created_on" readonly /><br />
@@ -53,6 +53,16 @@
 </div>
 
 <script type="text/javascript">
+
+  const handleInput = () => {
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var retailPrice = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    document.querySelector('.retailPrice').textContent = retailPrice.format(document.getElementById('retail_price').value);
+  }
 
   const handleSubmit = () => {
     // user_id == supplier._id
