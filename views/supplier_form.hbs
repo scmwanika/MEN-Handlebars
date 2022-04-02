@@ -1,96 +1,6 @@
-<style>
-  .navbar {
-    width: 100%;
-    position: fixed;
-    top: 0;
-  }
-
-  body {
-    /* Padding to prevent the content to go underneath the header */
-    padding-top: 75px;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    background-color: #ebebed;
-  }
-
-  span {
-    color: #0000FF;
-    font-size: 22pt;
-    font-weight: lighter;
-    font-family: Monotype Corsiva;
-  }
-
-  .dropdown-menu {
-    border: none;
-  }
-
-  a,
-  label {
-    font-size: 11pt;
-  }
-
-  .flex-container {
-    display: flex;
-    flex-direction: row;
-  }
-
-  form {
-    margin: 0 auto;
-  }
-
-  legend {
-    text-align: center;
-    color: grey;
-  }
-
-  label {
-    color: grey;
-    margin-bottom: 0;
-  }
-
-  input[type="text"],
-  input[type="email"],
-  input[type="url"],
-  select {
-    width: 290px;
-    padding: 0.75%;
-    margin-bottom: 5px;
-    font-size: 14pt;
-    border: none;
-  }
-
-  .logout {
-    border: none;
-    font-size: 12pt;
-    margin-left: 24px;
-  }
-
-  .submit {
-    width: 25%;
-  }
-
-  /* Responsive layout */
-  @media (max-width: 800px) {
-    .flex-container {
-      flex-direction: column;
-    }
-  }
-
-  footer {
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    font-size: 12pt;
-    text-align: center;
-  }
-
-  .reset {
-    display: none;
-  }
-</style>
-
 <div class="flex-container">
   <!-- SUPPLIER FORM -->
-  <form method="POST" action="/suppliers/new" oninput="handleInput()" onsubmit="handleSubmit()">
+  <form method="POST" action="/suppliers/new" onsubmit="handleSubmit()">
     {{!-- <input type="hidden" name="_id"> --}}
     <fieldset>
       <legend>Supplier</legend>
@@ -103,28 +13,17 @@
       <label>Telephone:</label><br /><input id="telephone" type="text" name="telephone" required /><br />
       <label>Email:</label><br /><input id="email" type="email" name="email" required /><br />
       <label>Website: </label><br /><input id="website" type="url" name="website" /><br />
-      <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button>
-      <button class="btn btn-success reset" type="reset">New <i class="fa fa-refresh"></i></button><br />
+      <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
     </fieldset>
   </form>
 </div>
 
 <script type="text/javascript">
 
-  // RUN ON INPUT
-  const handleInput = () => {
-    // Display the submit button
-    $('.submit').css('display', 'inline');
-    // Hide the reset button
-    $('.reset').css('display', 'none');
-  }
-
   // RUN ON SUBMIT
   const handleSubmit = () => {
     // Hide the submit button
     $('.submit').css('display', 'none');
-    // Display the reset button
-    $('.reset').css('display', 'inline');
   }
 
 </script>

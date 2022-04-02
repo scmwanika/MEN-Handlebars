@@ -239,7 +239,7 @@ app.post('/payments/new', oidc.ensureAuthenticated(), async (req, res) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
     else
-      res.redirect('/');
+    res.redirect('/debtors');
   });
 });
 
@@ -266,6 +266,8 @@ app.post('/finance-and-investments/edit', oidc.ensureAuthenticated(), (req, res)
   Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
+    else
+      res.redirect('/finance-and-investments/new');
   });
 });
 
