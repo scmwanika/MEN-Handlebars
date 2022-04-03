@@ -63,7 +63,8 @@
     <option class="select-option" value="">Select ...</option>
     <option value={{this}}>{{this}}</option>
     {{/each}}
-  </select><button class="search" type="submit">search <i class="fa fa-search" aria-hidden="true"></i></button>
+  </select>
+  <button class="search" type="submit">search <i class="fa fa-search" aria-hidden="true"></i></button>
 </form>
 <br />
 <div class="cards">
@@ -71,8 +72,7 @@
   <div>
     <img src={{this.product_name}}.jpg />
     <div class="card-title"><b>{{this.product_name}}</b></div>
-    <div class="card-text">{{this.retail_price}} Ugx. /Kg</div>
-    <div class="card-text">Available: {{this.quantity_instock}} Kg</div>
+    <div class="card-text">USh {{this.retail_price}}</div>
     <a href="/items/{{this._id}}"> order </a>
   </div>
   {{/each}}
