@@ -1,7 +1,7 @@
 // IMPORTING DEPENDENCIES
 const { default: axios } = require('axios');
 const express = require('express');
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000
@@ -17,18 +17,18 @@ app.use(express.static('static/img'));
 app.use(express.static('uploads'));
 
 // CONNECT DATABASE
-mongoose.connect(process.env.DATABASE, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// mongoose.connect(process.env.DATABASE, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
-mongoose.connection
-  .on('open', () => {
-    console.log('Mongoose connection open');
-  })
-  .on('error', (error) => {
-    console.log(`Connection error: ${error.message}`);
-  });
+// mongoose.connection
+//   .on('open', () => {
+//     console.log('Mongoose connection open');
+//   })
+//   .on('error', (error) => {
+//     console.log(`Connection error: ${error.message}`);
+//   });
 
 // IMPORT MODELS
 const User = require('./models/user_model');
