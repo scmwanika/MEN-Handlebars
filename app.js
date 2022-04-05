@@ -2,8 +2,8 @@
 const { default: axios } = require('axios');
 const express = require('express');
 const bodyParser = require('body-parser');
-//const session = require('express-session');
-//const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
+const session = require('express-session');
+const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 //const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -38,24 +38,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //     console.log(`Connection error: ${error.message}`);
 //   });
 
-// // USER SESSION
-// app.use(session({
-//   cookie: { httpOnly: true },
-//   secret: `${process.env.OKTA_CLIENT_SECRET}`,
-//   resave: true,
-//   saveUninitialized: false
-// }));
+// USER SESSION
+app.use(session({
+  cookie: { httpOnly: true },
+  secret: `${process.env.OKTA_CLIENT_SECRET}`,
+  resave: true,
+  saveUninitialized: false
+}));
 
-// // AUTHENTICATE USER
-// const oidc = new ExpressOIDC({
-//   appBaseUrl: `${process.env.HOST_URL}`,
-//   issuer: `${process.env.OKTA_ORG_URL}`,
-//   client_id: process.env.OKTA_CLIENT_ID,
-//   client_secret: process.env.OKTA_CLIENT_SECRET,
-//   scope: 'openid profile email'
-// });
+// AUTHENTICATE USER
+const oidc = new ExpressOIDC({
+  appBaseUrl: `${process.env.HOST_URL}`,
+  issuer: `${process.env.OKTA_ORG_URL}`,
+  client_id: process.env.OKTA_CLIENT_ID,
+  client_secret: process.env.OKTA_CLIENT_SECRET,
+  scope: 'openid profile email'
+});
 
-// app.use(oidc.router);
+app.use(oidc.router);
 
 // IMPORT MODELS
 const User = require('./models/user_model');
@@ -73,7 +73,7 @@ app.get('/', (req, res) => {
 /* --- USER CONTROLLERS --- */
 
 // GET AND FILL IN THE USER (Supplier)
-app.get('/suppliers/new', (req, res) => {
+app.get('/suppliers/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('supplier_form');
 });
 
@@ -109,7 +109,7 @@ app.get('/suppliers/:id', async (req, res) => {
 });
 
 // GET AND FILL IN THE USER (Customer)
-app.get('/customers/new', (req, res) => {
+app.get('/customers/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('customer_form');
 });
 
@@ -257,7 +257,7 @@ app.post('/payments/new', async (req, res) => {
 /* --- FINANCE AND INVESTMENTS CONTROLLERS --- */
 
 // GET THE FINANCE AND INVESTMENTS FORM
-app.get('/finance-and-investments/new', (req, res) => {
+app.get('/finance-and-investments/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('finance_and_investments_form');
 });
 
