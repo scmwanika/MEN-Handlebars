@@ -1,6 +1,9 @@
 // IMPORTING DEPENDENCIES
 const { default: axios } = require('axios');
 const express = require('express');
+const bodyParser = require('body-parser');
+//const session = require('express-session');
+//const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 //const mongoose = require('mongoose');
 require('dotenv').config();
 
@@ -16,7 +19,12 @@ app.use(express.static('static/css'));
 app.use(express.static('static/img'));
 app.use(express.static('uploads'));
 
-// CONNECT DATABASE
+// MANIPULATE DATABASE USING JSON
+app.use(express.json());
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// // CONNECT DATABASE
 // mongoose.connect(process.env.DATABASE, {
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
@@ -29,6 +37,25 @@ app.use(express.static('uploads'));
 //   .on('error', (error) => {
 //     console.log(`Connection error: ${error.message}`);
 //   });
+
+// // USER SESSION
+// app.use(session({
+//   cookie: { httpOnly: true },
+//   secret: `${process.env.OKTA_CLIENT_SECRET}`,
+//   resave: true,
+//   saveUninitialized: false
+// }));
+
+// // AUTHENTICATE USER
+// const oidc = new ExpressOIDC({
+//   appBaseUrl: `${process.env.HOST_URL}`,
+//   issuer: `${process.env.OKTA_ORG_URL}`,
+//   client_id: process.env.OKTA_CLIENT_ID,
+//   client_secret: process.env.OKTA_CLIENT_SECRET,
+//   scope: 'openid profile email'
+// });
+
+// app.use(oidc.router);
 
 // IMPORT MODELS
 const User = require('./models/user_model');
@@ -46,12 +73,12 @@ app.get('/', (req, res) => {
 /* --- USER CONTROLLERS --- */
 
 // GET AND FILL IN THE USER (Supplier)
-app.get('/suppliers/new',  (req, res) => {
+app.get('/suppliers/new', (req, res) => {
   res.render('supplier_form');
 });
 
 // CREATE USER (Supplier)
-app.post('/suppliers/new',  async (req, res) => {
+app.post('/suppliers/new', async (req, res) => {
   const newSupplier = new User(req.body);
   await newSupplier.save((error) => {
     if (error)
@@ -62,7 +89,7 @@ app.post('/suppliers/new',  async (req, res) => {
 });
 
 // EDIT USER (Supplier)
-app.post('/suppliers/edit',  (req, res) => {
+app.post('/suppliers/edit', (req, res) => {
   Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -72,7 +99,7 @@ app.post('/suppliers/edit',  (req, res) => {
 });
 
 // GET THE USER (Supplier) BY ID
-app.get('/suppliers/:id',  async (req, res) => {
+app.get('/suppliers/:id', async (req, res) => {
   try {
     const supplier = await User.findOne({ _id: req.params.id });
     res.render('supplies_form', { supplier });
@@ -82,12 +109,12 @@ app.get('/suppliers/:id',  async (req, res) => {
 });
 
 // GET AND FILL IN THE USER (Customer)
-app.get('/customers/new',  (req, res) => {
+app.get('/customers/new', (req, res) => {
   res.render('customer_form');
 });
 
 // CREATE USER (Customer)
-app.post('/customers/new',  async (req, res) => {
+app.post('/customers/new', async (req, res) => {
   const newCustomer = new User(req.body);
   await newCustomer.save((error) => {
     if (error)
@@ -111,7 +138,7 @@ app.post('/customers/new',  async (req, res) => {
 // });
 
 // CREATE PRODUCT
-app.post('/products/new',  async (req, res) => {
+app.post('/products/new', async (req, res) => {
   const newProduct = new Product(req.body);
   await newProduct.save((error) => {
     if (error)
@@ -122,7 +149,7 @@ app.post('/products/new',  async (req, res) => {
 });
 
 // EDIT PRODUCT
-app.post('/products/edit',  (req, res) => {
+app.post('/products/edit', (req, res) => {
   Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -132,7 +159,7 @@ app.post('/products/edit',  (req, res) => {
 });
 
 // SEARCH THE PRODUCT BY NAME
-app.get('/products/search',  async (req, res) => {
+app.get('/products/search', async (req, res) => {
   try {
     const products = await Product.find({ product_name: req.query.product_name });
     res.render('search_product', { products });
@@ -142,7 +169,7 @@ app.get('/products/search',  async (req, res) => {
 });
 
 // DELETE THE PRODUCT BY ID
-app.get('/products/delete/:id',  async (req, res) => {
+app.get('/products/delete/:id', async (req, res) => {
   try {
     const product = await Product.deleteOne({ _id: req.params.id });
     res.render('search_product', { product });
@@ -152,7 +179,7 @@ app.get('/products/delete/:id',  async (req, res) => {
 });
 
 // GET THE PRODUCT BY ID (Transactions)
-app.get('/products/:id',  async (req, res) => {
+app.get('/products/:id', async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
     const users = await axios.get('http://localhost:3000/report/transactions');
@@ -175,7 +202,7 @@ app.get('/items/:id', async (req, res) => {
 /* --- TRANSACTION CONTROLLERS --- */
 
 // CREATE TRANSACTION
-app.post('/transactions/new',  async (req, res) => {
+app.post('/transactions/new', async (req, res) => {
   const newTransaction = new Transaction(req.body);
   await newTransaction.save((error) => {
     if (error)
@@ -184,7 +211,7 @@ app.post('/transactions/new',  async (req, res) => {
 });
 
 // EDIT TRANSACTION
-app.post('/transactions/edit',  (req, res) => {
+app.post('/transactions/edit', (req, res) => {
   Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -194,7 +221,7 @@ app.post('/transactions/edit',  (req, res) => {
 });
 
 // GET THE TRANSACTION BY ID
-app.get('/transactions/:id',  async (req, res) => {
+app.get('/transactions/:id', async (req, res) => {
   try {
     const transaction = await Transaction.findOne({ _id: req.params.id });
     res.render('payment_form', { transaction });
@@ -219,7 +246,7 @@ app.post('/orders/new', async (req, res) => {
 /* --- PAYMENT CONTROLLERS --- */
 
 // PAY OFF DEBT
-app.post('/payments/new',  async (req, res) => {
+app.post('/payments/new', async (req, res) => {
   const newPayment = new Payment(req.body);
   await newPayment.save((error) => {
     if (error)
@@ -230,12 +257,12 @@ app.post('/payments/new',  async (req, res) => {
 /* --- FINANCE AND INVESTMENTS CONTROLLERS --- */
 
 // GET THE FINANCE AND INVESTMENTS FORM
-app.get('/finance-and-investments/new',  (req, res) => {
+app.get('/finance-and-investments/new', (req, res) => {
   res.render('finance_and_investments_form');
 });
 
 // CREATE FINANCE AND INVESTMENTS
-app.post('/finance-and-investments/new',  async (req, res) => {
+app.post('/finance-and-investments/new', async (req, res) => {
   const newfinance_and_investments = new FinanceAndInvestment(req.body);
   await newfinance_and_investments.save((error) => {
     if (error)
@@ -246,7 +273,7 @@ app.post('/finance-and-investments/new',  async (req, res) => {
 });
 
 // EDIT FINANCE AND INVESTMENTS
-app.post('/finance-and-investments/edit',  (req, res) => {
+app.post('/finance-and-investments/edit', (req, res) => {
   Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -258,7 +285,7 @@ app.post('/finance-and-investments/edit',  (req, res) => {
 /* --- EXTRACT REPORTS --- */
 
 // LIST USERS (Suppliers)
-app.get('/suppliers',  async (req, res) => {
+app.get('/suppliers', async (req, res) => {
   try {
     const suppliers = await User.find({ user: 'SUPPLIER' });
     res.render('suppliers', { suppliers });
@@ -268,7 +295,7 @@ app.get('/suppliers',  async (req, res) => {
 });
 
 // LIST PRODUCTS
-app.get('/products',  async (req, res) => {
+app.get('/products', async (req, res) => {
   try {
     const products = await Product.find();
     res.json(products);
@@ -278,7 +305,7 @@ app.get('/products',  async (req, res) => {
 });
 
 // LIST DEBTORS
-app.get('/debtors',  async (req, res) => {
+app.get('/debtors', async (req, res) => {
   try {
     const debtors = await Transaction.find({ debtor: { $gt: 0 } }); // find where debtor > 0
     res.render('debtors', { debtors });
@@ -380,6 +407,12 @@ app.get('/logout', (req, res) => {
 
 /* --- APP LISTEN TO REQUESTS --- */
 
+//oidc.on('ready', () => {
 app.listen(PORT, () => {
-  console.log(`App up at port ${PORT}`);
+  console.log(`App running at port ${PORT}`);
 });
+//});
+
+// oidc.on('error', err => {
+//   console.error(err);
+// });
