@@ -5,7 +5,7 @@
   "author": "Mwanika Stephen Crispin",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "@okta/oidc-middleware": "^4.5.1",
