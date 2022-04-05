@@ -39,9 +39,9 @@ const Order = require('./models/order_model');
 const Payment = require('./models/payment_model');
 const FinanceAndInvestment = require('./models/finance_and_investment_model');
 
-// app.get('/', (req, res) => {
-//   res.render('index');
-// });
+app.get('/', (req, res) => {
+  res.render('index');
+});
 
 /* --- USER CONTROLLERS --- */
 
@@ -100,15 +100,15 @@ app.post('/customers/new',  async (req, res) => {
 /* --- PRODUCT CONTROLLERS --- */
 
 // INDEX PAGE: THE PRODUCT CATALOGUE
-app.get('/', async (req, res) => {
-  try {
-    // search by category and retrieve products not discontinued
-    const products = await Product.find({ category: req.query.category, discontinued: 'No' });
-    res.render('index', { products, items });
-  } catch (error) {
-    res.status(400).send('index page closed; please try again.');
-  }
-});
+// app.get('/', async (req, res) => {
+//   try {
+//     // search by category and retrieve products not discontinued
+//     const products = await Product.find({ category: req.query.category, discontinued: 'No' });
+//     res.render('index', { products, items });
+//   } catch (error) {
+//     res.status(400).send('index page closed; please try again.');
+//   }
+// });
 
 // CREATE PRODUCT
 app.post('/products/new',  async (req, res) => {
