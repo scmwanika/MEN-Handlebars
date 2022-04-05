@@ -7,8 +7,8 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const hostname = '127.0.0.1';
-const port = 5000;
+//const hostname = '127.0.0.1';
+const port = 3000;
 
 const app = express();
 
@@ -405,8 +405,8 @@ app.get('/logout', (req, res) => {
 /* --- APP LISTEN TO REQUESTS --- */
 
 //oidc.on('ready', () => {
-  app.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
+  app.listen(port,  () => {
+    console.log(`Server running at http://localhost:${port}/`);
   });
 //});
 
