@@ -8,7 +8,9 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
-//const uri = process.env.MONGODB_URI;
+const DATABASE = process.env.MONGODB_URI || "mongodb+srv://scmwanika:pUxtMN36uxkqczWh@supply-chain.ijyxe.mongodb.net/test?retryWrites=true&w=majority";
+
+//const DATABASE = process.env.MONGODB_URI;
 
 const app = express();
 
@@ -26,7 +28,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // CONNECT DATABASE
-mongoose.connect(process.env.DATABASE, {
+mongoose.connect(DATABASE, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
