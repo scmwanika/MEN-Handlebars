@@ -4,11 +4,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 //const session = require('express-session');
 //const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
-//const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
-const uri = process.env.MONGODB_URI;
+//const uri = process.env.MONGODB_URI;
 
 const app = express();
 
@@ -25,19 +25,19 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// // CONNECT DATABASE
-// mongoose.connect(process.env.DATABASE, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
+// CONNECT DATABASE
+mongoose.connect(process.env.DATABASE, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-// mongoose.connection
-//   .on('open', () => {
-//     console.log('Mongoose connection open');
-//   })
-//   .on('error', (error) => {
-//     console.log(`Connection error: ${error.message}`);
-//   });
+mongoose.connection
+  .on('open', () => {
+    console.log('Mongoose connection open');
+  })
+  .on('error', (error) => {
+    console.log(`Connection error: ${error.message}`);
+  });
 
 // // USER SESSION
 // app.use(session({
