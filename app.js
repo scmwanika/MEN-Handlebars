@@ -7,9 +7,7 @@ const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const PORT = process.env.PORT || 3000;
-const DATABASE = process.env.DATABASE || "mongodb+srv://scmwanika:pUxtMN36uxkqczWh@supply-chain.ijyxe.mongodb.net/test?retryWrites=true&w=majority";
-const { HOST_URL, OKTA_ORG_URL, OKTA_CLIENT_ID, OKTA_CLIENT_SECRET } = process.env;
+const { PORT, DATABASE, HOST_URL, OKTA_ORG_URL, OKTA_CLIENT_ID, OKTA_CLIENT_SECRET } = process.env;
 
 const app = express();
 
@@ -77,7 +75,7 @@ app.get('/suppliers/new', oidc.ensureAuthenticated(), (req, res) => {
 });
 
 // CREATE USER (Supplier)
-app.post('/suppliers/new', async (req, res) => {
+app.post('/suppliers/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newSupplier = new User(req.body);
   await newSupplier.save((error) => {
     if (error)
@@ -88,7 +86,7 @@ app.post('/suppliers/new', async (req, res) => {
 });
 
 // EDIT USER (Supplier)
-app.post('/suppliers/edit', (req, res) => {
+app.post('/suppliers/edit', oidc.ensureAuthenticated(), (req, res) => {
   Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -98,7 +96,7 @@ app.post('/suppliers/edit', (req, res) => {
 });
 
 // GET THE USER (Supplier) BY ID
-app.get('/suppliers/:id', async (req, res) => {
+app.get('/suppliers/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const supplier = await User.findOne({ _id: req.params.id });
     res.render('supplies_form', { supplier });
@@ -108,7 +106,7 @@ app.get('/suppliers/:id', async (req, res) => {
 });
 
 // GET AND FILL IN THE USER (Customer)
-app.get('/customers/new', (req, res) => {
+app.get('/customers/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('customer_form');
 });
 
@@ -137,7 +135,7 @@ app.get('/', async (req, res) => {
 });
 
 // CREATE PRODUCT
-app.post('/products/new', async (req, res) => {
+app.post('/products/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newProduct = new Product(req.body);
   await newProduct.save((error) => {
     if (error)
@@ -148,7 +146,7 @@ app.post('/products/new', async (req, res) => {
 });
 
 // EDIT PRODUCT
-app.post('/products/edit', (req, res) => {
+app.post('/products/edit', oidc.ensureAuthenticated(), (req, res) => {
   Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -158,7 +156,7 @@ app.post('/products/edit', (req, res) => {
 });
 
 // SEARCH THE PRODUCT BY NAME
-app.get('/products/search', async (req, res) => {
+app.get('/products/search', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const products = await Product.find({ product_name: req.query.product_name });
     res.render('search_product', { products });
@@ -168,7 +166,7 @@ app.get('/products/search', async (req, res) => {
 });
 
 // DELETE THE PRODUCT BY ID
-app.get('/products/delete/:id', async (req, res) => {
+app.get('/products/delete/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.deleteOne({ _id: req.params.id });
     res.render('search_product', { product });
@@ -178,10 +176,10 @@ app.get('/products/delete/:id', async (req, res) => {
 });
 
 // GET THE PRODUCT BY ID (Transactions)
-app.get('/products/:id', async (req, res) => {
+app.get('/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
-    const users = await axios.get('http://localhost:3000/report/transactions');
+    const users = await axios.get('http://stock-life.herokuapp.com/report/transactions');
     res.render('product_form', { product, users: users.data });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
@@ -201,7 +199,7 @@ app.get('/items/:id', async (req, res) => {
 /* --- TRANSACTION CONTROLLERS --- */
 
 // CREATE TRANSACTION
-app.post('/transactions/new', async (req, res) => {
+app.post('/transactions/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newTransaction = new Transaction(req.body);
   await newTransaction.save((error) => {
     if (error)
@@ -210,7 +208,7 @@ app.post('/transactions/new', async (req, res) => {
 });
 
 // EDIT TRANSACTION
-app.post('/transactions/edit', (req, res) => {
+app.post('/transactions/edit', oidc.ensureAuthenticated(), (req, res) => {
   Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -220,7 +218,7 @@ app.post('/transactions/edit', (req, res) => {
 });
 
 // GET THE TRANSACTION BY ID
-app.get('/transactions/:id', async (req, res) => {
+app.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const transaction = await Transaction.findOne({ _id: req.params.id });
     res.render('payment_form', { transaction });
@@ -245,7 +243,7 @@ app.post('/orders/new', async (req, res) => {
 /* --- PAYMENT CONTROLLERS --- */
 
 // PAY OFF DEBT
-app.post('/payments/new', async (req, res) => {
+app.post('/payments/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newPayment = new Payment(req.body);
   await newPayment.save((error) => {
     if (error)
@@ -256,12 +254,12 @@ app.post('/payments/new', async (req, res) => {
 /* --- FINANCE AND INVESTMENTS CONTROLLERS --- */
 
 // GET THE FINANCE AND INVESTMENTS FORM
-app.get('/finance-and-investments/new', (req, res) => {
+app.get('/finance-and-investments/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('finance_and_investments_form');
 });
 
 // CREATE FINANCE AND INVESTMENTS
-app.post('/finance-and-investments/new', async (req, res) => {
+app.post('/finance-and-investments/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newfinance_and_investments = new FinanceAndInvestment(req.body);
   await newfinance_and_investments.save((error) => {
     if (error)
@@ -272,7 +270,7 @@ app.post('/finance-and-investments/new', async (req, res) => {
 });
 
 // EDIT FINANCE AND INVESTMENTS
-app.post('/finance-and-investments/edit', (req, res) => {
+app.post('/finance-and-investments/edit', oidc.ensureAuthenticated(), (req, res) => {
   Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -284,7 +282,7 @@ app.post('/finance-and-investments/edit', (req, res) => {
 /* --- EXTRACT REPORTS --- */
 
 // LIST USERS (Suppliers)
-app.get('/suppliers', async (req, res) => {
+app.get('/suppliers', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const suppliers = await User.find({ user: 'SUPPLIER' });
     res.render('suppliers', { suppliers });
@@ -294,7 +292,7 @@ app.get('/suppliers', async (req, res) => {
 });
 
 // LIST PRODUCTS
-app.get('/products', async (req, res) => {
+app.get('/products', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const products = await Product.find();
     res.json(products);
@@ -304,7 +302,7 @@ app.get('/products', async (req, res) => {
 });
 
 // LIST DEBTORS
-app.get('/debtors', async (req, res) => {
+app.get('/debtors', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const debtors = await Transaction.find({ debtor: { $gt: 0 } }); // find where debtor > 0
     res.render('debtors', { debtors });
