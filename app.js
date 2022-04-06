@@ -2,15 +2,18 @@
 const { default: axios } = require('axios');
 const express = require('express');
 const bodyParser = require('body-parser');
-//const session = require('express-session');
-//const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
+const session = require('express-session');
+const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 const mongoose = require('mongoose');
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3000;
-const DATABASE = process.env.MONGODB_URI || "mongodb+srv://scmwanika:pUxtMN36uxkqczWh@supply-chain.ijyxe.mongodb.net/test?retryWrites=true&w=majority";
+const DATABASE = process.env.DATABASE || "mongodb+srv://scmwanika:pUxtMN36uxkqczWh@supply-chain.ijyxe.mongodb.net/test?retryWrites=true&w=majority";
 
-//const DATABASE = process.env.MONGODB_URI;
+const HOST_URL = process.env.HOST_URL || "http://localhost:3000"
+const OKTA_ORG_URL = process.env.OKTA_ORG_URL || "https://dev-5812657.okta.com"
+const OKTA_CLIENT_ID = process.env.OKTA_CLIENT_ID || "0oa39vq4sPNs3xeN75d6"
+const OKTA_CLIENT_SECRET = process.env.OKTA_CLIENT_SECRET || -WmIidylOyCzzRC3Ouk9PL6WrxpQd_kB9qRcxY_d
 
 const app = express();
 
@@ -35,30 +38,30 @@ mongoose.connect(DATABASE, {
 
 mongoose.connection
   .on('open', () => {
-    console.log('Mongoose connection open');
+    console.log('Database successfully connected');
   })
   .on('error', (error) => {
-    console.log(`Connection error: ${error.message}`);
+    console.log(`Sorry! Database disconnected: ${error.message}`);
   });
 
-// // USER SESSION
-// app.use(session({
-//   cookie: { httpOnly: true },
-//   secret: `${process.env.OKTA_CLIENT_SECRET}`,
-//   resave: true,
-//   saveUninitialized: false
-// }));
+// USER SESSION
+app.use(session({
+  cookie: { httpOnly: true },
+  secret: `${OKTA_CLIENT_SECRET}`,
+  resave: true,
+  saveUninitialized: false
+}));
 
-// // AUTHENTICATE USER
-// const oidc = new ExpressOIDC({
-//   appBaseUrl: `${process.env.HOST_URL}`,
-//   issuer: `${process.env.OKTA_ORG_URL}`,
-//   client_id: process.env.OKTA_CLIENT_ID,
-//   client_secret: process.env.OKTA_CLIENT_SECRET,
-//   scope: 'openid profile email'
-// });
+// AUTHENTICATE USER
+const oidc = new ExpressOIDC({
+  appBaseUrl: `${HOST_URL}`,
+  issuer: `${OKTA_ORG_URL}`,
+  client_id: OKTA_CLIENT_ID,
+  client_secret: OKTA_CLIENT_SECRET,
+  scope: 'openid profile email'
+});
 
-// app.use(oidc.router);
+app.use(oidc.router);
 
 // IMPORT MODELS
 const User = require('./models/user_model');
@@ -69,14 +72,10 @@ const Order = require('./models/order_model');
 const Payment = require('./models/payment_model');
 const FinanceAndInvestment = require('./models/finance_and_investment_model');
 
-app.get('/', (req, res) => {
-  res.render('index');
-});
-
 /* --- USER CONTROLLERS --- */
 
 // GET AND FILL IN THE USER (Supplier)
-app.get('/suppliers/new', (req, res) => {
+app.get('/suppliers/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('supplier_form');
 });
 
@@ -130,15 +129,15 @@ app.post('/customers/new', async (req, res) => {
 /* --- PRODUCT CONTROLLERS --- */
 
 // INDEX PAGE: THE PRODUCT CATALOGUE
-// app.get('/', async (req, res) => {
-//   try {
-//     // search by category and retrieve products not discontinued
-//     const products = await Product.find({ category: req.query.category, discontinued: 'No' });
-//     res.render('index', { products, items });
-//   } catch (error) {
-//     res.status(400).send('index page closed; please try again.');
-//   }
-// });
+app.get('/', async (req, res) => {
+  try {
+    // search by category and retrieve products not discontinued
+    const products = await Product.find({ category: req.query.category, discontinued: 'No' });
+    res.render('index', { products, items });
+  } catch (error) {
+    res.status(400).send('index page closed; please try again.');
+  }
+});
 
 // CREATE PRODUCT
 app.post('/products/new', async (req, res) => {
@@ -410,12 +409,12 @@ app.get('/logout', (req, res) => {
 
 /* --- APP LISTEN TO REQUESTS --- */
 
-//oidc.on('ready', () => {
-app.listen(PORT, () => {
-  console.log(`App running at port ${PORT}`);
+oidc.on('ready', () => {
+  app.listen(PORT, () => {
+    console.log(`App running at port ${PORT}`);
+  });
 });
-//});
 
-// oidc.on('error', err => {
-//   console.error(err);
-// });
+oidc.on('error', err => {
+  console.error(err);
+});
