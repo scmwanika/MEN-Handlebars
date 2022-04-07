@@ -208,7 +208,7 @@ app.get('/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
 });
 
 // GET THE PRODUCT BY ID (Product Catalogue)
-app.get('/items/:id', oidc.ensureAuthenticated(), async (req, res) => {
+app.get('/items/:id', async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
     res.render('order_form', { product });

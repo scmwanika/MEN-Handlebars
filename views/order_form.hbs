@@ -3,16 +3,15 @@
     display: none;
   }
 
-  .flex-container,
-  fieldset {
-    display: flex;
-    flex-direction: row;
+  body {
+    padding-top: 10px;
+
   }
 
   .customer-details,
   .order-details {
     width: 50%;
-    margin: 10px;
+    margin: 15px;
   }
 
   input[type="text"],
@@ -60,7 +59,7 @@
         <input id="website" type="url" name="website" /><br />
       </div>
       <div class="order-details">
-        <legend>Order</legend><br /><br />
+        <legend>Order</legend><br />
         <input id="product" type="text" name="product" readonly />
         <p class="unitCost"></p>
         <label>Quantity:</label>

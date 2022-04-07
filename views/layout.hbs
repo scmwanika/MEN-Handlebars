@@ -97,12 +97,14 @@
     }
 
     .btn-reset select {
-      width: 278px;
+      width: 276px;
+      padding-left: 0px;
       background-color: #ebebed;
     }
 
     .btn-reset {
-      border: none;
+      width: 290px;
+      border: 0.25px solid #ebebed;
     }
 
     input[name='payment'] {
@@ -124,10 +126,6 @@
       margin-left: 24px;
     }
 
-    .submit {
-      width: 27.5%;
-    }
-
     .select-item {
       width: 290px;
       border: none;
@@ -135,7 +133,9 @@
 
     /* Responsive layout */
     @media (max-width: 800px) {
-      .flex-container {
+
+      .flex-container,
+      fieldset {
         flex-direction: column;
       }
     }
