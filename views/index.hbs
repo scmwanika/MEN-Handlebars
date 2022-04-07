@@ -71,9 +71,9 @@
 <div class="cards">
   {{#each products}}
   <div>
-    <img src={{this.product_name}}.jpg />
+    <img src={{this.file_name}} />
     <div class="card-title"><b>{{this.product_name}}</b></div>
-    <div class="card-text">USh {{this.retail_price}}</div>
+    <div class="card-text">USh {{this.retail_price}} {{this.measurement}}</div>
     <a href="/items/{{this._id}}"> order </a>
   </div>
   {{/each}}

@@ -33,14 +33,29 @@
     </fieldset>
   </form>
 
+  <!-- UPLOAD PRODUCT -->
+  <form class="upload" method="POST" action="/uploads" enctype='multipart/form-data'>
+    <legend>Product Details</legend><br />
+    <label>Photo:</label><br />
+    <input id="photo" type="file" name="photo" /><br /><br />
+    <button class="btn btn-success" type="submit">Upload <i class="fa fa-upload"></i></button><br />
+  </form>
+
   <!-- PRODUCT FORM -->
   <form class="product" method="POST" action="/products/new" oninput="handleInput()" onsubmit="handleSubmit()">
-    <fieldset>
-      <legend>Product Details</legend>
+    <fieldset><br /><br />
       <input id="user_id" type="hidden" name="user_id" readonly /><br />
+      <input id="file_name" type="hidden" name="file_name" />
       <label>Product Name:</label><br />
       <input id="product_name" type="text" name="product_name" /><br />
-      <label>Category:</label><br /><input id="category" type="text" name="category" /><br />
+      <label>Category:</label><br />
+      <select id="category" name="category" required>
+        {{#each items.category}}
+        <option class="select-option" value="">Select ...</option>
+        <option value={{this}}>{{this}}</option>
+        {{/each}}
+      </select><br />
+      <input id="measurement" type="hidden" name="measurement" />
       <label>Proposed Retail Price:</label><br />
       <input id="retail_price" type="text" name="retail_price" />
       <p class="retailPrice"></p>
@@ -55,6 +70,14 @@
 <script type="text/javascript">
 
   const handleInput = () => {
+    const fileName = document.getElementById('photo').value;
+    document.getElementById('file_name').value = fileName.substring(12);
+
+    if (document.getElementById('category').value == "Poultry")
+      document.getElementById('measurement').value = '';
+    else
+      document.getElementById('measurement').value = '/Kg';
+
     // FORMAT NUMBER AND DISPLAY AS CURRENCY
     var retailPrice = new Intl.NumberFormat('en-UG', {
       style: 'currency',

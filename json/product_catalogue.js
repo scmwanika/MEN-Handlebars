@@ -1,4 +1,4 @@
 const items = {
-  category: ['Horticulture', 'Poultry']
+  category: ['Poultry', 'Fruits', 'Vegetables']
 }
 module.exports = items

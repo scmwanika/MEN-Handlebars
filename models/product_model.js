@@ -6,10 +6,16 @@ const productSchema = new Schema({
   user_id: {
     type: mongoose.ObjectId,
   },
+  file_name: {
+    type: String,
+  },
   product_name: {
     type: String,
   },
   category: {
+    type: String,
+  },
+  measurement: {
     type: String,
   },
   retail_price: {
