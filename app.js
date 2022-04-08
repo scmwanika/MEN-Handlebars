@@ -8,7 +8,7 @@ const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const { PORT, DATABASE, HOST_URL, OKTA_ORG_URL, OKTA_CLIENT_ID, OKTA_CLIENT_SECRET } = process.env;
+const { HOST_URL, OKTA_ORG_URL, OKTA_CLIENT_ID, OKTA_CLIENT_SECRET, DATABASE, PORT } = process.env;
 
 const app = express();
 
