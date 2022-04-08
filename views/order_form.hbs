@@ -5,13 +5,6 @@
 
   body {
     padding-top: 10px;
-
-  }
-
-  .customer-details,
-  .order-details {
-    width: 50%;
-    margin: 15px;
   }
 
   input[type="text"],
@@ -35,10 +28,10 @@
 </style>
 
 <div class="flex-container">
-  <!-- ORDER FORM -->
+  <!-- CUSTOMER DETAILS -->
   <form class="order" method="POST" action="/orders/new" oninput="handleInput()">
     <fieldset>
-      <div class="customer-details">
+      <div>
         <legend>Customer</legend><br />
         <input id="user" type="hidden" name="user" value="CUSTOMER" required />
         <label>Name:</label><br />
@@ -57,12 +50,12 @@
         <input id="email" type="email" name="email" required /><br />
         <label>Website: </label><br />
         <input id="website" type="url" name="website" /><br />
-      </div>
-      <div class="order-details">
-        <legend>Order</legend><br />
+        <br />
+        <!-- ORDER DETAILS -->
+        <legend>Order</legend>
         <input id="product" type="text" name="product" readonly />
         <p class="unitCost"></p>
-        <label>Quantity:</label>
+        <label>Quantity:</label><br />
         <input id="quantity" type="text" name="quantity" /><br />
         <input id="unit_cost" type="hidden" name="unit_cost" readonly />
         <label>Total Cost:</label>

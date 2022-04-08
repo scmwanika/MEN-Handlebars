@@ -33,19 +33,21 @@
     </fieldset>
   </form>
 
+  {{!--
   <!-- UPLOAD PRODUCT -->
   <form class="upload" method="POST" action="/uploads" enctype='multipart/form-data'>
     <legend>Product Details</legend><br />
     <label>Photo:</label><br />
     <input id="photo" type="file" name="photo" /><br /><br />
     <button class="btn btn-success" type="submit">Upload <i class="fa fa-upload"></i></button><br />
-  </form>
+  </form> --}}
 
   <!-- PRODUCT FORM -->
   <form class="product" method="POST" action="/products/new" oninput="handleInput()" onsubmit="handleSubmit()">
-    <fieldset><br /><br />
-      <input id="user_id" type="hidden" name="user_id" readonly /><br />
-      <input id="file_name" type="hidden" name="file_name" />
+    <fieldset>
+      <legend>Product</legend><br />
+      <input id="user_id" type="hidden" name="user_id" readonly />
+      <input id="file_name" type="hidden" name="file_name" readonly/>
       <label>Product Name:</label><br />
       <input id="product_name" type="text" name="product_name" /><br />
       <label>Category:</label><br />
