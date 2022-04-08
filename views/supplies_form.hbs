@@ -47,7 +47,7 @@
     <fieldset>
       <legend>Product</legend><br />
       <input id="user_id" type="hidden" name="user_id" readonly />
-      <input id="file_name" type="hidden" name="file_name" readonly/>
+      <input id="file_name" type="hidden" name="file_name" readonly />
       <label>Product Name:</label><br />
       <input id="product_name" type="text" name="product_name" /><br />
       <label>Category:</label><br />
@@ -61,9 +61,8 @@
       <label>Proposed Retail Price:</label><br />
       <input id="retail_price" type="text" name="retail_price" />
       <p class="retailPrice"></p>
-      <label>Discontinued:</label><br />
-      <input id="discontinued" type="text" name="discontinued" value="Yes" readonly />
-      <input id="created_on" type="hidden" name="created_on" readonly /><br />
+      <input id="discontinued" type="hidden" name="discontinued" value="Yes" readonly />
+      <input id="created_on" type="hidden" name="created_on" readonly />
       <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
     </fieldset>
   </form>
@@ -72,8 +71,8 @@
 <script type="text/javascript">
 
   const handleInput = () => {
-    const fileName = document.getElementById('photo').value;
-    document.getElementById('file_name').value = fileName.substring(12);
+    //const fileName = document.getElementById('photo').value;
+    //document.getElementById('file_name').value = fileName.substring(12);
 
     if (document.getElementById('category').value == "Poultry")
       document.getElementById('measurement').value = '';

@@ -3,16 +3,15 @@
   <form class="transaction" method="POST" action="/transactions/new" oninput="handleInput()" onsubmit="handleSubmit()">
     <fieldset>
       <legend>Transact</legend><br />
-      <button class="btn-reset" type="reset" style="background-color: #ebebed">
-        <select id="transaction_type" name="transaction_type" required>
-          <option value="">Select ...</option>
-          <option value="Purchases">Purchase</option>
-          <option value="Sales">Sale</option>
-          <option value="Goods Withdrawn">Withdraw Goods</option>
-          <option value="Purchases Returns">Return outwards</option>
-          <option value="Sales Returns">Return inwards</option>
-        </select>
-      </button>
+      <select id="transaction_type" name="transaction_type" required>
+        <option value="">Select ...</option>
+        <option value="Purchases">Purchase</option>
+        <option value="Sales">Sale</option>
+        <option value="Goods Withdrawn">Withdraw Goods</option>
+        <option value="Purchases Returns">Return outwards</option>
+        <option value="Sales Returns">Return inwards</option>
+      </select>
+      <button class="btn-reset" type="reset" style="background-color: #ebebed"><i class="fa fa-refresh"></i></button>
       <br />
       <input id="product" type="text" name="product" readonly /><br />
       <label>Purchase from / Sale to / Withdraw by / Returns:</label><br />
@@ -130,14 +129,10 @@
       document.getElementById('goods_withdrawn').value = Number(document.getElementById('total_cost').value);
 
     //
-    if (document.getElementById('transaction_type').value == "Purchases")
+    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
       // Display the field "initial_payment"
       $('#initial_payment').css('display', 'inline');
 
-    if (document.getElementById('transaction_type').value == "Sales")
-      // Display the field "initial_payment"
-      $('#initial_payment').css('display', 'inline');
-      
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       // Hide the field "payment"
       $('#payment').css('display', 'none');
