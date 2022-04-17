@@ -1,0 +1,205 @@
+<div class="flex-container">
+  <!-- TRANSACTION FORM -->
+  <form class="transaction" method="POST" action="/transactions/new" oninput="handleInput()" onsubmit="handleSubmit()">
+    <fieldset>
+      <legend>Transact</legend><br />
+      <select id="transaction_type" name="transaction_type" required>
+        <option value="">Select ...</option>
+        <option value="Goods Withdrawn">Withdraw Goods</option>
+      </select>
+      <br />
+      <input id="product" type="text" name="product" readonly /><br />
+      <input id="userId" type="hidden" name="userId" value="624c0fca6bfe7b791e3ca00d" />
+      <label>Quantity:</label><br />
+      <input id="quantity" type="text" name="quantity" /><br />
+      <label>Unit Cost:</label><br />
+      <input id="unit_cost" type="text" name="unit_cost" />
+      <p class="unitCost"></p>
+      <label>Total Cost:</label><input id="total_cost" type="hidden" name="total_cost" readonly />
+      <p class="totalCost"></p>
+      <input id="payment" type="text" name="payment" readonly /><br />
+      <input id="initial_payment" type="text" name="initial_payment" required /><br />
+      <label>Balance:</label>
+      <p class="debt"></p>
+      <input id="creditor" type="hidden" name="creditor" readonly />
+      <input id="debtor" type="hidden" name="debtor" readonly />
+      <input id="goods_withdrawn" type="hidden" name="goods_withdrawn" readonly />
+      <input id="transaction_date" type="hidden" name="transaction_date" readonly />
+      <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
+    </fieldset>
+  </form>
+
+  <!-- PRODUCT FORM -->
+  <form class="product" method="POST" action="/products/edit" onsubmit="handleProductSubmit()">
+    <input type="hidden" name="_id" value="{{product._id}}">
+    <fieldset>
+      <legend></legend><br />
+      <input id="user_id" type="hidden" name="user_id" value="{{product.user_id}}" readonly />
+      <input id="product_name" type="hidden" name="product_name" value="{{product.product_name}}" readonly />
+      <input id="category" type="hidden" name="category" value="{{product.category}}" readonly />
+      <input id="retail_price" type="hidden" name="retail_price" value="{{product.retail_price}}" readonly />
+      <input id="quantity_purchased" type="hidden" name="quantity_purchased" value="{{product.quantity_purchased}}"
+        readonly />
+      <input id="net_purchases" type="hidden" name="net_purchases" value="{{product.net_purchases}}" readonly />
+      <input id="quantity_sold" type="hidden" name="quantity_sold" value="{{product.quantity_sold}}" readonly />
+      <input id="net_sales" type="hidden" name="net_sales" value="{{product.net_sales}}" readonly />
+      <input id="quantity_instock" type="hidden" name="quantity_instock" value="{{product.quantity_instock}}"
+        readonly />
+      <input id="closing_stock" type="hidden" name="closing_stock" value="{{product.closing_stock}}" readonly />
+      <input id="cost_of_sales" type="hidden" name="cost_of_sales" value="{{product.cost_of_sales}}" readonly />
+      <input id="gross_profit_or_loss" type="hidden" name="gross_profit_or_loss"
+        value="{{product.gross_profit_or_loss}}" readonly />
+      <input id="discontinued" type="hidden" name="discontinued" value="{{product.discontinued}}" readonly />
+      <input id="created_on" type="hidden" name="created_on" value="{{product.created_on}}" readonly />
+      <input id="updated_on" type="hidden" name="updated_on" value="{{product.updated_on}}" readonly />
+      <button class="btn btn-success conclude" type="submit">Conclude Transaction</button><br />
+    </fieldset>
+  </form>
+</div>
+
+<script type="text/javascript">
+
+  const handleInput = () => {
+
+    // Total Cost
+    document.getElementById('total_cost').value = Number(document.getElementById('quantity').value) * Number(document.getElementById('unit_cost').value);
+
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var totalCost = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    document.querySelector('.totalCost').textContent = totalCost.format(document.getElementById('total_cost').value);
+
+    // Insert Product automatically
+    document.getElementById('product').value = "{{product.product_name}}";
+
+    // Insert Dates automatically
+    document.getElementById('transaction_date').value = Date();
+    document.getElementById('updated_on').value = document.getElementById('transaction_date').value;
+
+    // Unit Cost
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('unit_cost').value = "{{product.retail_price}}";
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('unit_cost').value = "{{product.closing_stock}}" / "{{product.quantity_instock}}";
+
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var unitCost = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    document.querySelector('.unitCost').textContent = unitCost.format(document.getElementById('unit_cost').value);
+
+    // Payment
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('payment').value = "Issued"
+
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('payment').value = "Received"
+
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('payment').value = "None"
+
+    // Creditor, Debtors, Goods Withdrawn
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('debtor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('goods_withdrawn').value = Number(document.getElementById('total_cost').value);
+
+    //
+    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
+      // Display the field "initial_payment"
+      $('#initial_payment').css('display', 'inline');
+
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      // Hide the field "payment"
+      $('#payment').css('display', 'none');
+
+    // FORMAT NUMBER AND DISPLAY AS CURRENCY
+    var debt = new Intl.NumberFormat('en-UG', {
+      style: 'currency',
+      currency: 'UGX',
+      minimumFractionDigits: 2
+    });
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.querySelector('.debt').textContent = debt.format(document.getElementById('creditor').value);
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.querySelector('.debt').textContent = debt.format(document.getElementById('debtor').value);
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.querySelector('.debt').textContent = debt.format(document.getElementById('goods_withdrawn').value);
+  }
+
+  const handleSubmit = () => {
+    // Hide the Transaction Form
+    $('.transaction').css('display', 'none');
+    // Display the Product Form
+    $('.product').css('display', 'inline');
+  }
+
+  const handleProductSubmit = () => {
+    // Quantity Purchased
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) + Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
+
+    // Quantity Sold
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) + Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) - Number(document.getElementById('quantity').value);
+
+    // Quantity Instock
+    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value) - Number(document.getElementById('quantity').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value);
+
+    // Discontinued
+    if (document.getElementById('quantity_instock').value == 0)
+      document.getElementById('discontinued').value = 'Yes'
+    else
+      document.getElementById('discontinued').value = 'No'
+
+    // Purchases
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) + Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Purchases Returns")
+      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('total_cost').value);
+
+    // Sales
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) + Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Sales Returns")
+      document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('total_cost').value);
+
+    // Closing Stock
+    if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) + Number(document.getElementById('total_cost').value);
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('closing_stock').value = Number(document.getElementById('quantity_instock').value) * Number(document.getElementById('closing_stock').value)
+        / (Number(document.getElementById('quantity_instock').value) + Number(document.getElementById('quantity').value));
+    if (document.getElementById('transaction_type').value == "Goods Withdrawn")
+      document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) - Number(document.getElementById('total_cost').value);
+
+    // Cost of Sales
+    document.getElementById('cost_of_sales').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('closing_stock').value);
+
+    // Gross Profit
+    document.getElementById('gross_profit_or_loss').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('cost_of_sales').value);
+  }
+
+</script>

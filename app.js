@@ -196,12 +196,32 @@ app.get('/products/delete/:id', oidc.ensureAuthenticated(), async (req, res) => 
   }
 });
 
-// GET THE PRODUCT BY ID (Transactions)
-app.get('/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
+// GET THE PRODUCT BY ID (Purchases)
+app.get('/purchases/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
-    const users = await axios.get('http://stock-life.herokuapp.com/report/transactions');
-    res.render('product_form', { product, users: users.data });
+    res.render('purchase_product', { product });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// GET THE PRODUCT BY ID (Sales)
+app.get('/sales/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
+  try {
+    const product = await Product.findOne({ _id: req.params.id });
+    const customers = await axios.get('http://stock-life.herokuapp.com/customers');
+    res.render('sale_product', { product, customers: customers.data });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// GET THE PRODUCT BY ID (Goods Withdrawn)
+app.get('/drawings/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
+  try {
+    const product = await Product.findOne({ _id: req.params.id });
+    res.render('withdraw_product', { product });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -307,6 +327,16 @@ app.get('/suppliers', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const suppliers = await User.find({ user: 'SUPPLIER' });
     res.render('suppliers', { suppliers });
+  } catch (error) {
+    res.status(400).send('Unable to find the list');
+  }
+});
+
+// LIST USERS (Customers)
+app.get('/customers', oidc.ensureAuthenticated(), async (req, res) => {
+  try {
+    const customers = await User.find({ user: 'CUSTOMER' });
+    res.json(customers);
   } catch (error) {
     res.status(400).send('Unable to find the list');
   }
