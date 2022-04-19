@@ -130,8 +130,7 @@
       document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
     
     // Quantity Instock
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
+    document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
     if (document.getElementById('transaction_type').value == "Purchases Returns")
       document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value) - Number(document.getElementById('quantity').value);
 

@@ -18,7 +18,7 @@
       <label>Total Cost:</label><input id="total_cost" type="hidden" name="total_cost" readonly />
       <p class="totalCost"></p>
       <input id="payment" type="text" name="payment" readonly /><br />
-      <input id="initial_payment" type="text" name="initial_payment" required /><br />
+      <input id="initial_payment" type="text" name="initial_payment" value="0" required /><br />
       <label>Balance:</label>
       <p class="debt"></p>
       <input id="creditor" type="hidden" name="creditor" readonly />
@@ -127,7 +127,7 @@
       document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
 
     // Quantity Instock
-    
+    document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
 
     // Discontinued
     if (document.getElementById('quantity_instock').value == 0)
