@@ -333,7 +333,7 @@ app.get('/suppliers', oidc.ensureAuthenticated(), async (req, res) => {
 });
 
 // LIST USERS (Customers)
-app.get('/customers', oidc.ensureAuthenticated(), async (req, res) => {
+app.get('/customers', async (req, res) => {
   try {
     const customers = await User.find({ user: 'CUSTOMER' });
     res.json(customers);

@@ -65,7 +65,7 @@
     <option value={{this}}>{{this}}</option>
     {{/each}}
   </select>
-  <button class="search" type="submit">search <i class="fa fa-search" aria-hidden="true"></i></button>
+  <button class="search" type="submit"><i class="fa fa-search" aria-hidden="true"></i> search</button>
 </form>
 <br />
 <div class="cards">
@@ -74,7 +74,7 @@
     <img src={{this.file_name}} />
     <div class="card-title"><b>{{this.product_name}}</b></div>
     <div class="card-text">USh {{this.retail_price}} {{this.measurement}}</div>
-    <a href="/items/{{this._id}}"> order </a>
+    <a style="font-weight: bolder" href="/items/{{this._id}}"> order </a>
   </div>
   {{/each}}
 </div>

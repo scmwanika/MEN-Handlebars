@@ -2,7 +2,7 @@
   <!-- TRANSACTION FORM -->
   <form class="transaction" method="POST" action="/transactions/new" oninput="handleInput()" onsubmit="handleSubmit()">
     <fieldset>
-      <legend>Transact</legend><br />
+      <legend>Withdraw Goods</legend><br />
       <select id="transaction_type" name="transaction_type" required>
         <option value="">Select ...</option>
         <option value="Goods Withdrawn">Withdraw Goods</option>
@@ -80,8 +80,6 @@
     document.getElementById('updated_on').value = document.getElementById('transaction_date').value;
 
     // Unit Cost
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('unit_cost').value = "{{product.retail_price}}";
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.getElementById('unit_cost').value = "{{product.closing_stock}}" / "{{product.quantity_instock}}";
 
@@ -94,30 +92,14 @@
     document.querySelector('.unitCost').textContent = unitCost.format(document.getElementById('unit_cost').value);
 
     // Payment
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('payment').value = "Issued"
-
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('payment').value = "Received"
-
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.getElementById('payment').value = "None"
 
-    // Creditor, Debtors, Goods Withdrawn
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
-
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('debtor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
-
+    // Goods Withdrawn
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.getElementById('goods_withdrawn').value = Number(document.getElementById('total_cost').value);
 
     //
-    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
-      // Display the field "initial_payment"
-      $('#initial_payment').css('display', 'inline');
-
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       // Hide the field "payment"
       $('#payment').css('display', 'none');
@@ -128,10 +110,6 @@
       currency: 'UGX',
       minimumFractionDigits: 2
     });
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.querySelector('.debt').textContent = debt.format(document.getElementById('creditor').value);
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.querySelector('.debt').textContent = debt.format(document.getElementById('debtor').value);
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.querySelector('.debt').textContent = debt.format(document.getElementById('goods_withdrawn').value);
   }
@@ -145,26 +123,11 @@
 
   const handleProductSubmit = () => {
     // Quantity Purchased
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) + Number(document.getElementById('quantity').value);
-    if (document.getElementById('transaction_type').value == "Purchases Returns")
-      document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.getElementById('quantity_purchased').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity').value);
 
-    // Quantity Sold
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) + Number(document.getElementById('quantity').value);
-    if (document.getElementById('transaction_type').value == "Sales Returns")
-      document.getElementById('quantity_sold').value = Number(document.getElementById('quantity_sold').value) - Number(document.getElementById('quantity').value);
-
     // Quantity Instock
-    if ((document.getElementById('transaction_type').value == "Purchases") || (document.getElementById('transaction_type').value == "Sales"))
-      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_purchased').value) - Number(document.getElementById('quantity_sold').value);
-    if (document.getElementById('transaction_type').value == "Purchases Returns")
-      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value) - Number(document.getElementById('quantity').value);
-    if (document.getElementById('transaction_type').value == "Sales Returns")
-      document.getElementById('quantity_instock').value = Number(document.getElementById('quantity_instock').value);
+    
 
     // Discontinued
     if (document.getElementById('quantity_instock').value == 0)
@@ -172,11 +135,7 @@
     else
       document.getElementById('discontinued').value = 'No'
 
-    // Purchases
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) + Number(document.getElementById('total_cost').value);
-    if (document.getElementById('transaction_type').value == "Purchases Returns")
-      document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('total_cost').value);
+    // Goods Withdrawn
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.getElementById('net_purchases').value = Number(document.getElementById('net_purchases').value) - Number(document.getElementById('total_cost').value);
 
@@ -187,11 +146,6 @@
       document.getElementById('net_sales').value = Number(document.getElementById('net_sales').value) - Number(document.getElementById('total_cost').value);
 
     // Closing Stock
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) + Number(document.getElementById('total_cost').value);
-    if (document.getElementById('transaction_type').value == "Sales")
-      document.getElementById('closing_stock').value = Number(document.getElementById('quantity_instock').value) * Number(document.getElementById('closing_stock').value)
-        / (Number(document.getElementById('quantity_instock').value) + Number(document.getElementById('quantity').value));
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
       document.getElementById('closing_stock').value = Number(document.getElementById('closing_stock').value) - Number(document.getElementById('total_cost').value);
 

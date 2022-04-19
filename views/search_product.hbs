@@ -19,6 +19,7 @@
 
   .search {
     border: none;
+    width: 100%;
   }
 </style>
 
@@ -27,10 +28,10 @@
   <tr>
     <form action="/products/search">
       <td colspan="2">
-        <input name="product_name" placeholder="product name" />
+        <input name="product_name" placeholder="search product" />
       </td>
       <td>
-        <button class="search" type="submit">search <i class="fa fa-search" aria-hidden="true"></i></button>
+        <button class="search" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
       </td>
     </form>
   </tr>
@@ -71,15 +72,13 @@
     <td>{{this.gross_profit_or_loss}}</td>
   </tr>
   <tr>
-    <th>
-      <a href="/purchases/products/{{this._id}}"> Purchase </a> |
-      <a href="/sales/products/{{this._id}}"> Sale </a> |
-      <a href="/drawings/products/{{this._id}}"> Withdraw </a>
+    <th style="font-weight: bolder" colspan="3">
+      <a href="/purchases/products/{{this._id}}">purchase</a>
+      <a style="padding-left: 10px" href="/sales/products/{{this._id}}">sale</a>
+      <a style="padding-left: 10px" href="/drawings/products/{{this._id}}">withdraw</a>
       {{!-- <a href="/products/delete/{{this._id}}" onclick="return confirm('Sure you want to delete this record?');">
         Delete </a> --}}
     </th>
-    <td></td>
-    <td></td>
   </tr>
   {{/each}}
 </table>
