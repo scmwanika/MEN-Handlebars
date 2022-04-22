@@ -75,7 +75,6 @@ const User = require('./models/user_model');
 const Product = require('./models/product_model');
 const items = require('./json/product_catalogue');
 const Transaction = require('./models/transaction_model');
-const Order = require('./models/order_model');
 const Payment = require('./models/payment_model');
 const FinanceAndInvestment = require('./models/finance_and_investment_model');
 
@@ -266,19 +265,6 @@ app.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => {
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
-});
-
-/* --- ORDER CONTROLLERS --- */
-
-// PLACE YOUR ORDER
-app.post('/orders/new', async (req, res) => {
-  const newOrder = new Order(req.body);
-  await newOrder.save((error) => {
-    if (error)
-      res.send('Sorry! Unsuccessful. Please Try Again.');
-    else
-      res.redirect('/');
-  });
 });
 
 /* --- PAYMENT CONTROLLERS --- */
