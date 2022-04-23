@@ -34,15 +34,14 @@
     <fieldset>
       <div>
         <legend>Customer</legend><br />
-        <input id="user" type="hidden" name="user" value="CUSTOMER" required />
         <label>Name:</label><br />
         <input id="name" type="text" name="name" required /><br />
         <label>Email:</label><br />
         <input id="email" type="email" name="email" required /><br />
         <label>Address:</label><br />
-        <input id="name" type="text" name="name" required /><br />
+        <input id="address" type="text" name="address" required /><br />
         <label>Telephone:</label><br />
-        <input id="name" type="text" name="name" required /><br />
+        <input id="telephone" type="text" name="telephone" required /><br />
         <br />
         <!-- ORDER DETAILS -->
         <legend>Order</legend>
@@ -102,10 +101,6 @@
 
     // Insert Date automatically
     document.getElementById('order_date').value = Date();
-
-    // Transactions by User ID
-    if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('userId').value = "{{product.user_id}}";
   }
 
   /* --- Send Email Directly From JavaScript using EmailJS --- */
@@ -126,7 +121,7 @@
       emailjs.sendForm(serviceID, templateID, this)
         .then(() => {
           btn.value = 'Submit';
-          alert('Received with Thanks. Please check your email for payment details.');
+          alert('Order received with Thanks. Please, check your email for payment details.');
         }, (err) => {
           btn.value = 'Submit';
           alert(JSON.stringify(err));
