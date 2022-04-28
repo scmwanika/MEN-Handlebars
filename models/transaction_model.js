@@ -24,7 +24,7 @@ const transactionSchema = new Schema({
   payment: {
     type: String,
   },
-  initial_payment: {
+  cumulative_payment: {
     type: Number,
   },
   creditor: {

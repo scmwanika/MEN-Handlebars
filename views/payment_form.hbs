@@ -30,7 +30,7 @@
       <input id="unit_cost" type="hidden" name="unit_cost" value="{{transaction.unit_cost}}" readonly />
       <input id="total_cost" type="hidden" name="total_cost" value="{{transaction.total_cost}}" readonly />
       <input id="payment" type="hidden" name="payment" value="{{transaction.payment}}" readonly />
-      <input id="initial_payment" type="hidden" name="initial_payment" value="{{transaction.initial_payment}}"
+      <input id="cumulative_payment" type="hidden" name="cumulative_payment" value="{{transaction.cumulative_payment}}"
         readonly />
       <input id="creditor" type="hidden" name="creditor" value="{{transaction.creditor}}" readonly />
       <input id="debtor" type="hidden" name="debtor" value="{{transaction.debtor}}" readonly />
@@ -65,7 +65,11 @@
 
     // Creditor, Debtor
     if (document.getElementById('transaction_type').value == "Purchases")
+      document.getElementById('cumulative_payment').value = Number(document.getElementById('cumulative_payment').value) + Number(document.getElementById('later_payment').value);
+    if (document.getElementById('transaction_type').value == "Purchases")
       document.getElementById('creditor').value = Number(document.getElementById('creditor').value) - Number(document.getElementById('later_payment').value);
+    if (document.getElementById('transaction_type').value == "Sales")
+      document.getElementById('cumulative_payment').value = Number(document.getElementById('cumulative_payment').value) + Number(document.getElementById('later_payment').value);
     if (document.getElementById('transaction_type').value == "Sales")
       document.getElementById('debtor').value = Number(document.getElementById('debtor').value) - Number(document.getElementById('later_payment').value);
 

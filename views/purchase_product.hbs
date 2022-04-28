@@ -19,7 +19,7 @@
       <label>Total Cost:</label><input id="total_cost" type="hidden" name="total_cost" readonly />
       <p class="totalCost"></p>
       <input id="payment" type="text" name="payment" readonly /><br />
-      <input id="initial_payment" type="text" name="initial_payment" required /><br />
+      <input id="cumulative_payment" type="text" name="cumulative_payment" required /><br />
       <label>Balance:</label>
       <p class="debt"></p>
       <input id="creditor" type="hidden" name="creditor" readonly />
@@ -98,12 +98,12 @@
 
     // Creditor
     if (document.getElementById('transaction_type').value == "Purchases")
-      document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('initial_payment').value);
+      document.getElementById('creditor').value = Number(document.getElementById('total_cost').value) - Number(document.getElementById('cumulative_payment').value);
 
     //
     if (document.getElementById('transaction_type').value == "Purchases")
-      // Display the field "initial_payment"
-      $('#initial_payment').css('display', 'inline');
+      // Display the field "cumulative_payment"
+      $('#cumulative_payment').css('display', 'inline');
 
     // FORMAT NUMBER AND DISPLAY AS CURRENCY
     var debt = new Intl.NumberFormat('en-UG', {

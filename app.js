@@ -16,7 +16,6 @@ const app = express();
 app.set('view engine', 'hbs');
 
 // SERVING MULTIPLE STATIC DIRECTORIES WITH MIDDLEWARE FUNCTION express.static
-app.use(express.static('static/css'));
 app.use(express.static('static/img'));
 app.use(express.static('uploads'));
 
