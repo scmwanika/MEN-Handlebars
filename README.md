@@ -1,2 +1,2 @@
 # SMART
-Stock Management
+Stock Management System
