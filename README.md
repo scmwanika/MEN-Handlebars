@@ -1,2 +1,2 @@
-# SMART
+# Web Application
 Stock Management System
