@@ -3,10 +3,12 @@ const { default: axios } = require('axios');
 const express = require('express');
 const multer = require('multer');
 const bodyParser = require('body-parser');
+const session = require('express-session');
+const ExpressOIDC = require('@okta/oidc-middleware').ExpressOIDC;
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const { DATABASE, PORT } = process.env;
+const { HOST_URL, OKTA_ORG_URL, OKTA_CLIENT_ID, OKTA_CLIENT_SECRET, DATABASE, PORT } = process.env;
 
 const app = express();
 
@@ -27,6 +29,26 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage: storage }).single('photo');
+
+// USER SESSION
+app.use(session({
+  cookie: { httpOnly: true },
+  secret: `${OKTA_CLIENT_SECRET}`,
+  resave: true,
+  saveUninitialized: false
+}));
+
+// AUTHENTICATE USER
+const oidc = new ExpressOIDC({
+  appBaseUrl: HOST_URL,
+  issuer: OKTA_ORG_URL,
+  client_id: OKTA_CLIENT_ID,
+  client_secret: OKTA_CLIENT_SECRET,
+  redirect_uri: `${HOST_URL}/authorization-code/callback`,
+  scope: 'openid profile email'
+});
+
+app.use(oidc.router);
 
 // MANIPULATE DATABASE USING JSON
 app.use(express.json());
@@ -58,12 +80,12 @@ const FinanceAndInvestment = require('./models/finance_and_investment_model');
 /* --- USER CONTROLLERS --- */
 
 // GET AND FILL IN THE USER (Supplier)
-app.get('/suppliers/new', (req, res) => {
+app.get('/suppliers/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('supplier_form');
 });
 
 // CREATE USER (Supplier)
-app.post('/suppliers/new', async (req, res) => {
+app.post('/suppliers/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newSupplier = new User(req.body);
   await newSupplier.save((error) => {
     if (error)
@@ -74,7 +96,7 @@ app.post('/suppliers/new', async (req, res) => {
 });
 
 // EDIT USER (Supplier)
-app.post('/suppliers/edit', async (req, res) => {
+app.post('/suppliers/edit', oidc.ensureAuthenticated(), async (req, res) => {
   await User.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -84,7 +106,7 @@ app.post('/suppliers/edit', async (req, res) => {
 });
 
 // GET THE USER (Supplier) BY ID
-app.get('/suppliers/:id', async (req, res) => {
+app.get('/suppliers/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const supplier = await User.findOne({ _id: req.params.id });
     res.render('supplies_form', { supplier, items });
@@ -94,12 +116,12 @@ app.get('/suppliers/:id', async (req, res) => {
 });
 
 // GET AND FILL IN THE USER (Customer)
-app.get('/customers/new', (req, res) => {
+app.get('/customers/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('customer_form');
 });
 
 // CREATE USER (Customer)
-app.post('/customers/new', async (req, res) => {
+app.post('/customers/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newCustomer = new User(req.body);
   await newCustomer.save((error) => {
     if (error)
@@ -115,7 +137,7 @@ app.post('/customers/new', async (req, res) => {
 app.get('/', async (req, res) => {
   try {
     // search by category and retrieve products not discontinued
-    const products = await Product.find({ category: req.query.category, discontinued: 'NO' });
+    const products = await Product.find({ category: req.query.category, discontinued: 'No' });
     res.render('index', { products, items });
   } catch (error) {
     res.status(400).send('index page closed; please try again.');
@@ -123,7 +145,7 @@ app.get('/', async (req, res) => {
 });
 
 // UPLOAD FILE (Product)
-app.post('/uploads', (req, res) => {
+app.post('/uploads', oidc.ensureAuthenticated(), (req, res) => {
   upload(req, res, (error) => {
     if (error) {
       return res.end('Sorry! Unsuccessful. Please Try Again.');
@@ -132,7 +154,7 @@ app.post('/uploads', (req, res) => {
 });
 
 // CREATE PRODUCT
-app.post('/products/new', async (req, res) => {
+app.post('/products/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newProduct = new Product(req.body);
   await newProduct.save((error) => {
     if (error)
@@ -143,7 +165,7 @@ app.post('/products/new', async (req, res) => {
 });
 
 // EDIT PRODUCT
-app.post('/products/edit', async (req, res) => {
+app.post('/products/edit', oidc.ensureAuthenticated(), async (req, res) => {
   await Product.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -153,7 +175,7 @@ app.post('/products/edit', async (req, res) => {
 });
 
 // SEARCH THE PRODUCT BY NAME
-app.get('/products/search', async (req, res) => {
+app.get('/products/search', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const products = await Product.find({ product_name: req.query.product_name });
     res.render('search_product', { products });
@@ -163,7 +185,7 @@ app.get('/products/search', async (req, res) => {
 });
 
 // DELETE THE PRODUCT BY ID
-app.get('/products/delete/:id', async (req, res) => {
+app.get('/products/delete/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.deleteOne({ _id: req.params.id });
     res.render('search_product', { product });
@@ -173,7 +195,7 @@ app.get('/products/delete/:id', async (req, res) => {
 });
 
 // GET THE PRODUCT BY ID (Purchases)
-app.get('/purchases/products/:id', async (req, res) => {
+app.get('/purchases/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
     res.render('purchase_product', { product });
@@ -183,7 +205,7 @@ app.get('/purchases/products/:id', async (req, res) => {
 });
 
 // GET THE PRODUCT BY ID (Sales)
-app.get('/sales/products/:id', async (req, res) => {
+app.get('/sales/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
     const customers = await axios.get('http://stock-life.herokuapp.com/customers');
@@ -194,7 +216,7 @@ app.get('/sales/products/:id', async (req, res) => {
 });
 
 // GET THE PRODUCT BY ID (Goods Withdrawn)
-app.get('/drawings/products/:id', async (req, res) => {
+app.get('/drawings/products/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const product = await Product.findOne({ _id: req.params.id });
     res.render('withdraw_product', { product });
@@ -216,7 +238,7 @@ app.get('/items/:id', async (req, res) => {
 /* --- TRANSACTION CONTROLLERS --- */
 
 // CREATE TRANSACTION
-app.post('/transactions/new', async (req, res) => {
+app.post('/transactions/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newTransaction = new Transaction(req.body);
   await newTransaction.save((error) => {
     if (error)
@@ -225,7 +247,7 @@ app.post('/transactions/new', async (req, res) => {
 });
 
 // EDIT TRANSACTION
-app.post('/transactions/edit', async (req, res) => {
+app.post('/transactions/edit', oidc.ensureAuthenticated(), async (req, res) => {
   await Transaction.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -235,7 +257,7 @@ app.post('/transactions/edit', async (req, res) => {
 });
 
 // GET THE TRANSACTION BY ID
-app.get('/transactions/:id', async (req, res) => {
+app.get('/transactions/:id', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const transaction = await Transaction.findOne({ _id: req.params.id });
     res.render('payment_form', { transaction });
@@ -247,7 +269,7 @@ app.get('/transactions/:id', async (req, res) => {
 /* --- PAYMENT CONTROLLERS --- */
 
 // PAY OFF DEBT
-app.post('/payments/new', async (req, res) => {
+app.post('/payments/new', oidc.ensureAuthenticated(), async (req, res) => {
   const newPayment = new Payment(req.body);
   await newPayment.save((error) => {
     if (error)
@@ -258,7 +280,7 @@ app.post('/payments/new', async (req, res) => {
 /* --- FINANCE AND INVESTMENTS CONTROLLERS --- */
 
 // GET THE FINANCE AND INVESTMENTS FORM
-app.get('/finance-and-investments/new', (req, res) => {
+app.get('/finance-and-investments/new', oidc.ensureAuthenticated(), (req, res) => {
   res.render('finance_and_investments_form');
 });
 
@@ -274,7 +296,7 @@ app.post('/finance-and-investments/new', async (req, res) => {
 });
 
 // EDIT FINANCE AND INVESTMENTS
-app.post('/finance-and-investments/edit', async (req, res) => {
+app.post('/finance-and-investments/edit', oidc.ensureAuthenticated(), async (req, res) => {
   await FinanceAndInvestment.updateOne({ _id: req.body._id }, req.body, { new: true }, (error) => {
     if (error)
       res.send('Sorry! Unsuccessful. Please Try Again.');
@@ -286,9 +308,9 @@ app.post('/finance-and-investments/edit', async (req, res) => {
 /* --- EXTRACT REPORTS --- */
 
 // LIST USERS (Suppliers)
-app.get('/suppliers', async (req, res) => {
+app.get('/suppliers', oidc.ensureAuthenticated(), async (req, res) => {
   try {
-    const suppliers = await User.find({ group: 'SUPPLIER' });
+    const suppliers = await User.find({ user: 'SUPPLIER' });
     res.render('suppliers', { suppliers });
   } catch (error) {
     res.status(400).send('Unable to find the list');
@@ -298,15 +320,25 @@ app.get('/suppliers', async (req, res) => {
 // LIST USERS (Customers)
 app.get('/customers', async (req, res) => {
   try {
-    const customers = await User.find({ group: 'CUSTOMER' });
+    const customers = await User.find({ user: 'CUSTOMER' });
     res.json(customers);
   } catch (error) {
     res.status(400).send('Unable to find the list');
   }
 });
 
+// LIST PRODUCTS
+app.get('/products', oidc.ensureAuthenticated(), async (req, res) => {
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
 // LIST DEBTORS
-app.get('/debtors', async (req, res) => {
+app.get('/debtors', oidc.ensureAuthenticated(), async (req, res) => {
   try {
     const debtors = await Transaction.find({ debtor: { $gt: 0 } }); // find where debtor > 0
     res.render('debtors', { debtors });
@@ -336,10 +368,49 @@ app.get('/report/transactions', async (req, res) => {
   }
 });
 
-// SUMMARIES
-app.get('/summaries', async (req, res) => {
+// FINANCE AND INVESTMENTS SUMMARIZED
+app.get('/report/finance-and-investments', async (req, res) => {
   try {
-    // Trading Account
+    const finance_and_investments = await FinanceAndInvestment.aggregate(
+      [{
+        "$group": {
+          "_id": "",
+          equity: { $sum: "$equity" },
+          loan: { $sum: "$loan" },
+          fixed_asset: { $sum: "$fixed_asset" },
+          business_expense: { $sum: "$business_expense" },
+          cash_withdrawn: { $sum: "$cash_withdrawn" }
+        }
+      }]
+    );
+    res.render('finance_and_investments_report', { finance_and_investments });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// CREDITOR, DEBTORS, GOODS WITHDRAWN SUMMARIZED
+app.get('/report/operations', async (req, res) => {
+  try {
+    const transactions = await Transaction.aggregate(
+      [{
+        "$group": {
+          "_id": "",
+          creditor: { $sum: "$creditor" },
+          debtor: { $sum: "$debtor" },
+          goods_withdrawn: { $sum: "$goods_withdrawn" }
+        }
+      }]
+    );
+    res.render('operations_report', { transactions });
+  } catch (error) {
+    res.status(400).send('Unable to find the record in the list');
+  }
+});
+
+// TRADING ACTIVITIES SUMMARIZED
+app.get('/report/trading', async (req, res) => {
+  try {
     const products = await Product.aggregate(
       [{
         "$group": {
@@ -352,31 +423,7 @@ app.get('/summaries', async (req, res) => {
         }
       }]
     );
-    // Creditor, Debtors, Goods Drawn
-    const transactions = await Transaction.aggregate(
-      [{
-        "$group": {
-          "_id": "",
-          creditors: { $sum: "$creditor" },
-          debtors: { $sum: "$debtor" },
-          goods_drawn: { $sum: "$goods_drawn" }
-        }
-      }]
-    );
-    // Equities, Loans, Fixed Assets, Business Expenses, Cash Drawn
-    const finance_and_investments = await FinanceAndInvestment.aggregate(
-      [{
-        "$group": {
-          "_id": "",
-          equities: { $sum: "$equity" },
-          loans: { $sum: "$loan" },
-          fixed_assets: { $sum: "$fixed_asset" },
-          business_expenses: { $sum: "$business_expense" },
-          cash_drawn: { $sum: "$cash_drawn" }
-        }
-      }]
-    );
-    res.render('summaries_report', { products, transactions, finance_and_investments });
+    res.render('trading_report', { products });
   } catch (error) {
     res.status(400).send('Unable to find the record in the list');
   }
@@ -387,11 +434,18 @@ app.get('/summaries', async (req, res) => {
 // LOGOUT ROUTE
 app.get('/logout', (req, res) => {
   req.logout();
+  req.session.destroy();
   res.redirect('/');
 });
 
 /* --- APP LISTEN TO REQUESTS --- */
 
-app.listen(PORT, () => {
-  console.log(`App running at port ${PORT}`);
+oidc.on('ready', () => {
+  app.listen(PORT, () => {
+    console.log(`App running at port ${PORT}`);
+  });
+});
+
+oidc.on('error', err => {
+  console.error(err);
 });

@@ -3,7 +3,7 @@
   #loan,
   #fixed_asset,
   #business_expense,
-  #cash_withdrawn {
+  #cash_drawn {
     display: none;
   }
 </style>
@@ -28,7 +28,7 @@
       <input id="loan" type="text" name="loan" placeholder="insert the amount ..." />
       <input id="fixed_asset" type="text" name="fixed_asset" placeholder="insert the cost ..." />
       <input id="business_expense" type="text" name="business_expense" placeholder="insert the cost ..." />
-      <input id="cash_withdrawn" type="text" name="cash_withdrawn" placeholder="insert the amount ..." />
+      <input id="cash_drawn" type="text" name="cash_drawn" placeholder="insert the amount ..." />
       <p class="amount"></p>
       <input id="updated_on" type="hidden" name="updated_on" />
       <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
@@ -70,9 +70,9 @@
 
     if (document.getElementById('transaction_type').value == "Cash Withdrawn")
       // Display the field "Goods Withdrawn"
-      $('#cash_withdrawn').css('display', 'inline');
+      $('#cash_drawn').css('display', 'inline');
     else
-      $('#cash_withdrawn').css('display', 'none');
+      $('#cash_drawn').css('display', 'none');
 
     // FORMAT NUMBER AND DISPLAY AS CURRENCY
     var amount = new Intl.NumberFormat('en-UG', {
@@ -89,7 +89,7 @@
     if (document.getElementById('transaction_type').value == "Business Expense")
       document.querySelector('.amount').textContent = amount.format(document.getElementById('business_expense').value);
     if (document.getElementById('transaction_type').value == "Cash Withdrawn")
-      document.querySelector('.amount').textContent = amount.format(document.getElementById('cash_withdrawn').value);
+      document.querySelector('.amount').textContent = amount.format(document.getElementById('cash_drawn').value);
   }
 
   // RUN ON SUBMIT
@@ -103,7 +103,7 @@
     $('#loan').css('display', 'none');
     $('#fixed_asset').css('display', 'none');
     $('#business_expense').css('display', 'none');
-    $('#cash_withdrawn').css('display', 'none');
+    $('#cash_drawn').css('display', 'none');
   }
 
 </script>

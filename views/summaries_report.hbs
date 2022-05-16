@@ -1,0 +1,87 @@
+<style>
+  .navbar {
+    display: none;
+  }
+</style>
+
+<!-- TRADING, PROFIT AND LOSS ACCOUNT -->
+<table class="listing-table table-striped">
+  {{#each products}}
+  <tr>
+    <th colspan="2">TRADING, PROFIT AND LOSS ACCOUNT</th>
+  </tr>
+  <tr>
+    <th>Net Purchases:</th>
+    <td>{{this.net_purchases}}</td>
+  </tr>
+  <tr>
+    <th>Net Sales:</th>
+    <td>{{this.net_sales}}</td>
+  </tr>
+  <tr>
+    <th>Closing Stock:</th>
+    <td>{{this.closing_stock}}</td>
+  </tr>
+  <tr>
+    <th>Cost of Sales:</th>
+    <td>{{this.cost_of_sales}}</td>
+  </tr>
+  <tr>
+    <th>Gross Profit or Loss:</th>
+    <td>{{this.gross_profit_or_loss}}</td>
+  </tr>
+  {{/each}}
+</table>
+
+<br />
+
+<!-- CREDITOR, DEBTORS AND GOODS DRAWN -->
+<table class="listing-table table-striped">
+  {{#each transactions}}
+  <tr>
+    <th colspan="2">CREDITOR, DEBTORS AND GOODS DRAWN</th>
+  </tr>
+  <tr>
+    <th>Creditors:</th>
+    <td>{{this.creditors}}</td>
+  </tr>
+  <tr>
+    <th>Debtors:</th>
+    <td>{{this.debtors}}</td>
+  </tr>
+  <tr>
+    <th>Goods Drawn:</th>
+    <td>{{this.goods_drawn}}</td>
+  </tr>
+  {{/each}}
+</table>
+
+<br />
+
+<!-- FINANCE AND INVESTMENTS -->
+<table class="listing-table table-striped">
+  {{#each finance_and_investments}}
+  <tr>
+    <th colspan="2">FINANCE AND INVESTMENTS</th>
+  </tr>
+  <tr>
+    <th>Equities:</th>
+    <td>{{this.equities}}</td>
+  <tr>
+    <th>Loans:</th>
+    <td>{{this.loans}}</td>
+  </tr>
+  <tr>
+    <th>Fixed Assets:</th>
+    <td>{{this.fixed_assets}}</td>
+  </tr>
+  <tr>
+    <th>Business Expenses:</th>
+    <td>{{this.business_expenses}}</td>
+  </tr>
+  <tr>
+    <th>Cash Drawn:</th>
+    <td>{{this.cash_drawn}}</td>
+  </tr>
+  {{/each}}
+</table>

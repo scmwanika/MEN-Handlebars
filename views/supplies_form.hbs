@@ -10,7 +10,7 @@
 
 <div class="flex-container">
   <!-- SUPPLIER FORM -->
-  <form class="supplier" method="POST" action="/suppliers/new">
+  <form class="supplier" method="POST" action="/suppliers/edit">
     <input type="hidden" name="_id" value="{{supplier._id}}" readonly>
     <fieldset>
       <legend>Supplier</legend><br />
@@ -32,15 +32,14 @@
       <input id="website" type="url" name="website" value="{{supplier.website}}" readonly /><br />
     </fieldset>
   </form>
-
-  {{!--
+  
   <!-- UPLOAD PRODUCT -->
   <form class="upload" method="POST" action="/uploads" enctype='multipart/form-data'>
     <legend>Product Details</legend><br />
     <label>Photo:</label><br />
     <input id="photo" type="file" name="photo" /><br /><br />
     <button class="btn btn-success" type="submit">Upload <i class="fa fa-upload"></i></button><br />
-  </form> --}}
+  </form>
 
   <!-- PRODUCT FORM -->
   <form class="product" method="POST" action="/products/new" oninput="handleInput()" onsubmit="handleSubmit()">
@@ -61,7 +60,7 @@
       <label>Proposed Retail Price:</label><br />
       <input id="retail_price" type="text" name="retail_price" />
       <p class="retailPrice"></p>
-      <input id="discontinued" type="hidden" name="discontinued" value="Yes" readonly />
+      <input id="discontinued" type="hidden" name="discontinued" value="YES" readonly />
       <input id="created_on" type="hidden" name="created_on" readonly />
       <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
     </fieldset>
@@ -71,11 +70,11 @@
 <script type="text/javascript">
 
   const handleInput = () => {
-    //const fileName = document.getElementById('photo').value;
-    //document.getElementById('file_name').value = fileName.substring(12);
+    const fileName = document.getElementById('photo').value;
+    document.getElementById('file_name').value = fileName.substring(12);
 
     if (document.getElementById('category').value == "Poultry")
-      document.getElementById('measurement').value = '';
+      document.getElementById('measurement').value = '/bird';
     else
       document.getElementById('measurement').value = '/Kg';
 

@@ -21,7 +21,7 @@ const finance_and_investmentsSchema = new Schema({
   business_expense: {
     type: Number,
   },
-  cash_withdrawn: {
+  cash_drawn: {
     type: Number,
   },
   updated_on: {

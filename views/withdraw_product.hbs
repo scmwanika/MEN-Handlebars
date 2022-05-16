@@ -23,7 +23,7 @@
       <p class="debt"></p>
       <input id="creditor" type="hidden" name="creditor" readonly />
       <input id="debtor" type="hidden" name="debtor" readonly />
-      <input id="goods_withdrawn" type="hidden" name="goods_withdrawn" readonly />
+      <input id="goods_drawn" type="hidden" name="goods_drawn" readonly />
       <input id="transaction_date" type="hidden" name="transaction_date" readonly />
       <button class="btn btn-success submit" type="submit">Save <i class="fa fa-save"></i></button><br />
     </fieldset>
@@ -97,7 +97,7 @@
 
     // Goods Withdrawn
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
-      document.getElementById('goods_withdrawn').value = Number(document.getElementById('total_cost').value);
+      document.getElementById('goods_drawn').value = Number(document.getElementById('total_cost').value);
 
     //
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
@@ -111,7 +111,7 @@
       minimumFractionDigits: 2
     });
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
-      document.querySelector('.debt').textContent = debt.format(document.getElementById('goods_withdrawn').value);
+      document.querySelector('.debt').textContent = debt.format(document.getElementById('goods_drawn').value);
   }
 
   const handleSubmit = () => {
@@ -131,9 +131,9 @@
 
     // Discontinued
     if (document.getElementById('quantity_instock').value == 0)
-      document.getElementById('discontinued').value = 'Yes'
+      document.getElementById('discontinued').value = 'YES'
     else
-      document.getElementById('discontinued').value = 'No'
+      document.getElementById('discontinued').value = 'NO'
 
     // Goods Withdrawn
     if (document.getElementById('transaction_type').value == "Goods Withdrawn")
