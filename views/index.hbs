@@ -60,9 +60,9 @@
   PRODUCT CATALOGUE
   <br />
   <select name="category">
-    {{#each items.category}}
+    {{#each items}}
     <option class="select-option" value="">Select ...</option>
-    <option value={{this}}>{{this}}</option>
+    <option value={{this.category}}>{{this.category}}</option>
     {{/each}}
   </select>
   <button class="search" type="submit"><i class="fa fa-search" aria-hidden="true"></i> search</button>
@@ -74,7 +74,7 @@
     <img src={{this.file_name}} />
     <div class="card-title"><b>{{this.product_name}}</b></div>
     <div class="card-text">USh {{this.retail_price}} {{this.measurement}}</div>
-    <a style="font-weight: bolder" href="/items/{{this._id}}"> order </a>
+    <a style="font-weight: bolder" href="/products/{{this._id}}"> order </a>
   </div>
   {{/each}}
 </div>

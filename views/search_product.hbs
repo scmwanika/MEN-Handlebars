@@ -10,11 +10,10 @@
     text-align: right;
   }
 
-  input[name='product_name'] {
+  select {
     width: 245px;
     border: none;
-    padding-top: 2px;
-    padding-bottom: 4px;
+    margin-top: 4.5px;
   }
 
   .search {
@@ -28,7 +27,12 @@
   <tr>
     <form action="/products/search">
       <td colspan="2">
-        <input name="product_name" placeholder="search product" />
+        <select name="product_name">
+          {{#each items}}
+          <option class="select-option" value="">Search Product ...</option>
+          <option value={{this.product_name}}>{{this.product_name}}</option>
+          {{/each}}
+        </select>
       </td>
       <td>
         <button class="search" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>

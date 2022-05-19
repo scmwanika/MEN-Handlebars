@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const finance_and_investmentsSchema = new Schema({
+const bookkeepingsSchema = new Schema({
   transaction_type: {
     type: String,
   },
@@ -28,7 +28,7 @@ const finance_and_investmentsSchema = new Schema({
     type: Date,
   },
 }, {
-  collection: 'finance-and-investments',
+  collection: 'bookkeepings',
 });
 
-module.exports = mongoose.model('FinanceAndInvestment', finance_and_investmentsSchema);
+module.exports = mongoose.model('Bookkeeping', bookkeepingsSchema);
